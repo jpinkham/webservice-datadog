@@ -1,0 +1,435 @@
+package WebService::DataDog;
+
+use strict;
+use warnings;
+
+use Data::Dumper;
+use Carp;
+use LWP::UserAgent qw();
+use HTTP::Request qw();
+use JSON qw();
+
+
+our $API_ENDPOINT = "https://app.datadoghq.com/api/v1/";
+
+
+=head1 NAME
+
+WebService::DataDog - Interface to DataDog's REST API.
+
+
+=head1 VERSION
+
+Version 1.0.0
+
+=cut
+
+our $VERSION = '1.0.0';
+
+
+=head1 SYNOPSIS
+
+This module allows you to interact with DataDog, a service that will "Capture
+metrics and events, then graph, filter, and search to see what's happening and 
+how systems interact." This module encapsulates all the communications with the
+REST API provided by DataDog to offer a Perl interface to metrics, dashboards,
+events, alerts, etc.
+
+Requests that write data require reporting access and require an API key.
+Requests that read data require full access and also require an application key.
+
+	use WebService::DataDog;
+	
+	# Create an object to communicate with DataDog
+	my $datadog = WebService::DataDog->new(
+		api_key         => 'your_api_key_here',
+		application_key => 'your_application_key',
+	);
+
+
+=head1 METHODS
+
+=head2 new()
+
+Create a new DataDog object that will be used as the interface with
+DataDog's API
+
+	use WebService::DataDog;
+	
+	# Create an object to communicate with DataDog
+	my $datadog = WebService::DataDog->new(
+		api_key         => 'your_api_key_here',
+		application_key => 'your_application_key',
+		verbose         => 1,
+	);
+
+Creates a new object to communicate with DataDog.
+
+The 'verbose' parameter is optional and defaults to not verbose.
+
+=cut
+
+sub new
+{
+	my ( $class, %args ) = @_;
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( api_key application_key ) )
+	{
+		croak "Argument '$arg' is needed to create the WebService::DataDog object"
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Create the object
+	my $self = bless(
+		{
+			api_key         => $args{'api_key'},
+			application_key => $args{'application_key'},
+		},
+		$class,
+	);
+	
+	$self->verbose( $args{'verbose'} );
+	
+	return $self;
+}
+
+
+=head2 get_dashboard()
+
+Retrieve details for one or all user-created dashboards ( does not include
+system-generated or integration dashboards ).
+
+	my $dashboards = $datadog->get_dashboard( id => 'all' );
+	my $dashboard = $datadog->get_dashboard( id => $dash_id );
+	
+Parameters:
+
+=over 4
+
+=item * id
+
+The ID of the dasboard you'd like to get details for. Use special value 'all'
+to retrieve details of all user-created dashboards.
+
+=back
+
+
+=cut
+
+sub get_dashboard
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id ) )
+	{
+		croak "Argument '$arg' is needed to retrieve DataDog dashboard information"
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	if ( $args{'id'} eq 'all' )
+	{
+		return $self->_send_request(
+			command => 'dash',
+			data    => { '' => [] }
+		);
+	}
+	else
+	{
+		return $self->_send_request(
+			command => 'dash',
+			data    => { 'id' => $args{'id'} }
+		);
+	}
+}
+
+
+=head2 get_tags()
+
+Retrieve list/mapping of tags for one or all hosts.
+
+	my $tags = $datadog->get_tags( host => 'all' );
+	my $tags = $datadog->get_tags( host => $hostname|$host_id );
+	
+Parameters:
+
+=over 4
+
+=item * host
+
+The host_id or hostname of the host you'd like to get tags for. Use special value 'all'
+to retrieve a mapping of all tags to each host with those tags.
+
+=back
+
+
+=cut
+
+sub get_tags
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( host ) )
+	{
+		croak "Argument '$arg' is needed to retrieve DataDog dashboard information"
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	if ( $args{'host'} eq 'all' )
+	{
+		return $self->_send_request(
+			command => 'tags/hosts',
+			data    => { '' => [] }
+		);
+	}
+	else
+	{
+		return $self->_send_request(
+			command => 'tags/hosts/' . $args{'host'},
+			data    => { '' => [] }
+		);
+	}
+}
+
+
+=head2 add_host_tags()
+
+Add tags to the specified host.
+
+	$datadog->add_host_tags(
+		host => $hostname|$host_id,
+		tags => [ $tag1, $tag2, $tag3],
+	);
+	
+Parameters:
+
+=over 4
+
+=item * host
+
+The host_id (internal to DataDog, assigned when install DataDog agent on a host)
+or hostname of the host you'd like to add tags to.
+
+NOTE: DataDog must already have metrics on the host you want to add tags to (they
+must have the host in their system). If their system is unaware of the host, you
+will receive the error "Request failed:404 Not Found" (because the API URL
+we attempt to use contains the hostname you specify).
+
+=item * tags
+
+The list of tags you would like to add to the specified host.
+
+=back
+
+
+=cut
+
+sub add_host_tags
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( host tags ) )
+	{
+		croak "Argument '$arg' is needed to retrieve DataDog dashboard information"
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	unless ( Data::Validate::Type::is_arrayref( $args{'tags'} ) )
+	{
+		croak "Argument 'tags' must be an arrayref";
+	}
+	
+	if ( $args{'host'} eq 'all' )
+	{
+		croak "'all' is an invalid value for argument 'host'. Please specify a single hostname or host id";
+	}
+	
+	return $self->_send_request(
+		command => 'tags/hosts/' . $args{'host'},
+		data    => 
+		{
+			'tags' => $args{'tags'} 
+		}
+	);
+}
+
+
+=head1 INTERNAL METHODS
+
+=head2 _send_request()
+
+
+=cut
+
+sub _send_request
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( command data ) )
+	{
+		croak "Argument '$arg' is needed to send a request with the WebService::DataDog object"
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	my $url = $API_ENDPOINT . $args{'command'} . '?api_key=' . $self->{'api_key'}
+	. '&application_key=' . $self->{'application_key'};
+	
+	my $json_in = JSON::encode_json( $args{'data'} );
+	carp "Sending JSON request >" . ( defined( $json_in ) ? $json_in : '' ) . "<"
+		if $verbose;
+	
+	my $request = HTTP::Request->new(GET => $url);
+	carp "GETting request to URL >" . ( defined( $url ) ? $url : '' ) . "<"
+		if $verbose;
+	
+	$request->content_type('application/json');
+	$request->content( $json_in );
+	
+	carp "Request object: ", Dumper( $request )
+		if $verbose;
+	
+	my $user_agent = LWP::UserAgent->new();
+	my $response = $user_agent->request($request);
+	
+	croak "Request failed:" . $response->status_line()
+		if !$response->is_success();
+
+	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
+		if $verbose;
+
+	my $json_out = JSON::decode_json( $response->content() );
+	
+	carp "JSON Response >" . ( defined( $json_out ) ? Dumper($json_out) : '' ) . "<"
+		if $verbose;
+	
+	return $json_out;
+}
+
+
+=head2 verbose()
+
+Control the verbosity of the debugging output.
+
+$datadog->verbose( 1 ); # turn on verbose information
+
+$datadog->verbose( 0 ); # quiet
+
+warn 'Verbose' if $datadog->verbose(); # getter-style
+
+=cut
+
+sub verbose
+{
+	my ( $self, $verbose ) = @_;
+	
+	$self->{'verbose'} = ( $verbose || 0 )
+		if defined( $verbose );
+	
+	return $self->{'verbose'};
+}
+
+
+=head1 RUNNING TESTS
+
+By default, only basic tests that do not require a connection to DataDog's
+platform are run in t/.
+
+To run the developer tests, you will need to do the following:
+
+=over 4
+
+=item *
+
+
+
+=back
+
+You can now create a file named DataDogConfig.pm in your own directory, with
+the following content:
+
+	package DataDogConfig;
+	
+	sub new
+	{
+		return
+		{
+			api_key         => 'your_api_key',
+			application_key => 'your_application_key',
+			verbose         => 0, # Enable this for debugging output
+		};
+	}
+	
+	1;
+
+You will then be able to run all the tests included in this distribution, after
+adding the path to DataDogConfig.pm to your library paths.
+
+
+=head1 AUTHOR
+
+Jennifer Pinkham, C<< <jpinkham at cpan.org> >>.
+
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-WebService-DataDog at rt.cpan.org>,
+or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
+
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+	perldoc WebService::DataDog
+
+
+You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-DataDog>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/WebService-DataDog>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/WebService-DataDog>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/WebService-DataDog/>
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/>
+
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2012 Jennifer Pinkham.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+=cut
+
+1;
