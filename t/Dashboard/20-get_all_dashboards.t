@@ -58,7 +58,7 @@ ok(
 );
 
 ok(
-	open( FILE, '>', 'webservice-datadog-dashboards.tmp'),
+	open( FILE, '>', 'webservice-datadog-dashboard-dashid.tmp'),
 	'Open temp file to store dashboard ids'
 );
 
