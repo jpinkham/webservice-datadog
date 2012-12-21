@@ -184,23 +184,43 @@ sub _send_request
 	my ( $self, %args ) = @_;
 #	my $verbose = $self->verbose();
 	my $verbose = 1;
-	
+
 	# Check for mandatory parameters
-	foreach my $arg ( qw( command data ) )
+	foreach my $arg ( qw( data method url ) )
 	{
 		croak "Argument '$arg' is needed to send a request with the WebService::DataDog object"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	my $url = $API_ENDPOINT . $args{'command'} . '?api_key=' . $self->{'api_key'}
-	. '&application_key=' . $self->{'application_key'};
+	my $url = $args{'url'};
+	my $method = $args{'method'};
+	
+	my $request;
+	if ( $method eq 'GET' )
+	{
+		# for GET, authentication info goes into url
+		$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
+		$request = HTTP::Request->new( GET => $url );
+	}
+	elsif ( $method eq 'POST' )
+	{
+		# for POST, add authentication info to Content section
+		$args{'data'}->{'api_key'} = $self->{'api_key'};
+		$args{'data'}->{'application_key'} = $self->{'application_key'};
+		
+		$request = HTTP::Request->new( POST => $url );
+	}
+	else
+	{
+		croak ">" . $args{'command'} . "< is an unknown command. Not sending request.";
+	}
+	
+	carp "Sending request to URL >" . ( defined( $url ) ? $url : '' ) . "< via method >$method<"
+		if $verbose;
+	
 	
 	my $json_in = JSON::encode_json( $args{'data'} );
 	carp "Sending JSON request >" . ( defined( $json_in ) ? $json_in : '' ) . "<"
-		if $verbose;
-	
-	my $request = HTTP::Request->new(GET => $url);
-	carp "GETting request to URL >" . ( defined( $url ) ? $url : '' ) . "<"
 		if $verbose;
 	
 	$request->content_type('application/json');

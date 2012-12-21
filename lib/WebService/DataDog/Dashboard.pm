@@ -22,9 +22,12 @@ sub get_all_dashboards
 	my ( $self, %args ) = @_;
 #	my $verbose = $self->verbose();
 	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'dash';
+	
 	return $self->_send_request(
-		command => 'dash',
-		data    => { '' => [] }
+		method => 'GET',
+		url    => $url,
+		data   => { '' => [] }
 	);
 }
 
