@@ -195,20 +195,24 @@ sub _send_request
 	my $url = $args{'url'};
 	my $method = $args{'method'};
 	
+	# Add authentication info
+	$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
 	my $request;
 	if ( $method eq 'GET' )
 	{
-		# for GET, authentication info goes into url
-		$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
 		$request = HTTP::Request->new( GET => $url );
 	}
 	elsif ( $method eq 'POST' )
 	{
-		# for POST, add authentication info to Content section
-		$args{'data'}->{'api_key'} = $self->{'api_key'};
-		$args{'data'}->{'application_key'} = $self->{'application_key'};
-		
 		$request = HTTP::Request->new( POST => $url );
+	}
+	elsif ( $method eq 'DELETE' )
+	{
+		$request = HTTP::Request->new( DELETE => $url );
+	}
+	elsif ( $method eq 'PUT' )
+	{
+		$request = HTTP::Request->new( PUT => $url );
 	}
 	else
 	{

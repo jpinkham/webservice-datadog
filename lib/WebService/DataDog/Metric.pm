@@ -117,34 +117,10 @@ sub post_metric
 	
 	if ( defined $args{'value'} )
 	{
-		# TODO there must be a better way
-		my @data_points = ();
-		my @single_point = ();
-		push( @single_point, time() );
-		push( @single_point, $args{'value'} );
-		push( @data_points, \@single_point );
-		
-		$series->{'points'} = \@data_points;
+		$series->{'points'} = [ [ time(), $args{'value'} ] ];
 	}
 	elsif ( defined $args{'data_points'} )
 	{
-#**    [CommentBlockStart     (December 21, 2012 5:36:23 PM EST, jenniferpinkham)
-#**+----------------------------------------------------------------------
-#**|		# TODO there must be a better way
-#**|		
-#**|		my @data_points = ();
-#**|		
-#**|		# turn into an array of arrays
-#**|		while ( my ($timestamp,$data_point) = each %{ $args{'data_points'} } )
-#**|		{
-#**|			my @single_point = ();
-#**|			push( @single_point, $timestamp );
-#**|			push( @single_point, $data_point );
-#**|			push( @data_points, \@single_point );
-#**|		}
-#**+----------------------------------------------------------------------
-#**    CommentBlockEnd]       (December 21, 2012 5:36:23 PM EST, jenniferpinkham)
-		
 		$series->{'points'} = $args{'data_points'};
 	}
 	
@@ -162,18 +138,15 @@ sub post_metric
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'series';
 	
-	return $self->_send_request(
+	my $response = $self->_send_request(
 		method => 'POST',
 		url    => $url,
 		data   => $data,
 	);
 	
+	#TODO check that response contains "status:ok"
 }
 
-
-=head1 INTERNAL FUNCTIONS
-
-=cut
 
 
 
