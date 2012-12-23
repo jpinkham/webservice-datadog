@@ -1,0 +1,41 @@
+---
+abstract: "Interface to DataDog's REST API."
+author:
+  - 'Jennifer Pinkham <jpinkham@cpan.org>'
+build_requires:
+  Carp: 0
+  Class::Load: 0
+  Data::Dumper: 0
+  Data::Validate::Type: 1.001000
+  HTTP::Request: 0
+  JSON: 0
+  LWP::UserAgent: 0
+  Test::More: 0.94
+  Try::Tiny: 0
+configure_requires:
+  Module::Build: 0
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+license: artistic
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: WebService-DataDog
+provides:
+  WebService::DataDog:
+    file: lib/WebService/DataDog.pm
+    version: v0.1.0
+  WebService::DataDog::Dashboard:
+    file: lib/WebService/DataDog/Dashboard.pm
+    version: v0.1.0
+  WebService::DataDog::Metric:
+    file: lib/WebService/DataDog/Metric.pm
+    version: v0.1.0
+requires:
+  perl: 5.006
+resources:
+  bugtracker: http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog
+  homepage: https://metacpan.org/release/WebService-DataDog
+  license: http://www.perlfoundation.org/artistic_license_1_0
+  repository: https://github.com/jpinkham/webservice-datadog.git
+version: v0.1.0
