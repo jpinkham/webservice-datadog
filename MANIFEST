@@ -3,6 +3,8 @@ Build.PL
 Changes
 ignore.txt
 lib/WebService/DataDog.pm
+lib/WebService/DataDog/Dashboard.pm
+lib/WebService/DataDog/Metric.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -11,7 +13,13 @@ META.yml
 README
 t/00-load.t
 t/10-new.t
+t/15-build.t
 t/99-cleanup.t
+t/Dashboard/00-load.t
+t/Dashboard/10-new.t
+t/Dashboard/20-get_all_dashboards.t
+t/Metric/00-load.t
+t/Metric/20-post_metric.t
 t/manifest.t
 t/module_versions.t
 t/perlcritic.t
