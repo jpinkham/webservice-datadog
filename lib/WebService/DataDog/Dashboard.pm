@@ -5,6 +5,21 @@ use warnings;
 
 use base qw( WebService::DataDog );
 
+
+=head1 NAME
+
+WebService::DataDog::Dashboard - Interface to Dashboard functions in DataDog's API.
+
+=head1 VERSION
+
+Version 0.1.0
+
+=cut
+
+our $VERSION = '0.1.0';
+
+=head1 METHODS
+
 =head2 get_all_dashboards()
 
 Retrieve details for all user-created dashboards ( does not include
@@ -20,7 +35,7 @@ Parameters: None
 sub get_all_dashboards
 {
 	my ( $self, %args ) = @_;
-#	my $verbose = $self->verbose();
+	my $verbose = $self->verbose();
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash';
 	

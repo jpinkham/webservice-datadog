@@ -109,7 +109,7 @@ sub new
 		$class,
 	);
 	
-#	$self->set_verbose( $args{'verbose'} );
+	$self->verbose( $args{'verbose'} );
 	
 	return $self;
 }

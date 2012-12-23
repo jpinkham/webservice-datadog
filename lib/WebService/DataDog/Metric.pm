@@ -6,6 +6,21 @@ use warnings;
 use base qw( WebService::DataDog );
 use Carp qw( carp croak );
 
+
+
+=head1 NAME
+
+WebService::DataDog::Metric - Interface to Metric functions in DataDog's API.
+
+=head1 VERSION
+
+Version 0.1.0
+
+=cut
+
+our $VERSION = '0.1.0';
+
+
 =head1 METHODS
 
 =head2 post_metric()
@@ -90,6 +105,7 @@ Optional. Host that generated the metric.
 
 Optional. List of tags associated with the metric.
 
+=back
 
 =cut
 
