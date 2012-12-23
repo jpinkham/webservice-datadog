@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Carp;
 use LWP::UserAgent qw();
 use HTTP::Request qw();
 use JSON qw();
@@ -39,7 +38,8 @@ REST API provided by DataDog to offer a Perl interface to metrics, dashboards,
 events, alerts, etc.
 
 Requests that write data require reporting access and require an API key.
-Requests that read data require full access and also require an application key.
+Requests that read data require full access and additionally require an
+application key.
 
 	use WebService::DataDog;
 	
@@ -48,7 +48,22 @@ Requests that read data require full access and also require an application key.
 		api_key         => 'your_api_key_here',
 		application_key => 'your_application_key',
 	);
-
+	
+	# For metrics functions, first build a metrics object
+	my $metric = $datadog->build('Metric');
+	
+	# To post metrics (past or present)
+	# NOTE: only use 'value' OR 'data_points', but not both.
+	$metric->post_metric(
+		name        => $metric_name,
+		type        => $metric_type,  # Optional - gauge|counter. Default=gauge.
+		value       => $metric_value, # For posting a single data point, time 'now'
+		data_points => $data_points,  # 1+ data points, with timestamps
+		host        => $hostname,     # Optional - host that produced the metric
+		tags        => $tag_list,     # Optional - tags associated with the metric
+	);
+	
+	
 =cut
 
 
@@ -105,8 +120,8 @@ sub new
 Create a WebService::DataDog::* object with the correct connection parameters.
 
 		# Use the factory to get a WebService::DataDog::* object with
-		# the correct connection parameters.
-		my $dashboard = $datadog->build( 'Dashboard' );
+		# the correct DataDog connection parameters.
+		my $metric = $datadog->build( 'Metric' );
 
 Parameters:
 
@@ -114,7 +129,7 @@ Parameters:
 
 =item *
 
-The submodule name, such as Dashboard for WebService::DataDog::Dashboard.
+The submodule name, such as Metric for WebService::DataDog::Metric.
 
 =back
 
@@ -124,6 +139,7 @@ sub build
 {
 		my ( $self, $module ) = @_;
 		
+		# Check required arguments
 		croak 'Please specify the name of the module to build'
 			if !defined( $module ) || ( $module eq '' );
 		
@@ -135,17 +151,47 @@ sub build
 }
 
 
+=head2 verbose()
+
+Get or set the 'verbose' property.
+
+	my $verbose = $self->verbose();
+	$self->verbose( 1 );
+
+=cut
+
+sub verbose
+{
+	my ( $self, $value ) = @_;
+	
+	if ( defined $value && $value =~ /^[01]$/ )
+	{
+		$self->{'verbose'} = $value;
+	}
+	else
+	{
+		return $self->{'verbose'};
+	}
+	
+	return;
+}
+
+
+
 =head1 RUNNING TESTS
 
-By default, only basic tests that do not require a connection to DataDog's platform are run in t/.
+By default, only basic tests that do not require a connection to DataDog's
+platform are run in t/.
 
 To run the developer tests, you will need to do the following:
 
 =over 4
 
-=item * make sure you are a DataDog customer (you can setup a free trial account)
+=item * Sign up to become a DataDog customer ( if you are not already), at
+L<https://app.datadoghq.com/signup>. Free trial accounts are available.
 
-=item * Generate an application key at https://app.datadoghq.com/account/settings#api
+=item * Generate an application key at
+L<https://app.datadoghq.com/account/settings#api>
 
 =back
 
@@ -178,13 +224,11 @@ adding the path to DataDogConfig.pm to your library paths.
 
 
 =cut
-
-sub _send_request
+sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines )
 {
 	my ( $self, %args ) = @_;
-#	my $verbose = $self->verbose();
-	my $verbose = 1;
-
+	my $verbose = $self->verbose();
+	
 	# Check for mandatory parameters
 	foreach my $arg ( qw( data method url ) )
 	{
@@ -197,8 +241,9 @@ sub _send_request
 	
 	# Add authentication info
 	$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
+	
 	my $request;
-	if ( $method eq 'GET' )
+	if ( $method eq 'GET' ) ## no critic qw( ControlStructures::ProhibitCascadingIfElse )
 	{
 		$request = HTTP::Request->new( GET => $url );
 	}
@@ -298,9 +343,11 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
-at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code for them!
-Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/>
-as well as ThinkGeek CPAN author Kate Kirby L<http://search.cpan.org/~kate/>
+at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code
+for them!
+Special thanks for architecture advice from fellow ThinkGeek CPAN author Guillaume
+Aubert L<http://search.cpan.org/~aubertg/> as well as fellow ThinkGeek CPAN author
+Kate Kirby L<http://search.cpan.org/~kate/>
 
 =head1 COPYRIGHT & LICENSE
 
