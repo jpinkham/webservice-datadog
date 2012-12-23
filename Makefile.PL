@@ -7,9 +7,9 @@ WriteMakefile
   'VERSION_FROM' => 'lib/WebService/DataDog.pm',
   'PREREQ_PM' => {
                    'Carp' => 0,
+                   'Class::Load' => 0,
                    'Data::Dumper' => 0,
                    'Data::Validate::Type' => '1.001000',
-                   'DateTime' => 0,
                    'HTTP::Request' => 0,
                    'JSON' => 0,
                    'LWP::UserAgent' => 0,
@@ -20,7 +20,7 @@ WriteMakefile
   'EXE_FILES' => [],
   'PL_FILES' => {},
   'test' => {
-              'TESTS' => 't/*.t'
+              'TESTS' => 't/*.t t/Dashboard/*.t t/Metric/*.t'
             }
 )
 ;
