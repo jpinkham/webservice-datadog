@@ -96,18 +96,17 @@ Optional. List of tags associated with the metric.
 sub post_metric
 {
 	my ( $self, %args ) = @_;
-#	my $verbose = $self->verbose();
+	my $verbose = $self->verbose();
 	
-	#TODO check for required arguments
-	#TODO check that 'value' or 'data_points' was specified, but not both
-	#TODO check that all metric values are numbers only
-	#TODO check that metric name has only allowed chars
-	#TODO check that tags contain only allowed chars
+	# Perform various error checks before attempting to send metrics
+	$self->_error_checks( %args );
 	
 	my $data = {};
 	my $series = 
 	{
-		metric => $args{'name'},
+		# Force to lowercase because DataDog is case sensitive and we don't want to
+		# end up with multiple metrics of the same name, varying only in case.
+		metric => lc( $args{'name'} ),
 	};
 	
 	if ( defined $args{'type'} )
@@ -126,12 +125,16 @@ sub post_metric
 	
 	if ( defined $args{'host'} )
 	{
-		$series->{'host'} = $args{'host'};
+		# Force to lowercase because DataDog is case sensitive and we don't want to
+		# tag metrics with hosts of the same name, varying only in case.
+		$series->{'host'} = lc( $args{'host'} );
 	}
 	
 	if ( defined $args{'tags'} )
 	{
-		$series->{'tags'} = $args{'tags'};
+		# Force to lowercase because DataDog is case sensitive and we don't want to
+		# tag metrics with multiple case variations of the same tag.
+		$series->{'tags'} = lc( $args{'tags'} );
 	}
 	
 	$data->{'series'} = [ $series ];
@@ -145,10 +148,107 @@ sub post_metric
 	);
 	
 	#TODO check that response contains "status:ok"
+	
+	return;
 }
 
 
+=head1 INTERNAL FUNCTIONS
 
+=head2 _error_checks()
+
+	$self->_error_checks( %args );
+
+Common error checking for all metric types.
+
+=cut
+
+sub _error_checks
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( name ) )
+	{
+		croak "ERROR - Argument '$arg' is required."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# One of these is required
+	if ( !defined $args{'value'} && !defined $args{'data_points'} )
+	{
+		croak "ERROR - You must specify argument 'value' for single data points, or argument 'data_points' for multiple data points";
+	}
+	
+	# You cannot specify both
+	if ( defined $args{'value'} && defined $args{'data_points'} )
+	{
+		croak "ERROR - You must specify argument 'value' for single data points, OR argument 'data_points' for multiple data points. Both arguments are not allowed.";
+	}
+	
+	# Metric name starts with a letter
+	if ( $args{'name'} !~ /^[a-zA-Z]/ )
+	{
+		croak( "ERROR - Invalid metric name >" . $args{'name'} . "<. Names must start with a letter, a-z. Not sending." );
+	}
+	
+	if ( defined $args{'value'} )
+	{
+		croak "ERROR - Value >" . $args{'value'} . "< is not a number."
+			unless ( $args{'value'} =~ /^\d+(\.\d+)?$/ );
+	}
+	
+	if ( defined $args{'data_points'} )
+	{
+		croak "ERROR - Invalid value for argument 'data_points', must be an arrayref."
+			unless Data::Validate::Type::is_arrayref( $args{'data_points'} );
+			
+		# Check that each data point is valid
+		foreach my $data_point ( @{ $args{'data_points'} } )
+		{
+			croak "ERROR - Invalid data point inside argument 'data_points', must be an arrayref."
+				unless Data::Validate::Type::is_arrayref( $data_point );
+				
+			my $timestamp  = $data_point->[0];
+			my $data_value = $data_point->[1];
+			
+			croak "ERROR - invalid timestamp >$timestamp< in data_points for >" . $args{'name'} . "<"
+				unless ( $timestamp =~ /^\d{10,}$/ ); #min 10 digits, allowing for older data back to 1/1/2000
+				
+			croak "ERROR - invalid value >$data_value< in data_points for >" . $args{'name'} . "<. Must be a number."
+				unless ( $data_value =~ /^\d+(\.\d+)?$/ );
+		}
+	}
+	
+	# Tags, if exist...
+	if ( defined( $args{'tags'} ) && scalar( $args{'tags'} ) != 0 )
+	{
+		# is valid
+		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
+		{
+			croak "Tag list is invalid. Must be an arrayref.";
+		}
+		
+		foreach my $tag ( @{ $args{'tags'} } )
+		{
+			# must start with a letter
+			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must start with a letter, a-z. Not sending." )
+				if ( $tag !~ /^[a-zA-Z]/ );
+			
+			# must be 200 characters max
+			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must be 200 characters or less. Not sending." )
+				if ( length( $tag ) > 200 );
+			
+			# NOTE: This check isn't required by DataDog, they will allow this through.
+			# However, this tag will not behave as expected in the graphs, if we were to allow it.
+			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags should only contain a single colon (:). Not sending." )
+				if ( $tag =~ /^\S+:\S+:/ );
+		}
+	}
+	
+	return;
+}
 
 =head1 AUTHOR
 
@@ -209,7 +309,6 @@ under the terms of the Artistic License.
 See http://dev.perl.org/licenses/ for more information.
 
 =cut
-
 
 
 1;
