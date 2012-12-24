@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 7 );
 
 my $config = DataDogConfig->new();
 
@@ -43,18 +43,13 @@ lives_ok(
 );
 
 ok(
-	Data::Validate::Type::is_hashref( $response ),
-	'Retrieve response.',
-) || diag( explain( $response ) );
-
-ok(
-	defined( $response->{'dashes'} ),
-	'We have a "dashes" block in the response.',
+	defined( $response ),
+	'Response was received.'
 );
 
 ok(
-	Data::Validate::Type::is_arrayref( $response->{'dashes'} ),
-	'"dashes" block is an arrayref.',
+	Data::Validate::Type::is_arrayref( $response ),
+	'Response is an arrayref.',
 );
 
 ok(
@@ -63,8 +58,8 @@ ok(
 );
 
 # Print first ID number to a text file, to use in other tests
-my $first_dash_id = defined $response->{'dashes'}->[0] && $response->{'dashes'}->[0]->{'id'}
- ? $response->{'dashes'}->[0]->{'id'}
+my $first_dash_id = defined $response->[0] && $response->[0]->{'id'}
+ ? $response->[0]->{'id'}
  : '';
 print FILE $first_dash_id;
 
