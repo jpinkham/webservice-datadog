@@ -12,9 +12,32 @@ Requests that read data require full access and also require an application key.
 You can find your API key, and generate application keys at
 https://app.datadoghq.com/account/settings
 
-**NOTE: This is in the development stage and has little functionality currently,
-except for posting metrics.  I intend to continue updating, eventually adding all
-functionality that DataDog-provided Ruby and Python API libraries have.
+**NOTE: This is in the development stage and has reduced functionality currently,
+supporting only the posting of metrics and creating/viewing/updating dashboards.
+I intend to continue updating, eventually adding all functionality that
+DataDog-provided Ruby and Python API libraries have.
+
+
+Features coming soon (not necessarily in this order):
+* existing module 'Dashboard'
+  - extensive error checking when updating a dashboard
+  - adding 'delete' function
+* new module 'Event'
+  - posting events
+  - getting specific event data
+  - searching events
+* new module 'Tag'
+  - getting all tags; getting tags on specified host
+  - adding/updating tags for a specific host
+  - removing host tags
+* new module 'Alert'
+  - create alerts
+  - retrieve details on one/all alerts
+  - delete an alert
+  - mute/unmute all alerts
+* new module 'Comment'
+  - created/edit/delete 
+* new module 'Search'
 
 
 INSTALLATION
