@@ -15,7 +15,6 @@ t/00-load.t
 t/10-new.t
 t/15-build.t
 t/Dashboard/00-load.t
-t/Dashboard/10-new.t
 t/Dashboard/20-get_all_dashboards.t
 t/Dashboard/30-get_dashboard.t
 t/Dashboard/40-update_dashboard.t

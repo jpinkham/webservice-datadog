@@ -22,11 +22,11 @@ WebService::DataDog - Interface to DataDog's REST API.
 
 =head1 VERSION
 
-Version 0.1.0
+Version 0.2.0
 
 =cut
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.2.0';
 
 
 =head1 SYNOPSIS
@@ -63,6 +63,17 @@ application key.
 		tags        => $tag_list,     # Optional - tags associated with the metric
 	);
 	
+	# For dashboard functions, first build a dashboard object
+	my $dashboard = $datadog->build('Dashboard');
+	
+	# To make any changes to an existing user-created dashboard:
+	# Specify dash_id and any combination of title, description, graphs
+	$dashboard->update_dashboard(
+		id          => $dash_id,
+		title       => $dash_title,
+		description => $dash_description,
+		graphs      => $graphs,
+	);
 	
 =cut
 
@@ -351,7 +362,7 @@ Kate Kirby L<http://search.cpan.org/~kate/>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2013 Jennifer Pinkham.
+Copyright 2012 Jennifer Pinkham.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the Artistic License.

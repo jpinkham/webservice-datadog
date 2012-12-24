@@ -24,13 +24,13 @@ name: WebService-DataDog
 provides:
   WebService::DataDog:
     file: lib/WebService/DataDog.pm
-    version: v0.1.0
+    version: v0.2.0
   WebService::DataDog::Dashboard:
     file: lib/WebService/DataDog/Dashboard.pm
-    version: v0.1.0
+    version: v0.2.0
   WebService::DataDog::Metric:
     file: lib/WebService/DataDog/Metric.pm
-    version: v0.1.0
+    version: v0.2.0
 requires:
   perl: 5.006
 resources:
@@ -38,4 +38,4 @@ resources:
   homepage: https://metacpan.org/release/WebService-DataDog
   license: http://www.perlfoundation.org/artistic_license_1_0
   repository: https://github.com/jpinkham/webservice-datadog.git
-version: v0.1.0
+version: v0.2.0

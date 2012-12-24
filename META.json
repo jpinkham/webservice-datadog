@@ -41,15 +41,15 @@
    "provides" : {
       "WebService::DataDog" : {
          "file" : "lib/WebService/DataDog.pm",
-         "version" : "v0.1.0"
+         "version" : "v0.2.0"
       },
       "WebService::DataDog::Dashboard" : {
          "file" : "lib/WebService/DataDog/Dashboard.pm",
-         "version" : "v0.1.0"
+         "version" : "v0.2.0"
       },
       "WebService::DataDog::Metric" : {
          "file" : "lib/WebService/DataDog/Metric.pm",
-         "version" : "v0.1.0"
+         "version" : "v0.2.0"
       }
    },
    "release_status" : "stable",
@@ -65,5 +65,5 @@
          "url" : "https://github.com/jpinkham/webservice-datadog.git"
       }
    },
-   "version" : "v0.1.0"
+   "version" : "v0.2.0"
 }

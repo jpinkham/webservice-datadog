@@ -14,11 +14,11 @@ WebService::DataDog::Dashboard - Interface to Dashboard functions in DataDog's A
 
 =head1 VERSION
 
-Version 0.1.0
+Version 0.2.0
 
 =cut
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.2.0';
 
 
 =head1 SYNOPSIS
@@ -36,7 +36,7 @@ Retrieve details for all user-created dashboards ( does not include
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_list = $dashboards->get_all_dashboards();
+	my $dashboard_list = $dashboard->get_all_dashboards();
 	
 Parameters: None
 
@@ -70,7 +70,7 @@ Retrieve details for specified user-created dashboards ( does not work for
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_data = $dashboards->get_dashboard( id => $dash_id );
+	my $dashboard_data = $dashboard->get_dashboard( id => $dash_id );
 	
 Parameters: 
 
@@ -135,7 +135,7 @@ LOSE ALL EXISTING GRAPHS.  Your 'graphs' section must include ALL graphs
 that you want to be part of a dashboard.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboards->update_dashboard(
+	$dashboard->update_dashboard(
 		id          => $dash_id,
 		title       => $dash_title,
 		description => $dash_description,
@@ -254,6 +254,66 @@ sub update_dashboard
 	return;
 }
 
+
+=head1 AUTHOR
+
+Jennifer Pinkham, C<< <jpinkham at cpan.org> >>.
+
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-WebService-DataDog at rt.cpan.org>,
+or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+	perldoc WebService::DataDog::Dashboard
+
+
+You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-DataDog>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/WebService-DataDog>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/WebService-DataDog>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/WebService-DataDog/>
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
+at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code
+for them!
+
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2012 Jennifer Pinkham.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+=cut
 
 
 1;

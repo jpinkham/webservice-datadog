@@ -1,2 +1,3 @@
-v0.1.0  12/24/2012
-        First release. Only metric posting is supported currently.
+v0.2.0  12/24/2012
+        First release. Only metric posting and dashboard interactions are
+        supported currently.
