@@ -31,7 +31,7 @@ Net::Dogstatsd to post metrics of other types (ex: 'timer', 'histogram', 'sets'
 or use  increment() or decrement() on a counter). The primary advantage of the
 API vs dogstatsd for posting metrics: API allows posting metrics from the past.
 
-Per DataDog API: "The metrics end-point allows you to post metrics data so it
+Per DataDog: "The metrics end-point allows you to post metrics data so it
 can be graphed on Datadog's dashboards."
 
 	my $metric = $datadog->build('Metric');
@@ -148,9 +148,7 @@ sub post_metric
 	
 	if ( defined $args{'tags'} )
 	{
-		# Force to lowercase because DataDog is case sensitive and we don't want to
-		# tag metrics with multiple case variations of the same tag.
-		$series->{'tags'} = lc( $args{'tags'} );
+		$series->{'tags'} = $args{'tags'};
 	}
 	
 	$data->{'series'} = [ $series ];
