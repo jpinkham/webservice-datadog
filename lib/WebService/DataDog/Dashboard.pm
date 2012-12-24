@@ -79,7 +79,7 @@ Parameters:
 =item * id
 Id of dashboard you want to retrieve the details for.
 
-=over
+=back
 
 =cut
 
@@ -158,7 +158,7 @@ Optional. Specify updated description for specified dashboard.
 =item * graphs
 Optional. Specify updated graph definition for specified dashboard.
 
-=over
+=back
 
 =cut
 
