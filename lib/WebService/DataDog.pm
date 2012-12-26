@@ -9,7 +9,7 @@ use HTTP::Request qw();
 use JSON qw();
 use Class::Load qw();
 use Carp qw( carp croak );
-
+use Data::Validate::Type qw();
 
 
 our $API_ENDPOINT = "https://app.datadoghq.com/api/v1/";
@@ -251,7 +251,14 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	my $method = $args{'method'};
 	
 	# Add authentication info
-	$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
+	if ( $url =~ /events/ )  #Events endpoint will already have URL params...
+	{
+		$url .= '&api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
+	}
+	else
+	{
+		$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
+	}
 	
 	my $request;
 	if ( $method eq 'GET' ) ## no critic qw( ControlStructures::ProhibitCascadingIfElse )
@@ -353,9 +360,6 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
-at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code
-for them!
 Special thanks for architecture advice from fellow ThinkGeek CPAN author Guillaume
 Aubert L<http://search.cpan.org/~aubertg/> as well as fellow ThinkGeek CPAN author
 Kate Kirby L<http://search.cpan.org/~kate/>

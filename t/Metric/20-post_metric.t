@@ -5,7 +5,6 @@ use warnings;
 
 use Data::Dumper;
 
-use Data::Validate::Type;
 use Test::Exception;
 use Test::More;
 

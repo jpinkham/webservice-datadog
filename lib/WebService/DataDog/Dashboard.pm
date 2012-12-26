@@ -297,13 +297,6 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 =back
 
 
-=head1 ACKNOWLEDGEMENTS
-
-Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
-at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code
-for them!
-
-
 =head1 COPYRIGHT & LICENSE
 
 Copyright 2012 Jennifer Pinkham.
