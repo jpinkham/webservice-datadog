@@ -127,6 +127,47 @@ sub search
 }
 
 
+
+=head2 get_event()
+Get details of specified event.
+NOTE: Receiving a 404 response likely means the requested event id does not exist.
+
+	my $event = $datadog->build('Event');
+	my $event_data = $event->get_event( id => $event_id );
+=cut
+
+sub get_event
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id ) )
+	{
+		croak "ERROR - Argument '$arg' is required."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Check that id specified is a number
+	croak "ERROR - Event id must be a number. You specified >" . $args{'id'} . "<"
+		unless $args{'id'} =~ /^\d+$/;
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'events' . '/' . $args{'id'};
+	my $response = $self->_send_request(
+		method => 'GET',
+		url    => $url,
+		data   => { '' => [] }
+	);
+	
+	if ( !defined($response) || !defined($response->{'event'}) )
+	{
+		croak "Fatal error. No response or 'event' missing from response.";
+	}
+	
+	return $response->{'event'};
+}
+
+
 =head1 INTERNAL FUNCTIONS
 
 =head2 _error_checks()
