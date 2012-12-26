@@ -251,7 +251,7 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	my $method = $args{'method'};
 	
 	# Add authentication info
-	if ( $url =~ /events/ )  #Events endpoint will already have URL params...
+	if ( $url =~ /events\?/ )  #Events search endpoint will already have URL params...
 	{
 		$url .= '&api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
 	}
