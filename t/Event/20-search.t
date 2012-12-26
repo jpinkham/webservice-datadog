@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 11 );
+	: plan( tests => 13 );
 
 my $config = DataDogConfig->new();
 
@@ -121,3 +121,19 @@ ok(
 	'Response is an arrayref.',
 );
 
+
+ok(
+	open( FILE, '>', 'webservice-datadog-events-eventid.tmp'),
+	'Open temp file to store event id'
+);
+
+# Print first ID number to a text file, to use in other tests
+my $first_event_id = defined $response->[0] && $response->[0]->{'id'}
+ ? $response->[0]->{'id'}
+ : '';
+print FILE $first_event_id;
+
+ok(
+	close FILE,
+	'Close temp file'
+);
