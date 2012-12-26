@@ -101,6 +101,9 @@ sub get_dashboard
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
 	my $response;
+	
+	#TODO find more reliable method to determine that dashboard id is unknown
+	# (check response specifically for failure of 404)
 	try
 	{
 		$response = $self->_send_request(
