@@ -13,7 +13,9 @@ You can find your API key, and generate application keys at
 https://app.datadoghq.com/account/settings
 
 **NOTE: This is in the development stage and has reduced functionality currently,
-supporting only the posting of metrics and creating/viewing/updating dashboards.
+supporting the posting of metrics, creating/viewing/updating dashboards, and
+searching/viewing/posting events to DDog event stream.
+
 I intend to continue updating, eventually adding all functionality that
 DataDog-provided Ruby and Python API libraries have.
 
@@ -22,10 +24,6 @@ Features coming soon (not necessarily in this order):
 * existing module 'Dashboard'
   - extensive error checking when updating a dashboard
   - adding 'delete' function
-* new module 'Event'
-  - posting events
-  - getting specific event data
-  - searching events
 * new module 'Tag'
   - getting all tags; getting tags on specified host
   - adding/updating tags for a specific host
