@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 14 );
+	: plan( tests => 15 );
 
 my $config = DataDogConfig->new();
 
@@ -74,6 +74,18 @@ throws_ok(
 	},
 	qr/Argument.*text.*required/,
 	'Dies on blank/missing "text" argument.',
+);
+
+# Undocumented limitation, as of 12/27/2012.
+dies_ok(
+	sub
+	{
+		$response = $event_obj->post_event(
+			text  => "SOmething something something",
+			title => "TESTTITLETESTTITLETESTTITLETESTTITLETESTTITLE-ABCDEFGHIJKLMNOPQRSTUVWXYZ-ABCDEFGH",
+		);
+	},
+	'Dies on title > 80 chars',
 );
 
 throws_ok(

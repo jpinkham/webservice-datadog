@@ -374,6 +374,10 @@ sub _event_error_checks
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
+	# Check that title is <= 80 characters
+	croak( "ERROR - Invalid title >" . $args{'title'} . "<. Title must be 80 characters or less." )
+	if ( length( $args{'title'} ) > 80 );
+	
 	# Check that 'date_happened' is valid
 	if ( defined( $args{'date_happened'} ) )
 	{
