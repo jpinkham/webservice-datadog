@@ -75,6 +75,46 @@ application key.
 		graphs      => $graphs,
 	);
 	
+	# For event functions, first build an event object
+	my $event = $datadog->build('Event');
+	
+	# To search the event stream
+	my $event_list = $event->search(
+		start     => $start_time,
+		end       => $end_time, # Optional - default 'now'
+		priority  => $priority, # Optional - low|normal
+		sources   => $sources,  # Optional - list of sources. Ex: Datadog, Github, Pingdom, Webmetrics
+		tags      => $tag_list, # Optional - list of tags associated with the event
+	);
+	
+	# Find all events in the last 48 hours.
+	my $event_list = $event->search(
+		start => time() - ( 48 * 60 * 60 ),
+	);
+	
+	# To get all details of a specific event
+	my $event_data = $event->get_event( id => $event_id );
+	
+	# To post a new event to the event stream
+	$event->post_event(
+		title            => $event_title,
+		text             => $event_text,  # Body/Description of the event.
+		date_happened    => $timestamp,   # Optional, default "now"
+		priority         => $priority,    # Optional. normal|low
+		related_event_id => $event_id,    # Optional, id of aggregate event
+		tags             => $tag_list,    # Optional - tags to apply to event (easy to search by)
+		alert_type       => $alert_type,  # Optional. error|warning|info|success
+		aggregation_key  => $agg_key,     # Optional. Arbitrary string to use for aggregation.
+		source_type_name => $source_type, # Optional. nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano
+	);
+	
+	# Submit a user event, with timestamp of `now`.
+	$event->post_event(
+		title            => 'Test event',
+		text             => 'Testing posting to event stream',
+		source_type_name => 'user',
+	);
+	
 =cut
 
 
