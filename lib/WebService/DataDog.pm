@@ -147,7 +147,7 @@ sub new
 	# Check for mandatory parameters
 	foreach my $arg ( qw( api_key application_key ) )
 	{
-		croak "Argument '$arg' is needed to create the WebService::DataDog object"
+		croak "Argument '$arg' is required to create the WebService::DataDog object"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	

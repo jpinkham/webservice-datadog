@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 15 );
+	: plan( tests => 14 );
 
 my $config = DataDogConfig->new();
 
@@ -76,16 +76,16 @@ throws_ok(
 	'Dies on blank/missing "text" argument.',
 );
 
-# Undocumented limitation, as of 12/27/2012.
-dies_ok(
+throws_ok(
 	sub
 	{
 		$response = $event_obj->post_event(
-			text  => "SOmething something something",
-			title => "TESTTITLETESTTITLETESTTITLETESTTITLETESTTITLE-ABCDEFGHIJKLMNOPQRSTUVWXYZ-ABCDEFGH",
+			text  => "Something something something",
+			title => "TESTTITLETESTTITLETESTTITLETESTTITLETESTTITLE-ABCDEFGHIJKLMNOPQRSTUVWXYZ-ABCDEFGHIJKLMNOPQRSTUVWXYZ123",
 		);
 	},
-	'Dies on title > 80 chars',
+	qr/nvalid 'title'.*100/,
+	'Dies on title > 100 chars',
 );
 
 throws_ok(
@@ -97,7 +97,7 @@ throws_ok(
 			date_happened   => "abc",
 		);
 	},
-	qr/invalid.*date_happened/,
+	qr/nvalid 'date_happened'.*POSIX/,
 	'Dies on invalid "date_happened".',
 );
 
@@ -111,7 +111,7 @@ throws_ok(
 			priority => "nuclear",
 		);
 	},
-	qr/nvalid.*priority/,
+	qr/nvalid.*'priority'/,
 	'Dies on invalid priority.',
 );
 
@@ -124,7 +124,7 @@ throws_ok(
 			related_event_id => "abc",
 		);
 	},
-	qr/nvalid.*related_event_id/,
+	qr/nvalid 'related_event_id'/,
 	'Dies on invalid related_event_id.',
 );
 
@@ -137,7 +137,7 @@ throws_ok(
 			tags  => "tags_go_here",
 		);
 	},
-	qr/ag list.*arrayref/,
+	qr/nvalid 'tag'.*arrayref/,
 	'Dies on invalid tag list.',
 );
 
@@ -145,43 +145,38 @@ throws_ok(
 	sub
 	{
 		$response = $event_obj->post_event(
-			title      => "title goes here",
+			title      => "title goes here(" . time() . ")",
 			text       => "Text goes here",
 			alert_type => "kabooom",
 		);
 	},
-	qr/nvalid.*alert_type/,
+	qr/nvalid 'alert_type'/,
 	'Dies on invalid alert_type.',
 );
 
-my $response;
+throws_ok(
+	sub
+	{
+		$response = $event_obj->post_event(
+			title            => "title goes here(" . time() . ")",
+			text             => "Text goes here",
+			source_type_name => "Portal 2",
+		);
+	},
+	qr/nvalid 'source_type_name'/,
+	'Dies on invalid source_type_name.',
+);
+
+
 lives_ok(
 	sub
 	{
 		$response = $event_obj->post_event(
-			title      => "title goes here",
+			title      => "title goes here(" . time() . ")",
 			text       => "Text goes here",
 		);
 	},
 	'Post valid event to stream.',
 );
 
-#TODO test with date_happened
-#TODO test with priority
-#TODO test with related_event_id
-#TODO test with tags
-#TODO test with alert_type
-#TODO test with source_type_name
-
-
-
-ok(
-	defined( $response ),
-	'Response was received.'
-);
-
-ok(
-	Data::Validate::Type::is_hashref( $response ),
-	'Response is an hashref.',
-);
 

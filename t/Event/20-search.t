@@ -86,7 +86,7 @@ throws_ok(
 			tags  => "tags_go_here",
 		);
 	},
-	qr/ag list.*arrayref/,
+	qr/nvalid 'tag'.*arrayref/,
 	'Dies on invalid tag list.',
 );
 
@@ -98,7 +98,7 @@ throws_ok(
 			sources => "sources_go_here",
 		);
 	},
-	qr/ources.*arrayref/,
+	qr/nvalid 'sources'.*arrayref/,
 	'Dies on invalid sources list.',
 );
 

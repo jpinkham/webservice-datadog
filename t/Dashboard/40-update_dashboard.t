@@ -11,6 +11,9 @@ use Test::More;
 
 use WebService::DataDog;
 
+#TODO Update this to utilize a newly-created dashboard, rather than modifying
+# someone's existing dashboard - not polite!
+
 
 eval 'use DataDogConfig';
 $@
@@ -73,7 +76,7 @@ throws_ok(
 			title       => "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC",
 		);
 	},
-	qr/nvalid title.*80/,
+	qr/nvalid 'title'.*80/,
 	'Dies with title too long.',
 );
 
@@ -96,7 +99,7 @@ Sed gravida odio at risus accumsan vel consectetur ante euismod. Proin rhoncus f
 Suspendisse gravida, leo ut ornare cursus, nulla odio luctus orci, lacinia elementum risus sapien eget purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec dapibus, felis eu tempor lobortis, leo odio sagittis massa, ut dignissim felis urna at lacus. Suspendisse ut feugiat lorem. Maecenas fermentum nulla sed quam nullam."
 		);
 	},
-	qr/nvalid description/,
+	qr/nvalid 'description'/,
 	'Dies with description too long.',
 );
 

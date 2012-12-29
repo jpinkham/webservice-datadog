@@ -173,12 +173,12 @@ sub update_dashboard
 	# Check for mandatory parameters
 	foreach my $arg ( qw( id ) )
 	{
-		croak "ERROR - Argument '$arg' is required."
+		croak "ERROR - Argument '$arg' is required for update_dashboard()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
 	# Check that id specified is a number
-	croak "ERROR - Dashboard id must be a number. You specified >" . $args{'id'} . "<"
+	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Dashboard id must be a number."
 		unless $args{'id'} =~ /^\d+$/;
 	
 	# Check that one update field was supplied
@@ -194,19 +194,19 @@ sub update_dashboard
 	
 	#TODO add these checks to upcoming create() function
 	# Check that title is <= 80 characters. Per Carlo @DDog. Undocumented?
-	croak( "ERROR - Invalid title >" . $args{'title'} . "<. Title must be 80 characters or less." )
+	croak( "ERROR - invalid 'title' >" . $args{'title'} . "<. Title must be 80 characters or less." )
 		if ( defined( $args{'title'} ) && length( $args{'title'} ) > 80 );
 	
 	# Check that description is <= 4000 characters. Per Carlo @DDog. Undocumented?
-	croak( "ERROR - Invalid description >" . $args{'description'} . "<. Description must be 4000 characters or less." )
+	croak( "ERROR - invalid 'description' >" . $args{'description'} . "<. Description must be 4000 characters or less." )
 		if ( defined( $args{'description'} ) && length( $args{'description'} ) > 4000 );
 	
 	#TODO extensive graph error checking
 	# ?? disallow any 'graph' section changes without additional config/force/etc?
 	# - compare new definition vs existing. warn if any graphs are removed. print old definition
 	# - make sure all graph fields are specified: 
-	#  title,
-	#  definition: events, requests
+	#  title,  (255 char limit)
+	#  definition: events, requests   (4000 char limit)
 	#  viz
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};

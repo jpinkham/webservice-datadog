@@ -204,7 +204,7 @@ sub _error_checks
 	# Metric name starts with a letter
 	if ( $args{'name'} !~ /^[a-zA-Z]/ )
 	{
-		croak( "ERROR - Invalid metric name >" . $args{'name'} . "<. Names must start with a letter, a-z. Not sending." );
+		croak( "ERROR - invalid metric name >" . $args{'name'} . "<. Names must start with a letter, a-z. Not sending." );
 	}
 	
 	if ( defined $args{'value'} )
@@ -215,13 +215,13 @@ sub _error_checks
 	
 	if ( defined $args{'data_points'} )
 	{
-		croak "ERROR - Invalid value for argument 'data_points', must be an arrayref."
+		croak "ERROR - invalid value for argument 'data_points', must be an arrayref."
 			unless Data::Validate::Type::is_arrayref( $args{'data_points'} );
 			
 		# Check that each data point is valid
 		foreach my $data_point ( @{ $args{'data_points'} } )
 		{
-			croak "ERROR - Invalid data point inside argument 'data_points', must be an arrayref."
+			croak "ERROR - invalid value for argument 'data_points', must be an arrayref."
 				unless Data::Validate::Type::is_arrayref( $data_point );
 				
 			my $timestamp  = $data_point->[0];
@@ -241,22 +241,22 @@ sub _error_checks
 		# is valid
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "Tag list is invalid. Must be an arrayref.";
+			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
 		}
 		
 		foreach my $tag ( @{ $args{'tags'} } )
 		{
 			# must start with a letter
-			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must start with a letter, a-z. Not sending." )
+			croak( "ERROR - invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must start with a letter, a-z. Not sending." )
 				if ( $tag !~ /^[a-zA-Z]/ );
 			
 			# must be 200 characters max
-			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must be 200 characters or less. Not sending." )
+			croak( "ERROR - invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags must be 200 characters or less. Not sending." )
 				if ( length( $tag ) > 200 );
 			
 			# NOTE: This check isn't required by DataDog, they will allow this through.
 			# However, this tag will not behave as expected in the graphs, if we were to allow it.
-			croak( "ERROR - Invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags should only contain a single colon (:). Not sending." )
+			croak( "ERROR - invalid tag >" . $tag . "< on metric >" . $args{'name'} . "<. Tags should only contain a single colon (:). Not sending." )
 				if ( $tag =~ /^\S+:\S+:/ );
 		}
 	}

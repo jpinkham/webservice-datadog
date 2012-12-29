@@ -248,7 +248,7 @@ sub post_event
 	my $verbose = $self->verbose();
 	
 	# Perform various error checks before attempting to send metrics
-	$self->_event_error_checks( %args );
+	$self->_post_event_error_checks( %args );
 	
 	my $data = {
 		title => $args{'title'},
@@ -293,9 +293,10 @@ sub post_event
 		data   => $data,
 	);
 	
-	#TODO check that response is status:ok
-	
-	return $response;
+	croak "ERROR - did not receive 'status: ok'. Response:", Dumper($response)
+		unless $response->{'status'} eq "ok";
+		
+	return;
 }
 
 
@@ -303,6 +304,7 @@ sub post_event
 
 =head2 _search_error_checks()
 
+Error checking for search()
 =cut
 
 sub _search_error_checks
@@ -318,20 +320,20 @@ sub _search_error_checks
 	}
 	
 	# Check that 'start' is valid
-	croak "ERROR - invalid value >" . $args{'start'} . "< for argument 'start'. Must be POSIX/Unixtime"
+	croak "ERROR - invalid 'start' value >" . $args{'start'} . "<. Must be POSIX/Unixtime"
 		unless ( $args{'start'} =~ /^\d{10,}$/ ); #min 10 digits, allowing for older data back to 1/1/2000
 	
 	# Check that 'end' is valid
 	if ( defined $args{'end'} )
 	{
-		croak "ERROR - invalid value >" . $args{'end'} . "< for argument 'end'. Must be POSIX/Unixtime"
+		croak "ERROR - invalid 'end' value >" . $args{'end'} . "<. Must be POSIX/Unixtime"
 		unless ( $args{'end'} =~ /^\d{10,}$/ ); #min 10 digits, allowing for older data back to 1/1/2000
 	}
 	
 	# Check that 'priority' is valid
 	if ( defined $args{'priority'} )
 	{
-		croak "Invalid value >" . $args{'priority'} . "< for argument 'priority'. Allowed values: low, normal."
+		croak "ERROR - invalid 'priority' value >" . $args{'priority'} . "<. Allowed values: low, normal."
 			unless ( lc( $args{'priority'} ) eq "low" || lc( $args{'priority'} ) eq "normal" );
 	}
 	
@@ -340,7 +342,7 @@ sub _search_error_checks
 	{
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "Tag list is invalid. Must be an arrayref.";
+			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
 		}
 	}
 	
@@ -349,7 +351,7 @@ sub _search_error_checks
 	{
 		if ( !Data::Validate::Type::is_arrayref( $args{'sources'} ) )
 		{
-			croak "Sources list is invalid. Must be an arrayref.";
+			croak "ERROR - invalid 'sources' value. Must be an arrayref.";
 		}
 	}
 	
@@ -358,11 +360,13 @@ sub _search_error_checks
 
 
 
-=head2 _event_error_checks()
+=head2 _post_event_error_checks()
+
+Error checking for post_event()
 
 =cut
 
-sub _event_error_checks
+sub _post_event_error_checks
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -370,32 +374,32 @@ sub _event_error_checks
 	# Check for mandatory parameters
 	foreach my $arg ( qw( title text ) )
 	{
-		croak "Argument '$arg' is required for search()"
+		croak "Argument '$arg' is required for post_event()"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	# Check that title is <= 80 characters
-	croak( "ERROR - Invalid title >" . $args{'title'} . "<. Title must be 80 characters or less." )
-	if ( length( $args{'title'} ) > 80 );
+	# Check that title is <= 100 characters. Per Carlo @ DDog. Undocumented?
+	croak( "ERROR - invalid 'title' >" . $args{'title'} . "<. Title must be 100 characters or less." )
+		if ( length( $args{'title'} ) > 100 );
 	
 	# Check that 'date_happened' is valid
 	if ( defined( $args{'date_happened'} ) )
 	{
-		croak "ERROR - invalid value >" . $args{'date_happened'} . "< for argument 'date_happened'. Must be POSIX/Unixtime"
+		croak "ERROR - invalid 'date_happened' >" . $args{'date_happened'} . "<. Must be POSIX/Unixtime"
 			unless ( $args{'date_happened'} =~ /^\d{10,}$/ ); #min 10 digits, allowing for older data back to 1/1/2000
 	}
 	
 	# Check that 'priority' is valid
 	if ( defined $args{'priority'} )
 	{
-		croak "Invalid value >" . $args{'priority'} . "< for argument 'priority'. Allowed values: low, normal."
+		croak "ERROR - invalid 'priority' >" . $args{'priority'} . "<. Allowed values: low, normal."
 			unless ( lc( $args{'priority'} ) eq "low" || lc( $args{'priority'} ) eq "normal" );
 	}
 	
 	# Check that 'related_event_id' is valid
 	if ( defined( $args{'related_event_id'} ) )
 	{
-		croak 'Invalid "related_event_id" >' . $args{'related_event_id'} . '<'
+		croak "ERROR - invalid 'related_event_id' >" . $args{'related_event_id'} . "<"
 			unless $args{'related_event_id'} =~ /^\d+$/;
 	}
 	
@@ -404,22 +408,22 @@ sub _event_error_checks
 	{
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "Tag list is invalid. Must be an arrayref.";
+			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
 		}
 	}
 	
 	# Check that 'alert_type' is valid
 	if ( defined( $args{'alert_type'} ) )
 	{
-		croak "alert_type >" . $args{'alert_type'} . "< is invalid. Allowed values: error|warning|info|success"
-			unless $args{'alert_type'} =~ /[error|warning|info|success]/;
+		croak "ERROR - invalid 'alert_type' >" . $args{'alert_type'} . "<. Allowed values: error, warning, info, success"
+			unless $args{'alert_type'} =~ /error|warning|info|success/;
 	}
 	
 	# Check that 'source_type_name' is valid
 	if ( defined( $args{'source_type_name'} ) )
 	{
-		croak "source_type_name >" . $args{'source_type_name'} . "< is invalid. Allowed values: nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano"
-			unless $args{'source_type_name'} =~ /[nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano]/;
+		croak "ERROR - invalid 'source_type_name' >" . $args{'source_type_name'} . "<. Allowed values: nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano"
+			unless $args{'source_type_name'} =~ /nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano/; ## no critic qw( RegularExpressions::RequireExtendedFormatting RegularExpressions::ProhibitComplexRegexes )
 	}
 	
 	return;
