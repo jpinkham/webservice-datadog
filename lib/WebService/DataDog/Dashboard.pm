@@ -192,6 +192,15 @@ sub update_dashboard
 		croak "ERROR - you cannot have a blank dashboard title.";
 	}
 	
+	#TODO add these checks to upcoming create() function
+	# Check that title is <= 80 characters. Per Carlo @DDog. Undocumented?
+	croak( "ERROR - Invalid title >" . $args{'title'} . "<. Title must be 80 characters or less." )
+		if ( defined( $args{'title'} ) && length( $args{'title'} ) > 80 );
+	
+	# Check that description is <= 4000 characters. Per Carlo @DDog. Undocumented?
+	croak( "ERROR - Invalid description >" . $args{'description'} . "<. Description must be 4000 characters or less." )
+		if ( defined( $args{'description'} ) && length( $args{'description'} ) > 4000 );
+	
 	#TODO extensive graph error checking
 	# ?? disallow any 'graph' section changes without additional config/force/etc?
 	# - compare new definition vs existing. warn if any graphs are removed. print old definition
@@ -214,7 +223,7 @@ sub update_dashboard
 	}
 	catch
 	{
-		croak "Error retrieving details on dashboard id >" . $args{'id'} . "<";
+		croak "Error retrieving details on dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
 	};
 	
 	if ( !defined($response) || !defined($response->{'dash'}) )
