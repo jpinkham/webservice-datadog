@@ -13,7 +13,6 @@ my $datadog = WebService::DataDog->new(
 #	verbose         => 1,
 );
 
-
 my $event = $datadog->build('Event');
 my $event_list;
 
@@ -47,3 +46,17 @@ catch
 };
 
 print "GitHub Event list:\n", Dumper($event_list);
+
+# Grab first event from list returned
+my $one_event = $event_list->[0]->{'id'};
+
+# Event details
+my $event_details = $event->get_event( id => $one_event );
+print "Details of event >$one_event<: ", Dumper($event_details);
+
+# Post a new event to stream
+$event->post_event(
+	title => "Example event title(" . time() . ")",
+	text  => "example event body/description",
+);
+
