@@ -238,9 +238,10 @@ sub update_dashboard
 =head2 create()
 
 Create new DataDog dashboard with 1+ graphs.
+If successful, returns created dashboard id.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboard->create(
+	my $dashboard_id = $dashboard->create(
 		title       => $dash_title,
 		description => $dash_description,
 		graphs      => $graphs,
@@ -283,12 +284,12 @@ sub create
 	};
 	
 	my $response = $self->_send_request(
-			method => 'PUT',
+			method => 'POST',
 			url    => $url,
 			data   => $data,
 		);
 	
-	return $response;
+	return $response->{'dash'}->{'id'};
 }
 
 
