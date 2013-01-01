@@ -96,14 +96,12 @@ sub get_dashboard
 	}
 	
 	# Check that id specified is a number
-	croak "ERROR - Dashboard id must be a number. You specified >" . $args{'id'} . "<"
+	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Dashboard id must be a number."
 		unless $args{'id'} =~ /^\d+$/;
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
 	my $response;
 	
-	#TODO find more reliable method to determine that dashboard id is unknown
-	# (check response specifically for failure of 404)
 	try
 	{
 		$response = $self->_send_request(
@@ -114,7 +112,14 @@ sub get_dashboard
 	}
 	catch
 	{
-		croak "Unknown dashboard id >" . $args{'id'} . "<";
+		if ( /404/ )
+		{
+			croak "Unknown dashboard id >" . $args{'id'} . "<";
+		}
+		else
+		{
+			croak "Error occurred while trying to verify that >" . $args{'id'} . "< is valid. Error: $_";
+		}
 	};
 	
 	if ( !defined($response) || !defined($response->{'dash'}) )
