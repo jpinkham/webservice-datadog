@@ -170,45 +170,11 @@ sub update_dashboard
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
 	
-	# Check for mandatory parameters
-	foreach my $arg ( qw( id ) )
-	{
-		croak "ERROR - Argument '$arg' is required for update_dashboard()."
-			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
-	}
-	
-	# Check that id specified is a number
-	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Dashboard id must be a number."
-		unless $args{'id'} =~ /^\d+$/;
-	
-	# Check that one update field was supplied
-	if ( !defined( $args{'title'} ) && !defined( $args{'description'} ) && !defined( $args{'graphs'} ) )
-	{
-		croak "ERROR - you must supply at least one of the following arguments: title, description, graphs";
-	}
-	
-	if ( defined( $args{'title'} ) && $args{'title'} eq '' )
-	{
-		croak "ERROR - you cannot have a blank dashboard title.";
-	}
-	
-	#TODO add these checks to upcoming create() function
-	# Check that title is <= 80 characters. Per Carlo @DDog. Undocumented?
-	croak( "ERROR - invalid 'title' >" . $args{'title'} . "<. Title must be 80 characters or less." )
-		if ( defined( $args{'title'} ) && length( $args{'title'} ) > 80 );
-	
-	# Check that description is <= 4000 characters. Per Carlo @DDog. Undocumented?
-	croak( "ERROR - invalid 'description' >" . $args{'description'} . "<. Description must be 4000 characters or less." )
-		if ( defined( $args{'description'} ) && length( $args{'description'} ) > 4000 );
-	
-	#TODO extensive graph error checking
-	# ?? disallow any 'graph' section changes without additional config/force/etc?
-	# - compare new definition vs existing. warn if any graphs are removed. print old definition
-	# - make sure all graph fields are specified: 
-	#  title,  (255 char limit)
-	#  definition: events, requests   (4000 char limit)
-	#  viz
-	
+	$self->_error_checks(
+		mode => 'update',
+		data => \%args,
+	);
+
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
 	
 	my $response;
@@ -254,14 +220,199 @@ sub update_dashboard
 		? $args{'graphs'} 
 		: $dash_original_details->{'graphs'};
 	
-	#do requested update
 	$response = $self->_send_request(
 			method => 'PUT',
 			url    => $url,
 			data   => $data,
 		);
 	
-	#TODO check that each intended change is reflected in response
+	return;
+}
+
+
+=head2 create()
+
+Create new DataDog dashboard with 1+ graphs.
+
+	my $dashboard = $datadog->build('Dashboard');
+	$dashboard->create(
+		title       => $dash_title,
+		description => $dash_description,
+		graphs      => $graphs,
+	);
+	
+Parameters:
+
+=over 4
+
+=item * title
+Specify title for new dashboard.
+
+=item * description
+Specify description for new dashboard.
+
+=item * graphs
+Specify graph definition for new dashboard.
+
+=back
+
+=cut
+
+sub create
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	$self->_error_checks(
+		mode => 'create',
+		data => \%args,
+	);
+
+	my $url = $WebService::DataDog::API_ENDPOINT . 'dash';
+	
+	my $data = 
+	{
+		title       => $args{'title'},
+		description => $args{'description'},
+		graphs      => $args{'graphs'},
+	};
+	
+	my $response = $self->_send_request(
+			method => 'PUT',
+			url    => $url,
+			data   => $data,
+		);
+	
+	return $response;
+}
+
+
+=head2 delete()
+
+Delete specified dashboard.
+
+=cut
+
+sub delete
+{
+	my ( $self, %args ) = @_;
+	
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id ) )
+	{
+		croak "ERROR - Argument '$arg' is required for delete()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Check that id specified is a number
+	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Dashboard id must be a number."
+		unless $args{'id'} =~ /^\d+$/;
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
+	
+	my $response;
+	try
+	{
+		$response = $self->_send_request(
+			method => 'DELETE',
+			url    => $url,
+			data   => { '' => [] }
+		);
+	}
+	catch
+	{
+		croak "Error 404 deleting dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
+	};
+	
+	return;
+}
+
+
+=head1 INTERNAL FUNCTIONS
+
+=head2 _error_checks()
+
+Common error checking for creating/updating dashboards.
+
+=cut
+
+sub _error_checks
+{
+	my ( $self, %arguments ) = @_;
+	my $verbose = $self->verbose();
+	
+	my $mode = $arguments{'mode'};
+	my %args = %{ $arguments{'data'} };
+	
+	if ( $mode eq "update" )
+	{
+		# Check for mandatory parameters
+		foreach my $arg ( qw( id ) )
+		{
+			croak "ERROR - Argument '$arg' is required for update_dashboard()."
+				if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+		}
+		
+		# Check that id specified is a number
+		croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Dashboard id must be a number."
+			unless $args{'id'} =~ /^\d+$/;
+		
+		# Check that one update field was supplied
+		if ( !defined( $args{'title'} ) && !defined( $args{'description'} ) && !defined( $args{'graphs'} ) )
+		{
+			croak "ERROR - you must supply at least one of the following arguments: title, description, graphs";
+		}
+	}
+	elsif ( $mode eq "create" )
+	{
+		# Check for mandatory parameters
+		foreach my $arg ( qw( title description graphs ) )
+		{
+			croak "ERROR - Argument '$arg' is required for create()."
+				if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+		}
+	}
+	
+	if ( defined( $args{'title'} ) && $args{'title'} eq '' )
+	{
+		croak "ERROR - you cannot have a blank dashboard title.";
+	}
+	
+	# Check that title is <= 80 characters. Per Carlo @DDog. Undocumented?
+	croak( "ERROR - invalid 'title' >" . $args{'title'} . "<. Title must be 80 characters or less." )
+		if ( defined( $args{'title'} ) && length( $args{'title'} ) > 80 );
+	
+	# Check that description is <= 4000 characters. Per Carlo @DDog. Undocumented?
+	croak( "ERROR - invalid 'description' >" . $args{'description'} . "<. Description must be 4000 characters or less." )
+		if ( defined( $args{'description'} ) && length( $args{'description'} ) > 4000 );
+	
+	#TODO extensive graph error checking
+	# ?? disallow any 'graph' section changes without additional config/force/etc?
+	# - compare new definition vs existing. warn if any graphs are removed. print old definition
+	# - make sure all graph fields are specified: 
+	#  title,  (255 char limit)
+	#  definition: events, requests   (4000 char limit)
+	#  viz?? (docs show it included in example, but not listed in fields, required or optional)
+	if ( defined ( $args{'graphs'} ) )
+	{
+		croak "ERROR - 'graphs' argument must be an arrayref"
+			if !Data::Validate::Type::is_arrayref( $args{'graphs'} );
+		
+		croak "ERROR - at least one graph definition is required for create()"
+			if scalar( @{ $args{'graphs'} } == 0 );
+			
+		foreach my $graph_item ( @{ $args{'graphs'} } )
+		{
+			# Check for mandatory parameters
+			foreach my $argument ( qw( title definition ) )
+			{
+				croak "ERROR - Argument '$argument' is required within each graph for create()."
+					if !defined( $graph_item->{$argument} ) || ( $graph_item->{$argument} eq '' );
+			}
+		}
+	}
 	
 	return;
 }
