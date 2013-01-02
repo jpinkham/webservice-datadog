@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 6 );
+	: plan( tests => 9 );
 
 my $config = DataDogConfig->new();
 
@@ -127,23 +127,23 @@ lives_ok(
 		);
 	},
 	'Create new dashboard',
+)|| diag explain $response;
+
+ok(
+	Data::Validate::Type::is_number( $response ),
+	'Response is a number.',
 );
 
-diag explain $response;
+# Store id for use in upcoming tests: update, delete, etc
 
-#**|
-#**|ok(
-#**|	open( FILE, '>', 'webservice-datadog-dashboard-dashid.tmp'),
-#**|	'Open temp file to store new dashboard id'
-#**|);
-#**|
-#**|# Print first ID number to a text file, to use in other tests
-#**|my $new_dash_id = defined $response->[0] && $response->[0]->{'id'}
-#**| ? $response->[0]->{'id'}
-#**| : '';
-#**|print FILE $first_dash_id;
-#**|
-#**|ok(
-#**|	close FILE,
-#**|	'Close temp file'
-#**|);
+ok(
+	open( FILE, '>', 'webservice-datadog-dashboard-dashid.tmp'),
+	'Open temp file to store new dashboard id'
+);
+
+print FILE $response;
+
+ok(
+	close FILE,
+	'Close temp file'
+);
