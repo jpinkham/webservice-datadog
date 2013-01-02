@@ -298,13 +298,13 @@ sub create
 }
 
 
-=head2 delete()
+=head2 delete_dashboard()
 
 Delete specified dashboard.
 
 =cut
 
-sub delete
+sub delete_dashboard
 {
 	my ( $self, %args ) = @_;
 	
@@ -313,7 +313,7 @@ sub delete
 	# Check for mandatory parameters
 	foreach my $arg ( qw( id ) )
 	{
-		croak "ERROR - Argument '$arg' is required for delete()."
+		croak "ERROR - Argument '$arg' is required for delete_dashboard()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	

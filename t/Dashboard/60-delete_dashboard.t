@@ -36,7 +36,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->delete( id => "abc" );
+		$response = $dashboard_obj->delete_dashboard( id => "abc" );
 	},
 	qr/id must be a number/,
 	'Dies on invalid dash id.',
@@ -45,7 +45,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->delete( id => "123" );
+		$response = $dashboard_obj->delete_dashboard( id => "123" );
 	},
 	qr/Error 404/,
 	'Dies on unknown dash id.',
@@ -72,7 +72,7 @@ ok(
 lives_ok(
 	sub
 	{
-		$dashboard_obj->delete( id => $dash_id );
+		$dashboard_obj->delete_dashboard( id => $dash_id );
 	},
 	'Delete specified dashboard'
 );
