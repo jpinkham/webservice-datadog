@@ -118,7 +118,7 @@ sub get_dashboard
 		}
 		else
 		{
-			croak "Error occurred while trying to verify that >" . $args{'id'} . "< is valid. Error: $_";
+			croak "Error occurred while trying to retrieve details of dashboard  >" . $args{'id'} . "<. Error: $_";
 		}
 	};
 	
@@ -289,6 +289,11 @@ sub create
 			data   => $data,
 		);
 	
+	if ( !defined($response) || !defined($response->{'dash'}) )
+	{
+		croak "Fatal error. No response or 'dash' missing from response.";
+	}
+	
 	return $response->{'dash'}->{'id'};
 }
 
@@ -318,6 +323,8 @@ sub delete
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
 	
+	
+	# NOTE: no response is returned when request is succesful
 	my $response;
 	try
 	{
@@ -329,7 +336,10 @@ sub delete
 	}
 	catch
 	{
-		croak "Error 404 deleting dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
+		if ( /404/ )
+		{
+			croak "Error 404 deleting dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
+		}
 	};
 	
 	return;
