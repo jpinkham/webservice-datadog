@@ -406,7 +406,7 @@ Kate Kirby L<http://search.cpan.org/~kate/>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2012 Jennifer Pinkham.
+Copyright 2013 Jennifer Pinkham.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the Artistic License.
