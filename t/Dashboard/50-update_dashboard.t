@@ -11,9 +11,6 @@ use Test::More;
 
 use WebService::DataDog;
 
-#TODO Update this to utilize a newly-created dashboard, rather than modifying
-# someone's existing dashboard - not polite!
-
 
 eval 'use DataDogConfig';
 $@
