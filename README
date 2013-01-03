@@ -1,6 +1,6 @@
 WebService-DataDog
 
-This module allows you to interact with DataDog L<http://http://www.datadoghq.com/>,
+This module allows you to interact with DataDog (http://http://www.datadoghq.com/),
 a service that will "Capture metrics and events, then graph, filter, and search
 to see what's happening and how systems interact. Datadog is a service for IT,
 Operations and Development teams who write and run applications at scale, and
