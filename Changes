@@ -2,7 +2,7 @@ v0.2.0  12/24/2013
         First release. Only metric posting and dashboard interactions are
         supported currently.
 v0.3.0  01/01/2013
-				Added WebService::DataDog::Event module, with tests. Added examples/
-				dir with simple example scripts for Event, Metric, Dashboard modules.
-				Updated WebService::DataDog::Dashboard to include create() and delete_dashboard().
-				Documentation changes.
+        Added WebService::DataDog::Event module, with tests. Added examples/
+        dir with simple example scripts for Event, Metric, Dashboard modules.
+        Updated WebService::DataDog::Dashboard to include create() and delete_dashboard().
+        Documentation changes.

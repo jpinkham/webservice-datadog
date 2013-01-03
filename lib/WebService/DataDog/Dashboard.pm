@@ -22,6 +22,7 @@ our $VERSION = '0.3.0';
 
 
 =head1 SYNOPSIS
+
 This module allows you interact with the Dashboard endpoint of the DataDog API.
 
 Per DataDog: "The Dashboards end point allow you to programmatically create,
@@ -77,6 +78,7 @@ Parameters:
 =over 4
 
 =item * id
+
 Id of dashboard you want to retrieve the details for.
 
 =back
@@ -150,20 +152,24 @@ that you want to be part of a dashboard.
 		graphs      => $graphs,
 	);
 	
-Parameters: 
+Parameters:
 
 =over 4
 
 =item * id
+
 Id of dashboard you want to update.
 
 =item * title
+
 Optional. Specify updated title for specified dashboard.
 
 =item * description
+
 Optional. Specify updated description for specified dashboard.
 
 =item * graphs
+
 Optional. Specify updated graph definition for specified dashboard.
 
 =back
@@ -247,39 +253,67 @@ If successful, returns created dashboard id.
 		graphs      => $graphs,
 	);
 	
+	Example:
+	my $new_dashboard_id = $dashboard->create(
+		title       => "TEST DASH",
+		description => "test dashboard",
+		graphs      =>
+		[
+			{
+				title => "Sum of Memory Free",
+				definition =>
+				{
+					events   =>[],
+					requests => [
+						{ q => "sum:system.mem.free{*}" }
+					]
+				},
+				viz => "timeseries"
+			},
+		],
+	);
+	
 Parameters:
 
 =over 4
 
 =item * title
+
 Specify title for new dashboard.
 
 =item * description
+
 Specify description for new dashboard.
 
 =item * graphs
+
 Specify graph definition for new dashboard.
 
 =over 4
 
 =item * title
+
 Title of graph.
 
 =item * definition
+
 Definition of graph.
 
 =over 4
 
 =item * events
+
 Overlay any events from the event stream.
 
 =item * requests
-Metrics you want to graph
+
+Metrics you want to graph.
 
 =back
 
 =item * viz
-Visualisation of graph. Valid values: timeseries (default), treemap
+
+Visualisation of graph. Valid values: timeseries (default), treemap.
 
 =back
 
@@ -323,11 +357,23 @@ sub create
 
 =head2 delete_dashboard()
 
-Delete specified dashboard.
+Delete specified user-created dashboard. 
+NOTE: You cannot remove system-generated or integration dashboards.
 
 	my $dashboard = $datadog->build('Dashboard');
 	$dashboard->delete_dashboard( id => $dash_id );
 	
+	
+Parameters:
+
+=over 4
+
+=item * id
+
+Dashboard id you want to delete.
+
+=back
+
 =cut
 
 sub delete_dashboard
@@ -429,9 +475,9 @@ sub _error_checks
 	croak( "ERROR - invalid 'description' >" . $args{'description'} . "<. Description must be 4000 characters or less." )
 		if ( defined( $args{'description'} ) && length( $args{'description'} ) > 4000 );
 	
-	#TODO extensive graph error checking
+	#TODO better graph error checking
 	# ?? disallow any 'graph' section changes without additional config/force/etc?
-	# - compare new definition vs existing. warn if any graphs are removed. print old definition
+	# - compare new definition vs existing. warn if any graphs are removed. print old definition?
 	# - make sure all graph fields are specified: 
 	#  title,  (255 char limit)
 	#  definition: events, requests   (4000 char limit)

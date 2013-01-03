@@ -146,7 +146,24 @@ DataDog's API
 
 Creates a new object to communicate with DataDog.
 
-The 'verbose' parameter is optional and defaults to not verbose.
+Parameters:
+
+=over 4
+
+=item * api_key
+
+DataDog API key. Found at L<https://app.datadoghq.com/account/settings>
+
+=item * application_key
+
+DataDog application key.  Multiple keys can be generated per account.  Generate/View existing at
+L<https://app.datadoghq.com/account/settings>
+
+=item * verbose
+
+Optional.  Set to 1 to see debugging output of request/response interaction with DataDog service.
+
+=back
 
 =cut
 
@@ -166,11 +183,10 @@ sub new
 		{
 			api_key         => $args{'api_key'},
 			application_key => $args{'application_key'},
+			verbose         => defined $args{'verbose'} ? $args{'verbose'} : 0,
 		},
 		$class,
 	);
-	
-	$self->verbose( $args{'verbose'} );
 	
 	return $self;
 }

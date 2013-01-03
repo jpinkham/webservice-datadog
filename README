@@ -1,19 +1,25 @@
 WebService-DataDog
 
-This module allows you to interact with DataDog, a service that will "Capture
-metrics and events, then graph, filter, and search to see what's happening and 
-how systems interact." This module encapsulates all the communications with the
-REST API provided by DataDog to offer a Perl interface to metrics, dashboards,
-events, alerts, etc.
+This module allows you to interact with DataDog L<http://http://www.datadoghq.com/>,
+a service that will "Capture metrics and events, then graph, filter, and search
+to see what's happening and how systems interact. Datadog is a service for IT,
+Operations and Development teams who write and run applications at scale, and
+want to turn the massive amounts of data produced by their apps, tools and
+services into actionable insight."
 
-Requests that write data require reporting access and require an API key.
-Requests that read data require full access and also require an application key.
+This module encapsulates all the communications with the REST API provided by
+DataDog to offer a Perl interface to metrics, dashboards, events, alerts, etc.
 
 You can find your API key, and generate application keys at
 https://app.datadoghq.com/account/settings
 
+For help with graph definitions (when creating/updating dashboards), please visit
+http://docs.datadoghq.com/graphing/  and
+http://help.datadoghq.com/kb/graphs-dashboards/graph-primer
+
+
 **NOTE: This is in the development stage and has reduced functionality currently,
-supporting the posting of metrics, creating/viewing/updating dashboards, and
+supporting the posting of metrics, creating/deleting/listing/updating dashboards, and
 searching/viewing/posting events to DDog event stream.
 
 I intend to continue updating, eventually adding all functionality that
