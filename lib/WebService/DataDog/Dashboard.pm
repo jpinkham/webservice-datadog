@@ -260,6 +260,29 @@ Specify description for new dashboard.
 =item * graphs
 Specify graph definition for new dashboard.
 
+=over 4
+
+=item * title
+Title of graph.
+
+=item * definition
+Definition of graph.
+
+=over 4
+
+=item * events
+Overlay any events from the event stream.
+
+=item * requests
+Metrics you want to graph
+
+=back
+
+=item * viz
+Visualisation of graph. Valid values: timeseries (default), treemap
+
+=back
+
 =back
 
 =cut
@@ -302,6 +325,9 @@ sub create
 
 Delete specified dashboard.
 
+	my $dashboard = $datadog->build('Dashboard');
+	$dashboard->delete_dashboard( id => $dash_id );
+	
 =cut
 
 sub delete_dashboard
@@ -322,7 +348,6 @@ sub delete_dashboard
 		unless $args{'id'} =~ /^\d+$/;
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
-	
 	
 	# NOTE: no response is returned when request is succesful
 	my $response;
