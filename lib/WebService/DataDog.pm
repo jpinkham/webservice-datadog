@@ -66,6 +66,16 @@ application key.
 	# For dashboard functions, first build a dashboard object
 	my $dashboard = $datadog->build('Dashboard');
 	
+	# Create a new dashboard
+	my $dashboard_id = $dashboard->create(
+		title       => $dash_title,
+		description => $dash_description,
+		graphs      => $graphs,
+	);
+	
+	# Delete a user-created dashboard that you don't need anymore
+	$dashboard->delete_dashboard( id => $dash_id );
+	
 	# To make any changes to an existing user-created dashboard:
 	# Specify dash_id and any combination of title, description, graphs
 	$dashboard->update_dashboard(
@@ -399,6 +409,9 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 
 
 =head1 ACKNOWLEDGEMENTS
+
+Thanks to ThinkGeek (<http://www.thinkgeek.com/>) and its corporate overlords at
+Geeknet (<http://www.geek.net/>), for footing the bill while I write code for them!
 
 Special thanks for architecture advice from fellow ThinkGeek CPAN author Guillaume
 Aubert L<http://search.cpan.org/~aubertg/> as well as fellow ThinkGeek CPAN author

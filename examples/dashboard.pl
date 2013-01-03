@@ -17,6 +17,7 @@ my $datadog = WebService::DataDog->new(
 
 my $dashboard = $datadog->build('Dashboard');
 my $dashboard_list;
+# Example - list of all user-created/cloned dashboards
 try
 {
 	$dashboard_list = $dashboard->get_all_dashboards();
@@ -28,7 +29,7 @@ catch
 
 print "Dashboard list:\n", Dumper($dashboard_list);
 
-
+# Example - update existing user-created dashboard
 try
 {
 	$dashboard->update_dashboard(
@@ -39,5 +40,46 @@ try
 catch
 {
 	print "FAILED - Could not update dashboard title because: @_ \n";
+};
+
+
+
+# Example - delete existing user-created dashboard
+# BE VERY CAREFUL WITH THIS! Also note: you cannot delete system/auto generated dashboards via the API
+try
+{
+	$dashboard->delete_dashboard( id => '504' );
+}
+catch
+{
+	print "FAILED - Could not delete dashboard id '504' because: @_ \n";
+};
+
+
+# Example - create new dashboard with a single graph
+try
+{
+	$dashboard->create(
+		title       => "TEST DASH",
+		description => "test dashboard",
+		graphs      =>
+		[
+			{
+				title => "Sum of Memory Free",
+				definition =>
+				{
+					events   =>[],
+					requests => [
+						{ q => "sum:system.mem.free{*}" }
+					]
+				},
+				viz => "timeseries"
+			},
+		],
+	);
+}
+catch
+{
+	print "FAILED - Could not create new dashboard because: @_ \n";
 };
 
