@@ -6,3 +6,5 @@ v0.3.0  01/01/2013
         dir with simple example scripts for Event, Metric, Dashboard modules.
         Updated WebService::DataDog::Dashboard to include create() and delete_dashboard().
         Documentation changes.
+v0.3.1  01/03/2013
+        Documentation updates.  Added more examples to POD and examples/* scripts.
