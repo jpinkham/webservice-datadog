@@ -20,9 +20,6 @@ Version 0.3.1
 
 our $VERSION = '0.3.1';
 
-
-# TODO get_alert
-# TODO update
 # TODO mute_all
 # TODO unmute_all
 # TODO delete_alert
@@ -133,7 +130,7 @@ sub create
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	# Error checks, common to create() and update()
+	# Error checks, common to create() and update_alert()
 	$self->_error_checks( %args );
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'alert';
@@ -229,6 +226,117 @@ sub get_alert
 	
 	return $response;
 }
+
+
+=head2 update_alert()
+
+Update existing DataDog alert for specified alert id.
+NOTE: a 404 response typically indicates you specified an incorrect alert id.
+
+	my $alert = $datadog->build('Alert');
+	$alert->update_alert(
+		id       => $alert_id,   # ID of alert to modify
+		query    => $query,      # Metric query to alert on
+		name     => $alert_name, # Optional.
+		message  => $message,    # Optional.
+		silenced => $boolean,    # Optional.
+	);
+	
+	Example:
+	# Change name of existing alert
+	$alert->update_alert(
+		id    => $alert_id,
+		name  => "Bytes received on host0",
+	);
+	
+Parameters:
+
+=over 4
+
+=item * id
+
+ID of alert you want to modify.
+
+=item * query
+
+Metric query to alert on.
+
+=item * name
+
+Optional. Name of the alert.
+
+=item * message
+
+Optional. A message to include with notifications for this alert. Email
+notifications can be sent to specific users by using the same '@username'
+notation as events.
+
+=item * silenced
+
+Optional.Whether the alert should notify by email and in the
+event stream. An alert with 'silenced' set to True is effectively muted. The
+alert will continue to detect state changes, but they will only be visible on
+the alert list page.
+
+=back
+
+=cut
+
+sub update_alert
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id query ) )
+	{
+		croak "ERROR - Argument '$arg' is required for update_alert()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Error checks, common to create() and update_alert()
+	$self->_error_checks( %args );
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'alert' . '/' . $args{'id'};
+	
+	my $data = 
+	{
+		query => $args{'query'},
+	};
+	
+	if ( defined( $args{'name'} ) && $args{'name'} ne '' )
+	{
+		$data->{'name'} = $args{'name'};
+	}
+	
+	if ( defined( $args{'message'} ) && $args{'message'} ne '' )
+	{
+		$data->{'message'} = $args{'message'};
+	}
+	
+	if ( defined( $args{'silenced'} ) && $args{'silenced'} ne '' )
+	{
+		# You must use references to integers in order to have JSON.pm properly
+		# encode these as JSON boolean values. Without this, JSON will encode integer
+		# value as string...which is how I found this fix, when it happened to me.
+		# Reference: http://stackoverflow.com/questions/1087308/why-cant-i-properly-encode-a-boolean-from-postgresql-via-jsonxs-via-perl
+		$data->{'silenced'} = ( $args{'silenced'} == 0 ? \0: \1 );
+	}
+	
+	my $response = $self->_send_request(
+			method => 'PUT',
+			url    => $url,
+			data   => $data,
+		);
+	
+	if ( !defined($response) || !defined($response->{'state'}) || $response->{'state'} ne 'OK' )
+	{
+		croak "Fatal error. No response or missing/invalid state in response.";
+	}
+	
+	return;
+}
+
 
 
 =head1 INTERNAL FUNCTIONS
