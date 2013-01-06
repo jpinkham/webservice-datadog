@@ -75,6 +75,8 @@ sub get_all_alerts
 Create new DataDog alert for specified metric query.
 If successful, returns created alert id.
 
+NOTE: 'silenced' seems to have no effect in create mode, but works fine in update/edit mode.
+
 	my $alert = $datadog->build('Alert');
 	my $alert_id = $alert->create(
 		query    => $query,      # Metric query to alert on
