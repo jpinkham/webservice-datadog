@@ -175,6 +175,60 @@ sub create
 }
 
 
+
+=head2 get_alert()
+
+Retrieve details for specified alert.
+NOTE: a 404 response typically indicates you specified an incorrect alert id.
+
+	my $alert = $datadog->build('Alert');
+	my $alert_data = $alert->get_alert( id => $alert_id );
+	
+Parameters:
+
+=over 4
+
+=item * id
+
+Id of alert you want to retrieve the details for.
+
+=back
+
+=cut
+
+sub get_alert
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id ) )
+	{
+		croak "ERROR - Argument '$arg' is required."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Check that id specified is a number
+	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Alert id must be a number."
+		unless $args{'id'} =~ /^\d+$/;
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'alert' . '/' . $args{'id'};
+	
+	my $response = $self->_send_request(
+		method => 'GET',
+		url    => $url,
+		data   => { '' => [] }
+	);
+	
+	if ( !defined($response) || !defined($response->{'id'}) )
+	{
+		croak "Fatal error. No response or alert 'id' missing from response.";
+	}
+	
+	return $response;
+}
+
+
 =head1 INTERNAL FUNCTIONS
 
 =head2 _error_checks()
