@@ -21,8 +21,6 @@ Version 0.3.1
 our $VERSION = '0.3.1';
 
 
-# TODO get_all_alerts
-# TODO create
 # TODO get_alert
 # TODO update
 # TODO mute_all
@@ -30,6 +28,7 @@ our $VERSION = '0.3.1';
 # TODO delete_alert
 
 =head1 SYNOPSIS
+
 This module allows you interact with the Alert endpoint of the DataDog API.
 
 Per DataDog: "Alerts allow you to watch a particular metric query and receive a
@@ -71,7 +70,132 @@ sub get_all_alerts
 }
 
 
+=head2 create()
 
+Create new DataDog alert for specified metric query.
+If successful, returns created alert id.
+
+	my $alert = $datadog->build('Alert');
+	my $alert_id = $alert->create(
+		query    => $query,      # Metric query to alert on
+		name     => $alert_name, # Optional. default=dynamic, based on query
+		message  => $message,    # Optional. default=None
+		silenced => $boolean,    # Optional. default=0
+	);
+	
+	Example:
+	my $alert_id = $alert->create(
+			query    => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 100",
+			name     => "Bytes received on host0",
+			message  => "We may need to add web hosts if this is consistently high.",
+		);
+	
+Parameters:
+
+=over 4
+
+=item * query
+
+Metric query to alert on.
+
+=item * name
+
+Optional. Name of the alert. Default = dynamic, based on query.
+
+=item * message
+
+Optional. A message to include with notifications for this alert. Email
+notifications can be sent to specific users by using the same '@username'
+notation as events.
+
+=item * silenced
+
+Optional. Default = false. Whether the alert should notify by email and in the
+event stream. An alert with 'silenced' set to True is effectively muted. The
+alert will continue to detect state changes, but they will only be visible on
+the alert list page.
+
+=back
+
+=cut
+
+sub create
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( query ) )
+	{
+		croak "ERROR - Argument '$arg' is required for create()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Error checks, common to create() and update()
+	$self->_error_checks( %args );
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'alert';
+	
+	my $data = 
+	{
+		query => $args{'query'},
+	};
+	
+	if ( defined( $args{'name'} ) && $args{'name'} ne '' )
+	{
+		$data->{'name'} = $args{'name'};
+	}
+	
+	if ( defined( $args{'message'} ) && $args{'message'} ne '' )
+	{
+		$data->{'message'} = $args{'message'};
+	}
+	
+	if ( defined( $args{'silenced'} ) && $args{'silenced'} ne '' )
+	{
+		# For some reason encode_json thinks 0/1 are strings, not integers, so 
+		# let's be explicit that we want JSON booleans.
+		$data->{'silenced'} = $args{'silenced'} == 0 ? JSON::XS::false: JSON::XS::true;
+	}
+	
+	my $response = $self->_send_request(
+			method => 'POST',
+			url    => $url,
+			data   => $data,
+		);
+	
+	if ( !defined($response) || !defined($response->{'state'}) || $response->{'state'} ne 'OK' )
+	{
+		croak "Fatal error. No response or missing/invalid state in response.";
+	}
+	
+	return $response->{'id'};
+}
+
+
+=head1 INTERNAL FUNCTIONS
+
+=head2 _error_checks()
+
+Common error checking for creating/updating alerts.
+
+=cut
+
+sub _error_checks
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check that name is <= 80 characters. Undocumented limitation.  A name of 81 chars results in '400 Bad Request'.
+	croak( "ERROR - invalid 'name' >" . $args{'name'} . "<. Name must be 80 characters or less." )
+		if ( defined( $args{'name'} ) && length( $args{'name'} ) > 80 );
+	
+	# Check that 'silenced' is a boolean.
+	croak( "ERROR - invalid 'silenced' value >" . $args{'silenced'} . "<. Must specify 0 (false) or 1 (true).")
+		if ( defined( $args{'silenced'} ) && $args{'silenced'} !~ /^[01]$/ );
+	
+	return;
+}
 
 
 =head1 AUTHOR
