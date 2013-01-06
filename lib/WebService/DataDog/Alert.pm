@@ -153,9 +153,11 @@ sub create
 	
 	if ( defined( $args{'silenced'} ) && $args{'silenced'} ne '' )
 	{
-		# For some reason encode_json thinks 0/1 are strings, not integers, so 
-		# let's be explicit that we want JSON booleans.
-		$data->{'silenced'} = $args{'silenced'} == 0 ? JSON::XS::false: JSON::XS::true;
+		# You must use references to integers in order to have JSON.pm properly
+		# encode these as JSON boolean values. Without this, JSON will encode integer
+		# value as string...which is how I found this fix, when it happened to me.
+		# Reference: http://stackoverflow.com/questions/1087308/why-cant-i-properly-encode-a-boolean-from-postgresql-via-jsonxs-via-perl
+		$data->{'silenced'} = ( $args{'silenced'} == 0 ? \0: \1 );
 	}
 	
 	my $response = $self->_send_request(
