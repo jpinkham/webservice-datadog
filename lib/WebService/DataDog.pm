@@ -54,7 +54,7 @@ application key.
 	
 	# To post metrics (past or present)
 	# NOTE: only use 'value' OR 'data_points', but not both.
-	$metric->post_metric(
+	$metric->emit(
 		name        => $metric_name,
 		type        => $metric_type,  # Optional - gauge|counter. Default=gauge.
 		value       => $metric_value, # For posting a single data point, time 'now'

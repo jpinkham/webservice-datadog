@@ -31,7 +31,7 @@ t/Event/30-retrieve.t
 t/Event/40-create.t
 t/Event/99-cleanup.t
 t/Metric/00-load.t
-t/Metric/20-post_metric.t
+t/Metric/20-emit.t
 t/manifest.t
 t/module_versions.t
 t/perlcritic.t

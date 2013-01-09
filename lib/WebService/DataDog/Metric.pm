@@ -23,7 +23,24 @@ our $VERSION = '0.3.1';
 
 =head1 METHODS
 
+
 =head2 post_metric()
+
+Deprecated. Please use emit() instead.
+
+=cut
+
+sub post_metric
+{
+	my ( $self, %args ) = @_;
+	
+	carp "post_metric() is deprecated. Please use emit() instead.";
+	
+	return $self->emit( %args );
+}
+
+
+=head2 emit()
 
 Post single/multiple time-series metrics. NOTE: only metrics of type 'gauge' 
 and type 'counter' are supported. You must use a dogstatsd client such as
@@ -35,7 +52,7 @@ Per DataDog: "The metrics end-point allows you to post metrics data so it
 can be graphed on Datadog's dashboards."
 
 	my $metric = $datadog->build('Metric');
-	$metric->post_metric(
+	$metric->emit(
 		name        => $metric_name,
 		type        => $metric_type,  # Optional - gauge|counter. Default=gauge.
 		value       => $metric_value, # For posting a single data point, time 'now'
@@ -46,19 +63,19 @@ can be graphed on Datadog's dashboards."
 	
 	Examples:
 	+ Submit a single point with a timestamp of `now`.
-	$metric->post_metric(
+	$metric->emit(
 		name  => 'page_views',
 		value => 1000,
 	);
 	
 	+ Submit a point with a timestamp.
-	$metric->post_metric(
+	$metric->emit(
 		name        => 'my.pair',
 		data_points => [ [ 1317652676, 15 ] ],
 	);
 		
 	+ Submit multiple points.
-	$metric->post_metric(
+	$metric->emit(
 		name        => 'my.series',
 		data_points => 
 		[
@@ -68,7 +85,7 @@ can be graphed on Datadog's dashboards."
 	);
 	
 	+ Submit a point with a host and tags.
-	$metric->post_metric(
+	$metric->emit(
 		name  => 'my.series',
 		value => 100,
 		host  => "myhost.example.com",
@@ -109,7 +126,7 @@ Optional. List of tags associated with the metric.
 
 =cut
 
-sub post_metric
+sub emit
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
