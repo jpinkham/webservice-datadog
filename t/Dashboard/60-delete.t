@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 12 );
 
 my $config = DataDogConfig->new();
 
@@ -52,27 +52,51 @@ throws_ok(
 );
 
 ok(
-	open( FILE, 'webservice-datadog-dashboard-dashid.tmp'),
-	'Open temp file to read dashboard id'
+	open( FILE, 'webservice-datadog-dashboard-dashid-deprecated.tmp'),
+	'Open temp file to read dashboard id - deprecated'
 );
 
 my $dash_id;
 
 ok(
 	$dash_id = do { local $/; <FILE> },
-	'Read in dashboard id'
+	'Read in dashboard id - deprecated'
 );
 
 ok(
 	close FILE,
-	'Close temp file'
+	'Close temp file - deprecated version'
 );
 
 
 lives_ok(
 	sub
 	{
-		$dashboard_obj->delete( id => $dash_id );
+		$dashboard_obj->delete_dashboard( id => $dash_id );
 	},
-	'Delete specified dashboard'
+	'Delete specified dashboard - deprecated version'
+);
+
+ok(                                                                             
+  open( FILE, 'webservice-datadog-dashboard-dashid.tmp'),                       
+  'Open temp file to read dashboard id'                                         
+);
+
+ok(                                                                             
+  $dash_id = do { local $/; <FILE> },                                           
+  'Read in dashboard id'                                                        
+);                                                                              
+                                                                                
+ok(                                                                             
+  close FILE,                                                                   
+  'Close temp file'                                                             
+);                                                                              
+                                                                                
+                                                                                
+lives_ok(                                                                       
+  sub                                                                           
+  {                                                                             
+    $dashboard_obj->delete( id => $dash_id );                                   
+  },                                                                            
+  'Delete specified dashboard'                                                  
 );
