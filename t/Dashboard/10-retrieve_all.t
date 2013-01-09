@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 5 );
+	: plan( tests => 6 );
 
 my $config = DataDogConfig->new();
 
@@ -33,6 +33,14 @@ ok(
 	'Create a new WebService::DataDog::Dashboard object.',
 );
 my $response;
+
+lives_ok(
+	sub
+	{
+		$response = $dashboard_obj->get_all_dashboards();
+	},
+	'Request list of all dashboards - deprecated version.',
+);
 
 lives_ok(
 	sub

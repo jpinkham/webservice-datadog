@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 9 );
 
 my $config = DataDogConfig->new();
 
@@ -102,6 +102,16 @@ Suspendisse gravida, leo ut ornare cursus, nulla odio luctus orci, lacinia eleme
 
 
 #TODO check that existing title is < 80 chars first, or this test will fail
+lives_ok(                                                                       
+  sub                                                                           
+  {                                                                             
+    $response = $dashboard_obj->update_dashboard(                                         
+      id          => $dash_id,                                                  
+      title       => "1" . $old_dash_info->{'title'}                            
+    );                                                                          
+  },                                                                            
+  'Update - change title, providing required fields - deprecated version',                           
+);
 lives_ok(
 	sub
 	{

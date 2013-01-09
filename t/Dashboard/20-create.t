@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 9 );
+	: plan( tests => 12 );
 
 my $config = DataDogConfig->new();
 
@@ -104,6 +104,43 @@ Suspendisse gravida, leo ut ornare cursus, nulla odio luctus orci, lacinia eleme
 	'Dies with description too long.',
 );
 
+
+lives_ok(                                                                       
+  sub                                                                           
+  {                                                                             
+    $response = $dashboard_obj->create(                                         
+      title       => "TO BE DELETED test dash deprecated",                                 
+      description => "Created by test script",                                  
+      graphs      => [                                                          
+        {                                                                       
+          title => "Sum of Memory Free",                                        
+          definition =>                                                         
+          {                                                                     
+            events   =>[],                                                      
+            requests => [                                                       
+              { q => "sum:system.mem.free{*}" }                                 
+            ]                                                                   
+          },                                                                    
+          viz => "timeseries"                                                   
+        }                                                                       
+      ],                                                                        
+    );                                                                          
+  },                                                                            
+  'Create new dashboard, just for deprecated delete',                                                       
+)|| diag explain $response;
+
+
+ok(                                                                             
+  open( FILE, '>', 'webservice-datadog-dashboard-dashid-deprecated.tmp'),                  
+  'Open temp file to store new dashboard id for deprecated delete'                                    
+);                                                                              
+                                                                                
+print FILE $response;
+
+ok(                                                                             
+  close FILE,                                                                   
+  'Close temp file'                                                             
+);
 
 lives_ok(
 	sub
