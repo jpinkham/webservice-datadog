@@ -51,11 +51,11 @@ print "GitHub Event list:\n", Dumper($event_list);
 my $one_event = $event_list->[0]->{'id'};
 
 # Event details
-my $event_details = $event->get_event( id => $one_event );
+my $event_details = $event->retrieve( id => $one_event );
 print "Details of event >$one_event<: ", Dumper($event_details);
 
 # Post a new event to stream
-$event->post_event(
+$event->create(
 	title => "Example event title(" . time() . ")",
 	text  => "example event body/description",
 );

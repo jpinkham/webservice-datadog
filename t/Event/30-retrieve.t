@@ -38,7 +38,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $event_obj->get_event( );
+		$response = $event_obj->retrieve( );
 	},
 	qr/Argument.*required/,
 	'Dies on missing event id argument.',
@@ -47,7 +47,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->get_event( id => "abc" );
+		$response = $event_obj->retrieve( id => "abc" );
 	},
 	qr/id must be a number/,
 	'Dies on invalid event id.',
@@ -56,7 +56,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->get_event( id => "123" );
+		$response = $event_obj->retrieve( id => "123" );
 	},
 	qr/404 Not Found/,
 	'Dies on unknown event id.',
@@ -83,7 +83,7 @@ ok(
 lives_ok(
 	sub
 	{
-		$response = $event_obj->get_event( id => $event_id );
+		$response = $event_obj->retrieve( id => $event_id );
 	},
 	'Request info on specific event.',
 );

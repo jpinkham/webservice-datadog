@@ -103,10 +103,10 @@ application key.
 	);
 	
 	# To get all details of a specific event
-	my $event_data = $event->get_event( id => $event_id );
+	my $event_data = $event->retrieve( id => $event_id );
 	
 	# To post a new event to the event stream
-	$event->post_event(
+	$event->create(
 		title            => $event_title,
 		text             => $event_text,  # Body/Description of the event.
 		date_happened    => $timestamp,   # Optional, default "now"
@@ -119,7 +119,7 @@ application key.
 	);
 	
 	# Submit a user event, with timestamp of `now`.
-	$event->post_event(
+	$event->create(
 		title            => 'Test event',
 		text             => 'Testing posting to event stream',
 		source_type_name => 'user',
