@@ -33,17 +33,33 @@ update delete and query dashboards."
 
 =head2 get_all_dashboards()
 
+Deprecated. Please use retrieve_all() instead.
+
+=cut
+
+sub get_all_dashboards
+{
+	my ( $self, %args ) = @_;
+	
+	carp "get_all_dashboards() is deprecated. Please use retrieve_all() instead.";
+	
+	return $self->retrieve_all( %args );
+}
+
+
+=head2 retrieve_all()
+
 Retrieve details for all user-created dashboards ( does not include
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_list = $dashboard->get_all_dashboards();
+	my $dashboard_list = $dashboard->retrieve_all();
 	
 Parameters: None
 
 =cut
 
-sub get_all_dashboards
+sub retrieve_all
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -67,11 +83,27 @@ sub get_all_dashboards
 
 =head2 get_dashboard()
 
+Deprecated. Please use retrieve() instead.
+
+=cut
+
+sub get_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp "get_dashboard() is deprecated. Please use retrieve() instead.";
+	
+	return $self->retrieve( %args );
+}
+
+
+=head2 retrieve()
+
 Retrieve details for specified user-created dashboards ( does not work for
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_data = $dashboard->get_dashboard( id => $dash_id );
+	my $dashboard_data = $dashboard->retrieve( id => $dash_id );
 	
 Parameters: 
 
@@ -85,7 +117,7 @@ Id of dashboard you want to retrieve the details for.
 
 =cut
 
-sub get_dashboard
+sub retrieve
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -133,7 +165,7 @@ sub get_dashboard
 }
 
 
-=head2 udpate_dashboard()
+=head2 update_dashboard()
 
 Deprecated. Please use update() instead.
 

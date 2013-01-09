@@ -38,7 +38,7 @@ open( FILE, 'webservice-datadog-dashboard-dashid.tmp');
 my $dash_id = do { local $/; <FILE> },
 close FILE;
 	
-my $old_dash_info = $dashboard_obj->get_dashboard( id => $dash_id )->{'dash'};
+my $old_dash_info = $dashboard_obj->retrieve( id => $dash_id )->{'dash'};
 my $response;
 
 

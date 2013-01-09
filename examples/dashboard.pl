@@ -20,7 +20,7 @@ my $dashboard_list;
 # Example - list of all user-created/cloned dashboards
 try
 {
-	$dashboard_list = $dashboard->get_all_dashboards();
+	$dashboard_list = $dashboard->retrieve_all();
 }
 catch
 {

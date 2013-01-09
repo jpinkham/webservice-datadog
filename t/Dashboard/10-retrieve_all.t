@@ -37,7 +37,7 @@ my $response;
 lives_ok(
 	sub
 	{
-		$response = $dashboard_obj->get_all_dashboards();
+		$response = $dashboard_obj->retrieve_all();
 	},
 	'Request list of all dashboards.',
 );
