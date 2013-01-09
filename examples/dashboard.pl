@@ -48,7 +48,7 @@ catch
 # BE VERY CAREFUL WITH THIS! Also note: you cannot delete system/auto generated dashboards via the API
 try
 {
-	$dashboard->delete_dashboard( id => '504' );
+	$dashboard->delete( id => '504' );
 }
 catch
 {

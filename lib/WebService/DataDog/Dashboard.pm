@@ -357,11 +357,27 @@ sub create
 
 =head2 delete_dashboard()
 
+Deprecated. Please use delete() instead.
+
+=cut
+
+sub delete_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp "delete_dashboard() is deprecated. Please use delete() instead.";
+	
+	return $self->delete( %args );
+}
+
+
+=head2 delete()
+
 Delete specified user-created dashboard. 
 NOTE: You cannot remove system-generated or integration dashboards.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboard->delete_dashboard( id => $dash_id );
+	$dashboard->delete( id => $dash_id );
 	
 	
 Parameters:
@@ -376,7 +392,7 @@ Dashboard id you want to delete.
 
 =cut
 
-sub delete_dashboard
+sub delete
 {
 	my ( $self, %args ) = @_;
 	
@@ -385,7 +401,7 @@ sub delete_dashboard
 	# Check for mandatory parameters
 	foreach my $arg ( qw( id ) )
 	{
-		croak "ERROR - Argument '$arg' is required for delete_dashboard()."
+		croak "ERROR - Argument '$arg' is required for delete()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	

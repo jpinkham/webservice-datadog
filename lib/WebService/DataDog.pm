@@ -74,7 +74,7 @@ application key.
 	);
 	
 	# Delete a user-created dashboard that you don't need anymore
-	$dashboard->delete_dashboard( id => $dash_id );
+	$dashboard->delete( id => $dash_id );
 	
 	# To make any changes to an existing user-created dashboard:
 	# Specify dash_id and any combination of title, description, graphs
