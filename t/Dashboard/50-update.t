@@ -45,7 +45,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard( 
+		$response = $dashboard_obj->update( 
 			title       => "TESTTITLE - " . $old_dash_info->{'title'}
 		);
 	},
@@ -56,7 +56,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard( 
+		$response = $dashboard_obj->update( 
 			id          => $dash_id,
 			title       => "",
 		);
@@ -68,7 +68,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard( 
+		$response = $dashboard_obj->update( 
 			id          => $dash_id,
 			title       => "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC",
 		);
@@ -80,7 +80,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard( 
+		$response = $dashboard_obj->update( 
 			id          => $dash_id,
 			title       => "title goes here",
 			description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget convallis lorem. Curabitur eget neque turpis. Curabitur gravida ligula et tortor facilisis placerat. Duis convallis justo eget lorem consectetur eleifend. Quisque lacinia ligula sit amet orci rhoncus condimentum. Curabitur facilisis velit eu urna dictum viverra. Cras accumsan magna porta nisi dapibus dignissim. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut massa mi, luctus facilisis venenatis eget, cursus a diam. Ut massa urna, ultrices lacinia dapibus et, convallis vitae eros. Donec egestas turpis eu mauris vulputate in congue augue venenatis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin nec sapien vel quam dictum viverra.
@@ -105,7 +105,7 @@ Suspendisse gravida, leo ut ornare cursus, nulla odio luctus orci, lacinia eleme
 lives_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard( 
+		$response = $dashboard_obj->update( 
 			id          => $dash_id,
 			title       => "1" . $old_dash_info->{'title'}
 		);
@@ -117,7 +117,7 @@ lives_ok(
 lives_ok(
 	sub
 	{
-		$response = $dashboard_obj->update_dashboard(
+		$response = $dashboard_obj->update(
 			id     => $dash_id,
 			graphs => [
 				{

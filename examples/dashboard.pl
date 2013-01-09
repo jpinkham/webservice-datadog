@@ -32,7 +32,7 @@ print "Dashboard list:\n", Dumper($dashboard_list);
 # Example - update existing user-created dashboard
 try
 {
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id    => '504',
 		title => "New title here",
 	);

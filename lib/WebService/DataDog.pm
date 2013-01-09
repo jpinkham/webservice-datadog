@@ -78,7 +78,7 @@ application key.
 	
 	# To make any changes to an existing user-created dashboard:
 	# Specify dash_id and any combination of title, description, graphs
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id          => $dash_id,
 		title       => $dash_title,
 		description => $dash_description,

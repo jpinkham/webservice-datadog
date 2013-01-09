@@ -133,7 +133,24 @@ sub get_dashboard
 }
 
 
-=head2 update_dashboard()
+=head2 udpate_dashboard()
+
+Deprecated. Please use update() instead.
+
+=cut
+
+sub update_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp("update_dashboard() is deprecated. Please use update() instead.");
+	
+	return $self->update( %args );
+	
+}
+
+
+=head2 update()
 
 Update details for specified user-created dashboard ( does not work for
 system-generated or integration dashboards ).
@@ -145,7 +162,7 @@ LOSE ALL EXISTING GRAPHS.  Your 'graphs' section must include ALL graphs
 that you want to be part of a dashboard.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id          => $dash_id,
 		title       => $dash_title,
 		description => $dash_description,
@@ -176,7 +193,7 @@ Optional. Specify updated graph definition for specified dashboard.
 
 =cut
 
-sub update_dashboard
+sub update
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -454,7 +471,7 @@ sub _error_checks
 		# Check for mandatory parameters
 		foreach my $arg ( qw( id ) )
 		{
-			croak "ERROR - Argument '$arg' is required for update_dashboard()."
+			croak "ERROR - Argument '$arg' is required for update()."
 				if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 		}
 		

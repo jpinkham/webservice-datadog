@@ -22,7 +22,7 @@ t/Dashboard/00-load.t
 t/Dashboard/10-get_all_dashboards.t
 t/Dashboard/20-create.t
 t/Dashboard/30-get_dashboard.t
-t/Dashboard/50-update_dashboard.t
+t/Dashboard/50-update.t
 t/Dashboard/60-delete.t
 t/Dashboard/99-cleanup.t
 t/Event/00-load.t
