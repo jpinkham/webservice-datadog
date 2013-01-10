@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 14 );
+	: plan( tests => 15 );
 
 my $config = DataDogConfig->new();
 
@@ -55,7 +55,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->create( 
+		$response = $event_obj->create(
 			text => "yadda yadda",
 			title => "",
 		);
@@ -167,6 +167,17 @@ throws_ok(
 	'Dies on invalid source_type_name.',
 );
 
+
+lives_ok(
+	sub
+	{
+		$response = $event_obj->post_event(
+			title      => "title goes here(" . time() . ")",
+			text       => "Text goes here",
+		);
+	},
+	'Post valid event to stream - deprecated version.',
+);
 
 lives_ok(
 	sub

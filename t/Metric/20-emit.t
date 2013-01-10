@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 19 );
+	: plan( tests => 20 );
 
 my $config = DataDogConfig->new();
 
@@ -188,6 +188,17 @@ throws_ok(
 lives_ok(
 	sub
 	{
+		$metric_obj->post_metric(
+			name  => 'testmetric.test_gauge',
+			value => 42
+		);
+	},
+	'post metric - deprecated version - single data point, no timestamp.',
+)|| diag( explain( $metric_obj ) );
+
+lives_ok(
+	sub
+	{
 		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 42
@@ -213,7 +224,7 @@ lives_ok(
 	{
 		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
-			data_points => [ 
+			data_points => [
 				[ ( time() - 100 ), 2.71828 ],
 				[ ( time() ), 3.41 ],
 				[ ( time() - 50 ), 47 ],

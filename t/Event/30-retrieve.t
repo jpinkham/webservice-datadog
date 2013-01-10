@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 11 );
+	: plan( tests => 12 );
 
 my $config = DataDogConfig->new();
 
@@ -79,6 +79,14 @@ ok(
 	close FILE,
 	'Close temp file'
 );
+
+lives_ok(
+	sub
+	{
+		$response = $event_obj->get_event( id => $event_id );
+	},
+	'Request info on specific event - deprecated version.',
+	);
 
 lives_ok(
 	sub
