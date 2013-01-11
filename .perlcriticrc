@@ -24,3 +24,7 @@ max_mccabe = 30
 
 # Allow map in void context, now that it's efficient again.
 [-BuiltinFunctions::ProhibitVoidMap]
+
+# No one is going to mistake the WebService::DataDog::*::delete() functions for
+# the built-in delete() function
+[-Subroutines::ProhibitBuiltinHomonyms]

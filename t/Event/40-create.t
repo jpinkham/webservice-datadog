@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 14 );
+	: plan( tests => 15 );
 
 my $config = DataDogConfig->new();
 
@@ -37,7 +37,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event();
+		$response = $event_obj->create();
 	},
 	qr/Argument.*required/,
 	'Dies on missing arguments.',
@@ -46,7 +46,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event( title => "abc" );
+		$response = $event_obj->create( title => "abc" );
 	},
 	qr/Argument.*text.*required/,
 	'Dies on blank/missing "text" argument.',
@@ -55,7 +55,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event( 
+		$response = $event_obj->create(
 			text => "yadda yadda",
 			title => "",
 		);
@@ -67,7 +67,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title => "yadda",
 			text  => "",
 		);
@@ -79,7 +79,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			text  => "Something something something",
 			title => "TESTTITLETESTTITLETESTTITLETESTTITLETESTTITLE-ABCDEFGHIJKLMNOPQRSTUVWXYZ-ABCDEFGHIJKLMNOPQRSTUVWXYZ123",
 		);
@@ -91,7 +91,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title           => "title goes here",
 			text            => "Text goes here",
 			date_happened   => "abc",
@@ -105,7 +105,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title    => "title goes here",
 			text     => "Text goes here",
 			priority => "nuclear",
@@ -118,7 +118,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title            => "title goes here",
 			text             => "Text goes here",
 			related_event_id => "abc",
@@ -131,7 +131,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title => "title goes here",
 			text  => "Text goes here",
 			tags  => "tags_go_here",
@@ -144,7 +144,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title      => "title goes here(" . time() . ")",
 			text       => "Text goes here",
 			alert_type => "kabooom",
@@ -157,7 +157,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $event_obj->post_event(
+		$response = $event_obj->create(
 			title            => "title goes here(" . time() . ")",
 			text             => "Text goes here",
 			source_type_name => "Portal 2",
@@ -172,6 +172,17 @@ lives_ok(
 	sub
 	{
 		$response = $event_obj->post_event(
+			title      => "title goes here(" . time() . ")",
+			text       => "Text goes here",
+		);
+	},
+	'Post valid event to stream - deprecated version.',
+);
+
+lives_ok(
+	sub
+	{
+		$response = $event_obj->create(
 			title      => "title goes here(" . time() . ")",
 			text       => "Text goes here",
 		);

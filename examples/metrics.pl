@@ -18,7 +18,7 @@ my $metric = $datadog->build('Metric');
 my $success = 1;
 try
 {
-	$metric->post_metric(
+	$metric->emit(
 		name  => 'testmetric.cron.app_name.heartbeat',
 	);
 }
@@ -36,7 +36,7 @@ $success = 1;
 # Post a counter a metric, with timestamp 'now'
 try
 {
-	$metric->post_metric(
+	$metric->emit(
 		name  => 'testmetric.cron.app_name.heartbeat',
 		value => 1,
 		type  => 'counter',

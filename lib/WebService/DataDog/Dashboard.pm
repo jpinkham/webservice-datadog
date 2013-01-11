@@ -33,17 +33,33 @@ update delete and query dashboards."
 
 =head2 get_all_dashboards()
 
+Deprecated. Please use retrieve_all() instead.
+
+=cut
+
+sub get_all_dashboards
+{
+	my ( $self, %args ) = @_;
+	
+	carp "get_all_dashboards() is deprecated. Please use retrieve_all() instead.";
+	
+	return $self->retrieve_all( %args );
+}
+
+
+=head2 retrieve_all()
+
 Retrieve details for all user-created dashboards ( does not include
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_list = $dashboard->get_all_dashboards();
+	my $dashboard_list = $dashboard->retrieve_all();
 	
 Parameters: None
 
 =cut
 
-sub get_all_dashboards
+sub retrieve_all
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -67,11 +83,27 @@ sub get_all_dashboards
 
 =head2 get_dashboard()
 
+Deprecated. Please use retrieve() instead.
+
+=cut
+
+sub get_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp "get_dashboard() is deprecated. Please use retrieve() instead.";
+	
+	return $self->retrieve( %args );
+}
+
+
+=head2 retrieve()
+
 Retrieve details for specified user-created dashboards ( does not work for
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
-	my $dashboard_data = $dashboard->get_dashboard( id => $dash_id );
+	my $dashboard_data = $dashboard->retrieve( id => $dash_id );
 	
 Parameters: 
 
@@ -85,7 +117,7 @@ Id of dashboard you want to retrieve the details for.
 
 =cut
 
-sub get_dashboard
+sub retrieve
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -135,6 +167,23 @@ sub get_dashboard
 
 =head2 update_dashboard()
 
+Deprecated. Please use update() instead.
+
+=cut
+
+sub update_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp("update_dashboard() is deprecated. Please use update() instead.");
+	
+	return $self->update( %args );
+	
+}
+
+
+=head2 update()
+
 Update details for specified user-created dashboard ( does not work for
 system-generated or integration dashboards ).
 Supply at least one of the arguments 'title', 'description', 'graphs'.
@@ -145,7 +194,7 @@ LOSE ALL EXISTING GRAPHS.  Your 'graphs' section must include ALL graphs
 that you want to be part of a dashboard.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id          => $dash_id,
 		title       => $dash_title,
 		description => $dash_description,
@@ -176,7 +225,7 @@ Optional. Specify updated graph definition for specified dashboard.
 
 =cut
 
-sub update_dashboard
+sub update
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -357,11 +406,27 @@ sub create
 
 =head2 delete_dashboard()
 
+Deprecated. Please use delete() instead.
+
+=cut
+
+sub delete_dashboard
+{
+	my ( $self, %args ) = @_;
+	
+	carp "delete_dashboard() is deprecated. Please use delete() instead.";
+	
+	return $self->delete( %args );
+}
+
+
+=head2 delete()
+
 Delete specified user-created dashboard. 
 NOTE: You cannot remove system-generated or integration dashboards.
 
 	my $dashboard = $datadog->build('Dashboard');
-	$dashboard->delete_dashboard( id => $dash_id );
+	$dashboard->delete( id => $dash_id );
 	
 	
 Parameters:
@@ -376,7 +441,7 @@ Dashboard id you want to delete.
 
 =cut
 
-sub delete_dashboard
+sub delete
 {
 	my ( $self, %args ) = @_;
 	
@@ -385,7 +450,7 @@ sub delete_dashboard
 	# Check for mandatory parameters
 	foreach my $arg ( qw( id ) )
 	{
-		croak "ERROR - Argument '$arg' is required for delete_dashboard()."
+		croak "ERROR - Argument '$arg' is required for delete()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
@@ -438,7 +503,7 @@ sub _error_checks
 		# Check for mandatory parameters
 		foreach my $arg ( qw( id ) )
 		{
-			croak "ERROR - Argument '$arg' is required for update_dashboard()."
+			croak "ERROR - Argument '$arg' is required for update()."
 				if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 		}
 		

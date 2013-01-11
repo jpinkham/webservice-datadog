@@ -54,7 +54,7 @@ application key.
 	
 	# To post metrics (past or present)
 	# NOTE: only use 'value' OR 'data_points', but not both.
-	$metric->post_metric(
+	$metric->emit(
 		name        => $metric_name,
 		type        => $metric_type,  # Optional - gauge|counter. Default=gauge.
 		value       => $metric_value, # For posting a single data point, time 'now'
@@ -74,11 +74,11 @@ application key.
 	);
 	
 	# Delete a user-created dashboard that you don't need anymore
-	$dashboard->delete_dashboard( id => $dash_id );
+	$dashboard->delete( id => $dash_id );
 	
 	# To make any changes to an existing user-created dashboard:
 	# Specify dash_id and any combination of title, description, graphs
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id          => $dash_id,
 		title       => $dash_title,
 		description => $dash_description,
@@ -103,10 +103,10 @@ application key.
 	);
 	
 	# To get all details of a specific event
-	my $event_data = $event->get_event( id => $event_id );
+	my $event_data = $event->retrieve( id => $event_id );
 	
 	# To post a new event to the event stream
-	$event->post_event(
+	$event->create(
 		title            => $event_title,
 		text             => $event_text,  # Body/Description of the event.
 		date_happened    => $timestamp,   # Optional, default "now"
@@ -119,7 +119,7 @@ application key.
 	);
 	
 	# Submit a user event, with timestamp of `now`.
-	$event->post_event(
+	$event->create(
 		title            => 'Test event',
 		text             => 'Testing posting to event stream',
 		source_type_name => 'user',

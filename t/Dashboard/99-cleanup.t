@@ -3,16 +3,27 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 
 SKIP:
 {
-	skip( 'Temporary dashboard id file does not exist.', 1 )
-		if ! -e 'webservice-datadog-dashboard-dashid.tmp';
+	skip( 'Temporary dashboard id file (deprecated version) does not exist.', 1 )
+		if ! -e 'webservice-datadog-dashboard-dashid-deprecated.tmp';
 
 	ok(
-		unlink( 'webservice-datadog-dashboard-dashid.tmp' ),
-		'Remove temporary dashboard id file',
+		unlink( 'webservice-datadog-dashboard-dashid-deprecated.tmp' ),
+		'Remove temporary dashboard id file - deprecated version',
 	);
+}
+
+SKIP:                                                                           
+{                                                                               
+  skip( 'Temporary dashboard id file does not exist.', 1 )                      
+    if ! -e 'webservice-datadog-dashboard-dashid.tmp';                          
+                                                                                
+  ok(                                                                           
+    unlink( 'webservice-datadog-dashboard-dashid.tmp' ),                        
+    'Remove temporary dashboard id file',                                       
+  );                                                                            
 }
 

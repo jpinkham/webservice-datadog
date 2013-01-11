@@ -4,16 +4,18 @@ use strict;
 use warnings;
 
 use Data::Dumper;
+
 use Data::Validate::Type;
 use Test::Exception;
 use Test::More;
+
 use WebService::DataDog;
 
 
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 6 );
 
 my $config = DataDogConfig->new();
 
@@ -30,49 +32,30 @@ ok(
 	defined( $dashboard_obj ),
 	'Create a new WebService::DataDog::Dashboard object.',
 );
-
 my $response;
-
-throws_ok(
-	sub
-	{
-		$response = $dashboard_obj->delete_dashboard( id => "abc" );
-	},
-	qr/id must be a number/,
-	'Dies on invalid dash id.',
-);
-
-throws_ok(
-	sub
-	{
-		$response = $dashboard_obj->delete_dashboard( id => "123" );
-	},
-	qr/Error 404/,
-	'Dies on unknown dash id.',
-);
-
-ok(
-	open( FILE, 'webservice-datadog-dashboard-dashid.tmp'),
-	'Open temp file to read dashboard id'
-);
-
-my $dash_id;
-
-ok(
-	$dash_id = do { local $/; <FILE> },
-	'Read in dashboard id'
-);
-
-ok(
-	close FILE,
-	'Close temp file'
-);
-
 
 lives_ok(
 	sub
 	{
-		$dashboard_obj->delete_dashboard( id => $dash_id );
+		$response = $dashboard_obj->get_all_dashboards();
 	},
-	'Delete specified dashboard'
+	'Request list of all dashboards - deprecated version.',
+);
+
+lives_ok(
+	sub
+	{
+		$response = $dashboard_obj->retrieve_all();
+	},
+	'Request list of all dashboards.',
+);
+
+ok(
+	defined( $response ),
+	'Response was received.'
+);
+
+ok(
+	Data::Validate::Type::is_arrayref( $response ),
+	'Response is an arrayref.',
 );

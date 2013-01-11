@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 19 );
+	: plan( tests => 20 );
 
 my $config = DataDogConfig->new();
 
@@ -41,7 +41,7 @@ isa_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 		);
 	},
 	qr/Argument.*is required/,
@@ -51,7 +51,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 		);
 	},
@@ -62,7 +62,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			value       => 42,
 			data_points => [ [ ( time() - 100 ), 3.41 ] ],
@@ -75,7 +75,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => '1testmetric.test_gauge',
 			value       => 42,
 		);
@@ -87,7 +87,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			value       => "a4b2",
 		);
@@ -99,7 +99,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			data_points => ( [ time(), "abc" ] ),
 		);
@@ -111,7 +111,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			data_points => [ [ time(), "abc" ] ],
 		);
@@ -123,7 +123,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			data_points => [ [ 12345, 3.41 ] ],
 		);
@@ -136,7 +136,7 @@ throws_ok(
 # This is a non-standard check, DataDog will allow it, but it will result in confusion and unusual behavior in UI/graphing
 throws_ok(
 	sub {
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 42,
 			tags  => [ 'tag:something:value' ],
@@ -149,7 +149,7 @@ throws_ok(
 
 throws_ok(
 	sub {
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 42,
 			tags  => {},
@@ -162,7 +162,7 @@ throws_ok(
 
 throws_ok(
 	sub {
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 42,
 			tags  => [ '1tag:something' ],
@@ -174,7 +174,7 @@ throws_ok(
 
 throws_ok(
 	sub {
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 42,
 			tags  => [ 'tagabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz:value' ],
@@ -193,13 +193,24 @@ lives_ok(
 			value => 42
 		);
 	},
+	'post metric - deprecated version - single data point, no timestamp.',
+)|| diag( explain( $metric_obj ) );
+
+lives_ok(
+	sub
+	{
+		$metric_obj->emit(
+			name  => 'testmetric.test_gauge',
+			value => 42
+		);
+	},
 	'post metric - single data point, no timestamp.',
 )|| diag( explain( $metric_obj ) );
 
 lives_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
 			data_points => [ [ ( time() - 100 ), 3.41 ] ],
 		);
@@ -211,9 +222,9 @@ lives_ok(
 lives_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name        => 'testmetric.test_gauge',
-			data_points => [ 
+			data_points => [
 				[ ( time() - 100 ), 2.71828 ],
 				[ ( time() ), 3.41 ],
 				[ ( time() - 50 ), 47 ],
@@ -226,7 +237,7 @@ lives_ok(
 lives_ok(
 	sub
 	{
-		$metric_obj->post_metric(
+		$metric_obj->emit(
 			name  => 'testmetric.test_gauge',
 			value => 3.41,
 			host  => 'test-host',

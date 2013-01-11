@@ -15,7 +15,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 11 );
+	: plan( tests => 12 );
 
 my $config = DataDogConfig->new();
 
@@ -38,7 +38,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->get_dashboard( );
+		$response = $dashboard_obj->retrieve( );
 	},
 	qr/Argument.*required/,
 	'Dies on missing dash id argument.',
@@ -47,7 +47,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->get_dashboard( id => "abc" );
+		$response = $dashboard_obj->retrieve( id => "abc" );
 	},
 	qr/id must be a number/,
 	'Dies on invalid dash id.',
@@ -56,7 +56,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $dashboard_obj->get_dashboard( id => "123" );
+		$response = $dashboard_obj->retrieve( id => "123" );
 	},
 	qr/Unknown dash/,
 	'Dies on unknown dash id.',
@@ -80,10 +80,18 @@ ok(
 	'Close temp file'
 );
 
+lives_ok(                                                                       
+  sub                                                                           
+  {                                                                             
+    $response = $dashboard_obj->get_dashboard( id => $dash_id );                     
+  },                                                                            
+  'Request info on specific dashboard - deprecated version.',                                        
+);
+
 lives_ok(
 	sub
 	{
-		$response = $dashboard_obj->get_dashboard( id => $dash_id );
+		$response = $dashboard_obj->retrieve( id => $dash_id );
 	},
 	'Request info on specific dashboard.',
 );

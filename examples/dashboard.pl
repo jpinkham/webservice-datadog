@@ -20,7 +20,7 @@ my $dashboard_list;
 # Example - list of all user-created/cloned dashboards
 try
 {
-	$dashboard_list = $dashboard->get_all_dashboards();
+	$dashboard_list = $dashboard->retrieve_all();
 }
 catch
 {
@@ -32,7 +32,7 @@ print "Dashboard list:\n", Dumper($dashboard_list);
 # Example - update existing user-created dashboard
 try
 {
-	$dashboard->update_dashboard(
+	$dashboard->update(
 		id    => '504',
 		title => "New title here",
 	);
@@ -48,7 +48,7 @@ catch
 # BE VERY CAREFUL WITH THIS! Also note: you cannot delete system/auto generated dashboards via the API
 try
 {
-	$dashboard->delete_dashboard( id => '504' );
+	$dashboard->delete( id => '504' );
 }
 catch
 {

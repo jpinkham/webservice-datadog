@@ -127,16 +127,32 @@ sub search
 }
 
 
-
 =head2 get_event()
+
+Deprecated. Please use retrieve() instead.
+
+=cut
+
+sub get_event
+{
+	my ( $self, %args ) = @_;
+	
+	carp "get_event() is deprecated. Please use retrieve() instead.";
+	
+	return $self->retrieve( %args );
+}
+
+
+=head2 retrieve()
+
 Get details of specified event.
 NOTE: Receiving a 404 response likely means the requested event id does not exist.
 
 	my $event = $datadog->build('Event');
-	my $event_data = $event->get_event( id => $event_id );
+	my $event_data = $event->retrieve( id => $event_id );
 =cut
 
-sub get_event
+sub retrieve
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -170,6 +186,22 @@ sub get_event
 
 =head2 post_event()
 
+Deprecated. Please use create() instead.
+
+=cut
+
+sub post_event
+{
+	my ( $self, %args ) = @_;
+	
+	carp "post_event() is deprecated. Please use create() instead.";
+	
+	return $self->create( %args );
+}
+
+
+=head2 create()
+
 Post event to DataDog event stream. This will overlay red areas on all dashboards,
 corresponding to each event.  Example uses: code pushes, server/service restarts, etc.
 
@@ -177,7 +209,7 @@ Per DataDog: "This end point allows you to post events to the stream. You can
 tag them, set priority and event aggregate them with other events."
 
 	my $event = $datadog->build('Event');
-	$event->post_event(
+	$event->create(
 		title            => $event_title,               
 		text             => $event_text,  # Body/Description of the event.
 		date_happened    => $timestamp,   # Optional, default "now"
@@ -191,7 +223,7 @@ tag them, set priority and event aggregate them with other events."
 	
 	Examples:
 	+ Submit a user event, with timestamp of `now`.
-	$event->post_event(
+	$event->create(
 		title            => 'Test event',
 		text             => 'Testing posting to event stream',
 		source_type_name => 'user',
@@ -242,13 +274,13 @@ jenkins, user, my apps, feed, chef, puppet, git, bitbucket, fabric, capistrano
 
 =cut
 
-sub post_event
+sub create
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
 	
 	# Perform various error checks before attempting to send metrics
-	$self->_post_event_error_checks( %args );
+	$self->_create_error_checks( %args );
 	
 	my $data = {
 		title => $args{'title'},
@@ -360,13 +392,13 @@ sub _search_error_checks
 
 
 
-=head2 _post_event_error_checks()
+=head2 _create_error_checks()
 
-Error checking for post_event()
+Error checking for create()
 
 =cut
 
-sub _post_event_error_checks
+sub _create_error_checks
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -374,7 +406,7 @@ sub _post_event_error_checks
 	# Check for mandatory parameters
 	foreach my $arg ( qw( title text ) )
 	{
-		croak "Argument '$arg' is required for post_event()"
+		croak "Argument '$arg' is required for create()"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
