@@ -28,23 +28,14 @@ DataDog-provided Ruby and Python API libraries have.
 
 Features coming soon (not necessarily in this order):
 
-[Sorry I didn't do this to begin with...it's a mix of function names that do
-and do not refer to the current object type]
-* Updating all modules to consistently use same function names:
- - create
- - update
- - delete  (after I add a PerlCritic ignore for whining about using a builtin name)
- - retrieve 
- - retrieve_all
-
-* Capture 404 errors on certain actions and show "invalid/unknown $object id" instead
-
 * new module 'Alert'
   - create alerts
   - modify alerts
   - retrieve details on one/all alerts
   - delete an alert
   - mute/unmute all alerts
+
+* Capture 404 errors on certain actions and show "invalid/unknown $object id" instead
 
 * new module 'Tag'
   - getting all tags; getting tags on specified host

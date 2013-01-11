@@ -8,3 +8,7 @@ v0.3.0  01/01/2013
         Documentation changes.
 v0.3.1  01/03/2013
         Documentation updates.  Added more examples to POD and examples/* scripts.
+v0.4.0  01/11/2013
+        Standardized object methods to use names like create/retrieve/update/delete
+        whereever possible.  Still support all original method names with
+        warning about deprecation.
