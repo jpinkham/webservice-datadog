@@ -14,11 +14,11 @@ WebService::DataDog::Dashboard - Interface to Dashboard functions in DataDog's A
 
 =head1 VERSION
 
-Version 0.3.1
+Version 0.4.0
 
 =cut
 
-our $VERSION = '0.3.1';
+our $VERSION = '0.4.0';
 
 
 =head1 SYNOPSIS
