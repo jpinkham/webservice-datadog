@@ -10,8 +10,10 @@ my $builder = Module::Build->new(
 	dist_version_from    => 'lib/WebService/DataDog.pm',
 	build_requires       =>
 	{
-		'Test::More'           => 0.94,
+		'Scalar::Util'         => 0,
+		'Storable'             => 0,
 		'Test::Exception'      => 0,
+		'Test::More'           => 0.94,
 	},
 	requires             =>
 	{
