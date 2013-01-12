@@ -3,6 +3,7 @@ abstract: "Interface to DataDog's REST API."
 author:
   - 'Jennifer Pinkham <jpinkham@cpan.org>'
 build_requires:
+  Test::Exception: 0
   Test::More: 0.94
 configure_requires:
   Module::Build: 0

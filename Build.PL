@@ -11,6 +11,7 @@ my $builder = Module::Build->new(
 	build_requires       =>
 	{
 		'Test::More'           => 0.94,
+		'Test::Exception'      => 0,
 	},
 	requires             =>
 	{

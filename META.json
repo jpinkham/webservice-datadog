@@ -16,6 +16,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
+            "Test::Exception" : "0",
             "Test::More" : "0.94"
          }
       },
