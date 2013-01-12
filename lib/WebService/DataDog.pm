@@ -22,11 +22,11 @@ WebService::DataDog - Interface to DataDog's REST API.
 
 =head1 VERSION
 
-Version 0.4.0
+Version 0.5.0
 
 =cut
 
-our $VERSION = '0.4.0';
+our $VERSION = '0.5.0';
 
 
 =head1 SYNOPSIS
@@ -438,9 +438,10 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 Thanks to ThinkGeek (<http://www.thinkgeek.com/>) and its corporate overlords at
 Geeknet (<http://www.geek.net/>), for footing the bill while I write code for them!
 
-Special thanks for architecture advice from fellow ThinkGeek CPAN author Guillaume
-Aubert L<http://search.cpan.org/~aubertg/> as well as fellow ThinkGeek CPAN author
-Kate Kirby L<http://search.cpan.org/~kate/>
+Special thanks for architecture advice, and code contributions, from fellow
+ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/> as 
+well as architecture advice from fellow ThinkGeek CPAN author Kate 
+Kirby L<http://search.cpan.org/~kate/>.
 
 =head1 COPYRIGHT & LICENSE
 

@@ -14,11 +14,11 @@ WebService::DataDog::Event - Interface to Event functions in DataDog's API.
 
 =head1 VERSION
 
-Version 0.4.0
+Version 0.5.0
 
 =cut
 
-our $VERSION = '0.4.0';
+our $VERSION = '0.5.0';
 
 
 =head1 SYNOPSIS
