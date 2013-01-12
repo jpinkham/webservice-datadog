@@ -8,3 +8,11 @@ v0.3.0  01/01/2013
         Documentation changes.
 v0.3.1  01/03/2013
         Documentation updates.  Added more examples to POD and examples/* scripts.
+v0.4.0  01/11/2013
+        Standardized object methods to use names like create/retrieve/update/delete
+        whereever possible.  Still support all original method names with
+        warning about deprecation.
+v0.5.0  01/12/2013
+        Fix for issue with WebService::DataDog::build() causing submodule object
+        to override the main datadog factory object. Thanks to Guillaume Aubert
+        for the discovery of the issue, and contribution of a fix.
