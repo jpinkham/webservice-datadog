@@ -220,10 +220,19 @@ sub build
 		croak 'Please specify the name of the module to build'
 			if !defined( $module ) || ( $module eq '' );
 		
+		# Load the class corresponding to the submodule requested.
 		my $class = __PACKAGE__ . '::' . $module;
-		
 		Class::Load::load_class( $class ) || croak "Failed to load $class, double-check the class name";
-		my $object = bless( $self, $class ); # Copy internals of factory so we have connection information
+		
+		# Instantiate a new object of that class. Since it's a subclass
+		# of WebService::DataDog, we pass all the non-hidden properties
+		# of the datadog object to build it.
+		my $object = $class->new(
+			map { $_ => $self->{$_} }
+			grep { substr( $_, 0, 1 ) ne '_' }
+			keys %$self
+		);
+		
 		return $object;
 }
 
