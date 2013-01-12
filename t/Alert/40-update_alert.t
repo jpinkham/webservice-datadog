@@ -54,7 +54,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $alert_obj->update_alert();
+		$response = $alert_obj->update();
 	},
 	qr/Argument.*required/,
 	'Dies without required arguments',
@@ -64,7 +64,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $alert_obj->update_alert(
+		$response = $alert_obj->update(
 			id      => $alert_id,
 			query   => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 200",
 			name    => "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC",
@@ -78,7 +78,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $alert_obj->update_alert(
+		$response = $alert_obj->update(
 			id       => $alert_id,
 			query   => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 200",
 			silenced => 'yup',
@@ -92,7 +92,7 @@ throws_ok(
 lives_ok(
 	sub
 	{
-		$response = $alert_obj->update_alert(
+		$response = $alert_obj->update(
 			id       => $alert_id,
 			query    => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 100",
 			message  => "Updated message goes here",

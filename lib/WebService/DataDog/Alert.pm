@@ -34,18 +34,18 @@ notification when the value either exceeds or falls below the pre-defined thresh
 
 =head1 METHODS
 
-=head2 get_all_alerts()
+=head2 retrieve_all()
 
 Retrieve details for all alerts.
 
 	my $alert = $datadog->build('Alert');
-	my $alert_list = $alert->get_all_alerts();
+	my $alert_list = $alert->retrieve_all();
 	
 Parameters: None
 
 =cut
 
-sub get_all_alerts
+sub retrieve_all
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -130,7 +130,7 @@ sub create
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	# Error checks, common to create() and update_alert()
+	# Error checks, common to create() and update()
 	$self->_error_checks( %args );
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'alert';
@@ -175,13 +175,13 @@ sub create
 
 
 
-=head2 get_alert()
+=head2 retrieve()
 
 Retrieve details for specified alert.
 NOTE: a 404 response typically indicates you specified an incorrect alert id.
 
 	my $alert = $datadog->build('Alert');
-	my $alert_data = $alert->get_alert( id => $alert_id );
+	my $alert_data = $alert->retrieve( id => $alert_id );
 	
 Parameters:
 
@@ -195,7 +195,7 @@ Id of alert you want to retrieve the details for.
 
 =cut
 
-sub get_alert
+sub retrieve
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -228,13 +228,13 @@ sub get_alert
 }
 
 
-=head2 update_alert()
+=head2 update()
 
 Update existing DataDog alert for specified alert id.
 NOTE: a 404 response typically indicates you specified an incorrect alert id.
 
 	my $alert = $datadog->build('Alert');
-	$alert->update_alert(
+	$alert->update(
 		id       => $alert_id,   # ID of alert to modify
 		query    => $query,      # Metric query to alert on
 		name     => $alert_name, # Optional.
@@ -244,7 +244,7 @@ NOTE: a 404 response typically indicates you specified an incorrect alert id.
 	
 	Example:
 	# Change name of existing alert
-	$alert->update_alert(
+	$alert->update(
 		id    => $alert_id,
 		name  => "Bytes received on host0",
 	);
@@ -282,7 +282,7 @@ the alert list page.
 
 =cut
 
-sub update_alert
+sub update
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
@@ -290,11 +290,11 @@ sub update_alert
 	# Check for mandatory parameters
 	foreach my $arg ( qw( id query ) )
 	{
-		croak "ERROR - Argument '$arg' is required for update_alert()."
+		croak "ERROR - Argument '$arg' is required for update()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	# Error checks, common to create() and update_alert()
+	# Error checks, common to create() and update()
 	$self->_error_checks( %args );
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'alert' . '/' . $args{'id'};

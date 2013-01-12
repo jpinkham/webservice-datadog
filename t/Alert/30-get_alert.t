@@ -38,7 +38,7 @@ my $response;
 throws_ok(
 	sub
 	{
-		$response = $alert_obj->get_alert();
+		$response = $alert_obj->retrieve();
 	},
 	qr/Argument.*required/,
 	'Dies on missing alert id argument.',
@@ -47,7 +47,7 @@ throws_ok(
 throws_ok(
 	sub
 	{
-		$response = $alert_obj->get_alert( id => "abc" );
+		$response = $alert_obj->retrieve( id => "abc" );
 	},
 	qr/id must be a number/,
 	'Dies on invalid alert id.',
@@ -73,7 +73,7 @@ ok(
 lives_ok(
 	sub
 	{
-		$response = $alert_obj->get_alert( id => $alert_id );
+		$response = $alert_obj->retrieve( id => $alert_id );
 	},
 	'Request info on specific alert.',
 );

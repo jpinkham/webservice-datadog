@@ -37,7 +37,7 @@ my $response;
 lives_ok(
 	sub
 	{
-		$response = $alert_obj->get_all_alerts();
+		$response = $alert_obj->retrieve_all();
 	},
 	'Request list of all alerts.',
 );
