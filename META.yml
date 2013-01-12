@@ -3,15 +3,7 @@ abstract: "Interface to DataDog's REST API."
 author:
   - 'Jennifer Pinkham <jpinkham@cpan.org>'
 build_requires:
-  Carp: 0
-  Class::Load: 0
-  Data::Dumper: 0
-  Data::Validate::Type: 1.001000
-  HTTP::Request: 0
-  JSON: 0
-  LWP::UserAgent: 0
   Test::More: 0.94
-  Try::Tiny: 0
 configure_requires:
   Module::Build: 0
 dynamic_config: 1
@@ -35,6 +27,14 @@ provides:
     file: lib/WebService/DataDog/Metric.pm
     version: v0.4.0
 requires:
+  Carp: 0
+  Class::Load: 0
+  Data::Dumper: 0
+  Data::Validate::Type: 1.001000
+  HTTP::Request: 0
+  JSON: 0
+  LWP::UserAgent: 0
+  Try::Tiny: 0
   perl: 5.006
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog
