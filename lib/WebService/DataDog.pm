@@ -336,25 +336,13 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	}
 	
 	my $request;
-	if ( $method eq 'GET' ) ## no critic qw( ControlStructures::ProhibitCascadingIfElse )
+	if ( $method =~ /\A(?:GET|POST|DELETE|PUT)\z/x )
 	{
-		$request = HTTP::Request->new( GET => $url );
-	}
-	elsif ( $method eq 'POST' )
-	{
-		$request = HTTP::Request->new( POST => $url );
-	}
-	elsif ( $method eq 'DELETE' )
-	{
-		$request = HTTP::Request->new( DELETE => $url );
-	}
-	elsif ( $method eq 'PUT' )
-	{
-		$request = HTTP::Request->new( PUT => $url );
+		$request = HTTP::Request->new( $method => $url );
 	}
 	else
 	{
-		croak ">" . $args{'command'} . "< is an unknown command. Not sending request.";
+		croak "The method >$method< is not supported. Not sending request.";
 	}
 	
 	carp "Sending request to URL >" . ( defined( $url ) ? $url : '' ) . "< via method >$method<"
