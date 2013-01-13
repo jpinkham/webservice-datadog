@@ -376,6 +376,33 @@ sub mute_all
 }
 
 
+=head2 unmute_all()
+
+Unmute all alerts.
+
+	my $alert = $datadog->build('Alert');
+	$alert->unmute_all();
+	
+Parameters: None
+
+=cut
+
+sub unmute_all
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'unmute_alerts';
+	
+	$self->_send_request(
+		method => 'POST',
+		url    => $url,
+		data   => { '' => [] }
+	);
+	
+	return;
+}
+
 
 =head1 INTERNAL FUNCTIONS
 
