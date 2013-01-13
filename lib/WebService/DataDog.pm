@@ -379,8 +379,13 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
-
-	my $json_out = JSON::decode_json( $response->content() );
+	
+	# Try to parse JSON response, only if one was received.
+	# Some functions, such as Dashboard::delete(), Alert::mute_all, Alert::unmute_all()
+	# return nothing when successful, so there won't be anything to parse.
+	my $json_out = defined( $response ) && defined( $response->content() ) && $response->content() ne ''
+		? JSON::decode_json( $response->content() )
+		: '';
 	
 	carp "JSON Response >" . ( defined( $json_out ) ? Dumper($json_out) : '' ) . "<"
 		if $verbose;
