@@ -460,11 +460,10 @@ sub delete
 	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'dash' . '/' . $args{'id'};
 	
-	# NOTE: no response is returned when request is succesful
-	my $response;
+	my $should_croak;
 	try
 	{
-		$response = $self->_send_request(
+		$self->_send_request(
 			method => 'DELETE',
 			url    => $url,
 			data   => { '' => [] }
@@ -474,9 +473,10 @@ sub delete
 	{
 		if ( /404/ )
 		{
-			croak "Error 404 deleting dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
+			$should_croak = "Error 404 deleting dashboard id >" . $args{'id'} . "<. Are you sure this is the correct dashboard id?";
 		}
 	};
+	croak $should_croak if $should_croak;
 	
 	return;
 }
