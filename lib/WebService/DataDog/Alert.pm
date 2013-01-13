@@ -233,6 +233,10 @@ sub retrieve
 Update existing DataDog alert for specified alert id.
 NOTE: a 404 response typically indicates you specified an incorrect alert id.
 
+#TODO fix this to use existing values for anything not user-supplied. Seems
+# that ddog will use defaults for anything you don't supply, effectively erasing
+# whatever existed
+
 	my $alert = $datadog->build('Alert');
 	$alert->update(
 		id       => $alert_id,   # ID of alert to modify
