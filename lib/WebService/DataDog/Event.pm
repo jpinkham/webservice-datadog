@@ -450,14 +450,14 @@ sub _create_error_checks
 	if ( defined( $args{'alert_type'} ) )
 	{
 		croak "ERROR - invalid 'alert_type' >" . $args{'alert_type'} . "<. Allowed values: error, warning, info, success"
-			unless $args{'alert_type'} =~ /error|warning|info|success/;
+			unless $args{'alert_type'} =~ /^error|warning|info|success$/;
 	}
 	
 	# Check that 'source_type_name' is valid
 	if ( defined( $args{'source_type_name'} ) )
 	{
 		croak "ERROR - invalid 'source_type_name' >" . $args{'source_type_name'} . "<. Allowed values: nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano"
-			unless $args{'source_type_name'} =~ /nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano/; ## no critic qw( RegularExpressions::RequireExtendedFormatting RegularExpressions::ProhibitComplexRegexes )
+			unless $args{'source_type_name'} =~ /^nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano$/; ## no critic qw( RegularExpressions::RequireExtendedFormatting RegularExpressions::ProhibitComplexRegexes )
 	}
 	
 	return;
