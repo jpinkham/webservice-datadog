@@ -22,6 +22,7 @@ our $VERSION = '0.5.0';
 
 
 =head1 SYNOPSIS
+
 This module allows you interact with the Event endpoint of the DataDog API.
 
 Per DataDog: "The events service allows you to programatically post events to
@@ -31,6 +32,7 @@ the stream and fetch events from the stream."
 =head1 METHODS
 
 =head2 search()
+
 Search the event stream using specified parameters.
 
 	my $event = $datadog->build('Event');
@@ -337,6 +339,7 @@ sub create
 =head2 _search_error_checks()
 
 Error checking for search()
+
 =cut
 
 sub _search_error_checks
@@ -389,7 +392,6 @@ sub _search_error_checks
 	
 	return;
 }
-
 
 
 =head2 _create_error_checks()
