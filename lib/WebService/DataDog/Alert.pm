@@ -6,6 +6,7 @@ use warnings;
 use base qw( WebService::DataDog );
 use Carp qw( carp croak );
 use Data::Dumper;
+use Try::Tiny;
 
 
 =head1 NAME
@@ -233,10 +234,6 @@ sub retrieve
 Update existing DataDog alert for specified alert id.
 NOTE: a 404 response typically indicates you specified an incorrect alert id.
 
-#TODO fix this to use existing values for anything not user-supplied. Seems
-# that ddog will use defaults for anything you don't supply, effectively erasing
-# whatever existed
-
 	my $alert = $datadog->build('Alert');
 	$alert->update(
 		id       => $alert_id,   # ID of alert to modify
@@ -301,13 +298,20 @@ sub update
 	# Error checks, common to create() and update()
 	$self->_error_checks( %args );
 	
+	my $original_alert = $self->retrieve( id => $args{'id'} );
+	
 	my $url = $WebService::DataDog::API_ENDPOINT . 'alert' . '/' . $args{'id'};
 	
+	# Populate with original details, otherwise the values will be lost
 	my $data = 
 	{
-		query => $args{'query'},
+		query    => $args{'query'},
+		name     => $original_alert->{'name'},
+		message  => $original_alert->{'message'},
+		silenced => $original_alert->{'silenced'},
 	};
 	
+	# Overwrite original details with any updated fields
 	if ( defined( $args{'name'} ) && $args{'name'} ne '' )
 	{
 		$data->{'name'} = $args{'name'};
@@ -337,6 +341,36 @@ sub update
 	{
 		croak "Fatal error. No response or missing/invalid state in response.";
 	}
+	
+	return;
+}
+
+
+=head2 mute_all()
+
+Mute all alerts.
+"Muting will prevent all alerts from notifying through email and posts to the
+event stream. State changes will only be visible by checking the alert page."
+
+	my $alert = $datadog->build('Alert');
+	$alert->mute_all();
+	
+Parameters: None
+
+=cut
+
+sub mute_all
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'mute_alerts';
+	
+	$self->_send_request(
+		method => 'POST',
+		url    => $url,
+		data   => { '' => [] }
+	);
 	
 	return;
 }
