@@ -404,6 +404,66 @@ sub unmute_all
 }
 
 
+=head2 delete()
+
+Delete specified alert.
+
+	my $alert = $datadog->build('Alert');
+	$alert->delete( id => $alert_id );
+	
+Parameters:
+
+=over 4
+
+=item * id
+
+Dashboard id you want to delete.
+
+=back
+
+=cut
+
+sub delete
+{
+	my ( $self, %args ) = @_;
+	
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( id ) )
+	{
+		croak "ERROR - Argument '$arg' is required for delete()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	# Check that id specified is a number
+	croak "ERROR - invalid 'id' >" . $args{'id'} . "<. Alert id must be a number."
+		unless $args{'id'} =~ /^\d+$/;
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'alert' . '/' . $args{'id'};
+	
+	my $should_croak;
+	try
+	{
+		$self->_send_request(
+			method => 'DELETE',
+			url    => $url,
+			data   => { '' => [] }
+		);
+	}
+	catch
+	{
+		if ( /404/ )
+		{
+			$should_croak = "Error 404 deleting alert id >" . $args{'id'} . "<. Are you sure this is the correct alert id?";
+		}
+	};
+	croak $should_croak if $should_croak;
+	
+	return;
+}
+
+
 =head1 INTERNAL FUNCTIONS
 
 =head2 _error_checks()
