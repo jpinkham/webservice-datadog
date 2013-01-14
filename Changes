@@ -17,6 +17,6 @@ v0.5.0  01/12/2013
         to override the main datadog factory object. Thanks to Guillaume Aubert
         for the discovery of the issue, and contribution of a fix.
 v0.6.0  01/14/2013
-        Added new WebService::DataDog::Alert module,with tests.
+        Added new WebService::DataDog::Alert module,with tests, and examples.
         Fixed issue with properly capturing 404 response in Dashboard submodule.
         Fixed issue with properly handling API methods that return empty JSON.
