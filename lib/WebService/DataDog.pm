@@ -125,6 +125,38 @@ application key.
 		source_type_name => 'user',
 	);
 	
+	# For alert functions, first build an alert object
+	my $alert = $datadog->build('Alert');
+	
+	# Get list, with details, of all alerts
+	my $alert_list = $alert->retrieve_all();
+	
+	# Create a new alert
+	my $alert_id = $alert->create(
+		query    => $query,      # Metric query to alert on
+		name     => $alert_name, # Optional. default=dynamic, based on query
+		message  => $message,    # Optional. default=None
+		silenced => $boolean,    # Optional. default=0
+	);
+
+	# Retrieve details on a specific alert
+	my $alert_data = $alert->retrieve( id => $alert_id );
+	
+	# Update an existing alert
+	$alert->update(
+		id       => $alert_id,   # ID of alert to modify
+		query    => $query,      # Metric query to alert on
+		name     => $alert_name, # Optional.
+		message  => $message,    # Optional.
+		silenced => $boolean,    # Optional.
+	);
+	
+	# Mute all alerts at once. Example usage: system maintenance.
+	$alert->mute_all();
+	
+	# Unmute all alerts at once. Example usage: completed system maintenance.
+	$alert->unmute_all();
+	
 =cut
 
 
