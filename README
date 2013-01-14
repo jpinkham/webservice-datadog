@@ -18,22 +18,12 @@ http://docs.datadoghq.com/graphing/  and
 http://help.datadoghq.com/kb/graphs-dashboards/graph-primer
 
 
-**NOTE: This is in the development stage and has reduced functionality currently,
-supporting the posting of metrics, creating/deleting/listing/updating dashboards, and
-searching/viewing/posting events to DDog event stream.
-
+**NOTE: This is in the development stage and has somewhat reduced functionality.
 I intend to continue updating, eventually adding all functionality that
 DataDog-provided Ruby and Python API libraries have.
 
 
 Features coming soon (not necessarily in this order):
-
-* new module 'Alert'
-  - create alerts
-  - modify alerts
-  - retrieve details on one/all alerts
-  - delete an alert
-  - mute/unmute all alerts
 
 * Capture 404 errors on certain actions and show "invalid/unknown $object id" instead
 
