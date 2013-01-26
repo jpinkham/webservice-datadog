@@ -121,3 +121,107 @@ sub retrieve
 }
 
 
+=head2 update()
+
+Update tags for specified host.
+NOTE: a 404 response typically indicates you specified an incorrect host name/id.
+WARNING: you must specify all tags that you want attached to this host, not
+simply new ones you want to add ( use add() for that, instead ).
+	
+	my $tag = $datadog->build('Tag');
+	$tag->update(
+		host => $host,  # name/ID of host to modify
+		tags => $tag_list, # Updated full list of tags to apply to host
+	);
+	
+	Example:
+	$tag->update(
+		host => 'my.example.com',
+		tags => [ 'tag1', 'tag2', 'tag3:val' ],
+	);
+	
+Parameters:
+
+=over 4
+
+=item * host
+
+Host name/id whose tags you want to modify.
+
+=item * tags
+
+List of tags to apply to host. This must be the full list you want applied,
+including any already applied.
+
+=cut
+
+sub update
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( host tags ) )
+	{
+		croak "ERROR - Argument '$arg' is required for update()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	$self->_error_checks( %args );
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'tags/hosts' . '/' . $args{'host'};
+	
+	my $response = $self->_send_request(
+		method => 'PUT',
+		url    => $url,
+		data   => { tags => $args{'tags'} }
+	);
+	
+	if ( !defined($response) || !defined($response->{'tags'}) )
+	{
+		croak "Fatal error. No response or tag 'tags' missing from response.";
+	}
+	
+	return $response->{'tags'};
+}
+
+
+=head1 INTERNAL FUNCTIONS
+
+=head2 _error_checks()
+
+Common error checking for adding/updating tags.
+
+=cut
+
+sub _error_checks
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# 'tags' argument is valid
+	if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
+	{
+		croak "ERROR - invalid 'tags' value. Must be an arrayref.";
+	}
+	
+	#TODO centralize this error checking, since it's nearly identical to Metric.pm
+	foreach my $tag ( @{ $args{'tags'} } )
+	{
+		# must start with a letter
+		croak( "ERROR - invalid tag >" . $tag . "< on host >" . $args{'host'} . "<. Tags must start with a letter, a-z. Not sending." )
+			if ( $tag !~ /^[a-zA-Z]/ );
+		
+		# must be 200 characters max
+		croak( "ERROR - invalid tag >" . $tag . "< on host >" . $args{'host'} . "<. Tags must be 200 characters or less. Not sending." )
+			if ( length( $tag ) > 200 );
+		
+		# NOTE: This check isn't required by DataDog, they will allow this through.
+		# However, this tag will not behave as expected in the graphs, if we were to allow it.
+		croak( "ERROR - invalid tag >" . $tag . "< on host >" . $args{'host'} . "<. Tags should only contain a single colon (:). Not sending." )
+			if ( $tag =~ /^\S+:\S+:/ );
+	}
+	
+	return;
+}
+
