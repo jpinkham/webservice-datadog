@@ -258,7 +258,7 @@ sub _error_checks
 		# is valid
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
+			croak "ERROR - invalid 'tags' value. Must be an arrayref.";
 		}
 		
 		foreach my $tag ( @{ $args{'tags'} } )

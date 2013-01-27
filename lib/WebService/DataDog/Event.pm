@@ -377,7 +377,7 @@ sub _search_error_checks
 	{
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
+			croak "ERROR - invalid 'tags' value. Must be an arrayref.";
 		}
 	}
 	
@@ -442,7 +442,7 @@ sub _create_error_checks
 	{
 		if ( !Data::Validate::Type::is_arrayref( $args{'tags'} ) )
 		{
-			croak "ERROR - invalid 'tag' value. Must be an arrayref.";
+			croak "ERROR - invalid 'tags' value. Must be an arrayref.";
 		}
 	}
 	

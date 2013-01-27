@@ -226,7 +226,7 @@ sub add
 	# Check for mandatory parameters
 	foreach my $arg ( qw( host tags ) )
 	{
-		croak "ERROR - Argument '$arg' is required for update()."
+		croak "ERROR - Argument '$arg' is required for add()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
