@@ -86,7 +86,7 @@ throws_ok(
 			tags  => "tags_go_here",
 		);
 	},
-	qr/nvalid 'tag'.*arrayref/,
+	qr/nvalid 'tags'.*arrayref/,
 	'Dies on invalid tag list.',
 );
 
@@ -106,9 +106,9 @@ throws_ok(
 lives_ok(
 	sub
 	{
-		$response = $event_obj->search( start => time() - ( 30 * 24 * 60 * 60 ) );
+		$response = $event_obj->search( start => time() - ( 10 * 24 * 60 * 60 ) );
 	},
-	'Search events for last 30 days.',
+	'Search events for last 10 days.',
 );
 
 ok(

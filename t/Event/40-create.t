@@ -137,7 +137,7 @@ throws_ok(
 			tags  => "tags_go_here",
 		);
 	},
-	qr/nvalid 'tag'.*arrayref/,
+	qr/nvalid 'tags'.*arrayref/,
 	'Dies on invalid tag list.',
 );
 

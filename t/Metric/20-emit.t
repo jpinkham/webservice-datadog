@@ -155,7 +155,7 @@ throws_ok(
 			tags  => {},
 		);
 	},
-	qr/nvalid 'tag'.*Must be an arrayref/,
+	qr/nvalid 'tags'.*Must be an arrayref/,
 	'post metric - dies with invalid tag list, not an arrayref.',
 );
 
