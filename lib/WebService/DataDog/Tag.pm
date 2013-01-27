@@ -153,6 +153,8 @@ Host name/id whose tags you want to modify.
 List of tags to apply to host. This must be the full list you want applied,
 including any already applied.
 
+=back
+
 =cut
 
 sub update
@@ -216,6 +218,8 @@ Host name/id whose tags you want to modify.
 
 List of new tags to apply to existing tags on specified host.
 
+=back
+
 =cut
 
 sub add
@@ -246,6 +250,50 @@ sub add
 	}
 	
 	return $response->{'tags'};
+}
+
+
+=head2 delete()
+
+Delete all tags from the specified host.
+
+	my $tag = $datadog->build('Tag');
+	$tag->delete( host => $host );
+	
+Parameters:
+
+=over 4
+
+=item * host
+
+Host name/id whose tags you want to delete.
+
+=back
+
+=cut
+
+sub delete
+{
+	my ( $self, %args ) = @_;
+	
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( host ) )
+	{
+		croak "ERROR - Argument '$arg' is required for delete()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'tags/hosts' . '/' . $args{'host'};
+	
+	$self->_send_request(
+		method => 'DELETE',
+		url    => $url,
+		data   => { '' => [] }
+	);
+	
+	return;
 }
 
 
