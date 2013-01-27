@@ -8,7 +8,8 @@ want to turn the massive amounts of data produced by their apps, tools and
 services into actionable insight."
 
 This module encapsulates all the communications with the REST API provided by
-DataDog to offer a Perl interface to metrics, dashboards, events, alerts, etc.
+DataDog to offer a Perl interface to metrics, dashboards, events, alerts, host
+tags, etc.
 
 You can find your API key, and generate application keys at
 https://app.datadoghq.com/account/settings
@@ -18,7 +19,7 @@ http://docs.datadoghq.com/graphing/  and
 http://help.datadoghq.com/kb/graphs-dashboards/graph-primer
 
 
-**NOTE: This is in the development stage and has somewhat reduced functionality.
+**NOTE: This is in the development stage and has slightly reduced functionality.
 I intend to continue updating, eventually adding all functionality that
 DataDog-provided Ruby and Python API libraries have.
 
@@ -27,10 +28,7 @@ Features coming soon (not necessarily in this order):
 
 * Capture 404 errors on certain actions and show "invalid/unknown $object id" instead
 
-* new module 'Tag'
-  - getting all tags; getting tags on specified host
-  - adding/updating tags for a specific host
-  - removing host tags
+* Centralize error checking for tags
 
 * new module 'Comment'
   - create
