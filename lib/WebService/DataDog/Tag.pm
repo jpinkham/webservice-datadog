@@ -186,6 +186,69 @@ sub update
 }
 
 
+
+=head2 add()
+
+Add tags to specified host.
+NOTE: a 404 response typically indicates you specified an incorrect host name/id.
+	
+	my $tag = $datadog->build('Tag');
+	$tag->add(
+		host => $host,  # name/ID of host to modify
+		tags => $tag_list, # Updated full list of tags to apply to host
+	);
+	
+	Example:
+	$tag->add(
+		host => 'my.example.com',
+		tags => [ 'tag3:val' ],
+	);
+	
+Parameters:
+
+=over 4
+
+=item * host
+
+Host name/id whose tags you want to modify.
+
+=item * tags
+
+List of new tags to apply to existing tags on specified host.
+
+=cut
+
+sub add
+{
+	my ( $self, %args ) = @_;
+	my $verbose = $self->verbose();
+	
+	# Check for mandatory parameters
+	foreach my $arg ( qw( host tags ) )
+	{
+		croak "ERROR - Argument '$arg' is required for update()."
+			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
+	}
+	
+	$self->_error_checks( %args );
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'tags/hosts' . '/' . $args{'host'};
+	
+	my $response = $self->_send_request(
+		method => 'POST',
+		url    => $url,
+		data   => { tags => $args{'tags'} }
+	);
+	
+	if ( !defined($response) || !defined($response->{'tags'}) )
+	{
+		croak "Fatal error. No response or tag 'tags' missing from response.";
+	}
+	
+	return $response->{'tags'};
+}
+
+
 =head1 INTERNAL FUNCTIONS
 
 =head2 _error_checks()
