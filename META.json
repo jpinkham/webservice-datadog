@@ -44,23 +44,27 @@
    "provides" : {
       "WebService::DataDog" : {
          "file" : "lib/WebService/DataDog.pm",
-         "version" : "v0.6.0"
+         "version" : "v0.7.0"
       },
       "WebService::DataDog::Alert" : {
          "file" : "lib/WebService/DataDog/Alert.pm",
-         "version" : "v0.6.0"
+         "version" : "v0.7.0"
       },
       "WebService::DataDog::Dashboard" : {
          "file" : "lib/WebService/DataDog/Dashboard.pm",
-         "version" : "v0.6.0"
+         "version" : "v0.7.0"
       },
       "WebService::DataDog::Event" : {
          "file" : "lib/WebService/DataDog/Event.pm",
-         "version" : "v0.6.0"
+         "version" : "v0.7.0"
       },
       "WebService::DataDog::Metric" : {
          "file" : "lib/WebService/DataDog/Metric.pm",
-         "version" : "v0.6.0"
+         "version" : "v0.7.0"
+      },
+      "WebService::DataDog::Tag" : {
+         "file" : "lib/WebService/DataDog/Tag.pm",
+         "version" : "v0.7.0"
       }
    },
    "release_status" : "stable",
@@ -76,5 +80,5 @@
          "url" : "https://github.com/jpinkham/webservice-datadog.git"
       }
    },
-   "version" : "v0.6.0"
+   "version" : "v0.7.0"
 }
