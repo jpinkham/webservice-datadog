@@ -6,11 +6,13 @@ examples/alert.pl
 examples/dashboard.pl
 examples/event.pl
 examples/metric.pl
+examples/tag.pl
 lib/WebService/DataDog.pm
 lib/WebService/DataDog/Alert.pm
 lib/WebService/DataDog/Dashboard.pm
 lib/WebService/DataDog/Event.pm
 lib/WebService/DataDog/Metric.pm
+lib/WebService/DataDog/Tag.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -43,6 +45,12 @@ t/Event/40-create.t
 t/Event/99-cleanup.t
 t/Metric/00-load.t
 t/Metric/20-emit.t
+t/Tag/00-load.t
+t/Tag/10-retrieve_all.t
+t/Tag/20-retrieve.t
+t/Tag/30-update.t
+t/Tag/40-add.t
+t/Tag/99-cleanup.t
 t/manifest.t
 t/module_versions.t
 t/perlcritic.t

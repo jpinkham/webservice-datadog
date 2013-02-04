@@ -23,7 +23,7 @@ WriteMakefile
   'EXE_FILES' => [],
   'PL_FILES' => {},
   'test' => {
-              'TESTS' => 't/*.t t/Dashboard/*.t t/Alert/*.t t/Metric/*.t t/Event/*.t'
+              'TESTS' => 't/*.t t/Dashboard/*.t t/Tag/*.t t/Alert/*.t t/Metric/*.t t/Event/*.t'
             }
 )
 ;
