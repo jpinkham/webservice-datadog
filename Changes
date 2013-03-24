@@ -1,24 +1,36 @@
-v0.2.0  12/24/2013
-        First release. Only metric posting and dashboard interactions are
-        supported currently.
+v0.7.0  02/04/2013
+        Added new WebService::DataDog::Tag module, with tests, and examples.
+
+
+v0.6.0  01/14/2013
+        Added new WebService::DataDog::Alert module,with tests, and examples.
+        Fixed issue with properly capturing 404 response in Dashboard submodule.
+        Fixed issue with properly handling API methods that return empty JSON.
+
+
+v0.5.0  01/12/2013
+        Fix for issue with WebService::DataDog::build() causing submodule object
+        to override the main datadog factory object. Thanks to Guillaume Aubert
+        for the discovery of the issue, and contribution of a fix.
+
+
+v0.4.0  01/11/2013
+        Standardized object methods to use names like create/retrieve/update/delete
+        whereever possible.  Still support all original method names with
+        warning about deprecation.
+
+
+v0.3.1  01/03/2013
+        Documentation updates.  Added more examples to POD and examples/* scripts.
+
+
 v0.3.0  01/01/2013
         Added WebService::DataDog::Event module, with tests. Added examples/
         dir with simple example scripts for Event, Metric, Dashboard modules.
         Updated WebService::DataDog::Dashboard to include create() and delete_dashboard().
         Documentation changes.
-v0.3.1  01/03/2013
-        Documentation updates.  Added more examples to POD and examples/* scripts.
-v0.4.0  01/11/2013
-        Standardized object methods to use names like create/retrieve/update/delete
-        whereever possible.  Still support all original method names with
-        warning about deprecation.
-v0.5.0  01/12/2013
-        Fix for issue with WebService::DataDog::build() causing submodule object
-        to override the main datadog factory object. Thanks to Guillaume Aubert
-        for the discovery of the issue, and contribution of a fix.
-v0.6.0  01/14/2013
-        Added new WebService::DataDog::Alert module,with tests, and examples.
-        Fixed issue with properly capturing 404 response in Dashboard submodule.
-        Fixed issue with properly handling API methods that return empty JSON.
-v0.7.0  02/04/2013
-        Added new WebService::DataDog::Tag module, with tests, and examples.
+
+
+v0.2.0  12/24/2013
+        First release. Only metric posting and dashboard interactions are
+        supported currently.
