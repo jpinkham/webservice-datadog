@@ -32,7 +32,7 @@ our $VERSION = '0.7.0';
 =head1 SYNOPSIS
 
 This module allows you to interact with DataDog, a service that will "Capture
-metrics and events, then graph, filter, and search to see what's happening and 
+metrics and events, then graph, filter, and search to see what's happening and
 how systems interact." This module encapsulates all the communications with the
 REST API provided by DataDog to offer a Perl interface to metrics, dashboards,
 events, alerts, etc.
@@ -42,16 +42,16 @@ Requests that read data require full access and additionally require an
 application key.
 
 	use WebService::DataDog;
-	
+
 	# Create an object to communicate with DataDog
 	my $datadog = WebService::DataDog->new(
 		api_key         => 'your_api_key_here',
 		application_key => 'your_application_key',
 	);
-	
+
 	# For metrics functions, first build a metrics object
 	my $metric = $datadog->build('Metric');
-	
+
 	# To post metrics (past or present)
 	# NOTE: only use 'value' OR 'data_points', but not both.
 	$metric->emit(
@@ -62,20 +62,20 @@ application key.
 		host        => $hostname,     # Optional - host that produced the metric
 		tags        => $tag_list,     # Optional - tags associated with the metric
 	);
-	
+
 	# For dashboard functions, first build a dashboard object
 	my $dashboard = $datadog->build('Dashboard');
-	
+
 	# Create a new dashboard
 	my $dashboard_id = $dashboard->create(
 		title       => $dash_title,
 		description => $dash_description,
 		graphs      => $graphs,
 	);
-	
+
 	# Delete a user-created dashboard that you don't need anymore
 	$dashboard->delete( id => $dash_id );
-	
+
 	# To make any changes to an existing user-created dashboard:
 	# Specify dash_id and any combination of title, description, graphs
 	$dashboard->update(
@@ -84,10 +84,10 @@ application key.
 		description => $dash_description,
 		graphs      => $graphs,
 	);
-	
+
 	# For event functions, first build an event object
 	my $event = $datadog->build('Event');
-	
+
 	# To search the event stream
 	my $event_list = $event->search(
 		start     => $start_time,
@@ -96,15 +96,15 @@ application key.
 		sources   => $sources,  # Optional - list of sources. Ex: Datadog, Github, Pingdom, Webmetrics
 		tags      => $tag_list, # Optional - list of tags associated with the event
 	);
-	
+
 	# Find all events in the last 48 hours.
 	my $event_list = $event->search(
 		start => time() - ( 48 * 60 * 60 ),
 	);
-	
+
 	# To get all details of a specific event
 	my $event_data = $event->retrieve( id => $event_id );
-	
+
 	# To post a new event to the event stream
 	$event->create(
 		title            => $event_title,
@@ -117,20 +117,20 @@ application key.
 		aggregation_key  => $agg_key,     # Optional. Arbitrary string to use for aggregation.
 		source_type_name => $source_type, # Optional. nagios|hudson|jenkins|user|my apps|feed|chef|puppet|git|bitbucket|fabric|capistrano
 	);
-	
+
 	# Submit a user event, with timestamp of `now`.
 	$event->create(
 		title            => 'Test event',
 		text             => 'Testing posting to event stream',
 		source_type_name => 'user',
 	);
-	
+
 	# For alert functions, first build an alert object
 	my $alert = $datadog->build('Alert');
-	
+
 	# Get list, with details, of all alerts
 	my $alert_list = $alert->retrieve_all();
-	
+
 	# Create a new alert
 	my $alert_id = $alert->create(
 		query    => $query,      # Metric query to alert on
@@ -141,7 +141,7 @@ application key.
 
 	# Retrieve details on a specific alert
 	my $alert_data = $alert->retrieve( id => $alert_id );
-	
+
 	# Update an existing alert
 	$alert->update(
 		id       => $alert_id,   # ID of alert to modify
@@ -150,34 +150,34 @@ application key.
 		message  => $message,    # Optional.
 		silenced => $boolean,    # Optional.
 	);
-	
+
 	# Mute all alerts at once. Example usage: system maintenance.
 	$alert->mute_all();
-	
+
 	# Unmute all alerts at once. Example usage: completed system maintenance.
 	$alert->unmute_all();
-	
+
 	# For tag functions, first build a tag object
 	my $tag = $datadog->build('Tag');
-	
+
 	# Retrieve a mapping of tags to hosts.
 	my $tag_host_list = $tag->retrieve_all();
-	
+
 	# Return a list of tags for the specified host.
 	my $tag_list = $tag->retrieve( host => $host_name_or_id );
-	
+
 	# Update tags for specified host.
 	$tag->update(
 		host => $host,  # name/ID of host to modify
 		tags => $tag_list, # Updated full list of tags to apply to host
 	);
-	
+
 	# Add tags to specified host.
 	$tag->add(
 		host => $host,  # name/ID of host to modify
 		tags => $tag_list, # Updated full list of tags to apply to host
 	);
-	
+
 	# Delete all tags from the specified host.
 	$tag->delete( host => $host );
 
@@ -188,7 +188,7 @@ application key.
 		term  => $search_term,
 		facet => [ 'hosts', 'metrics' ] #optional
 	);
-	
+
 =cut
 
 
@@ -200,7 +200,7 @@ Create a new DataDog object that will be used as the interface with
 DataDog's API
 
 	use WebService::DataDog;
-	
+
 	# Create an object to communicate with DataDog
 	my $datadog = WebService::DataDog->new(
 		api_key         => 'your_api_key_here',
@@ -234,14 +234,14 @@ Optional.  Set to 1 to see debugging output of request/response interaction with
 sub new
 {
 	my ( $class, %args ) = @_;
-	
+
 	# Check for mandatory parameters
 	foreach my $arg ( qw( api_key application_key ) )
 	{
 		croak "Argument '$arg' is required to create the WebService::DataDog object"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
-	
+
 	# Create the object
 	my $self = bless(
 		{
@@ -251,7 +251,7 @@ sub new
 		},
 		$class,
 	);
-	
+
 	return $self;
 }
 
@@ -279,15 +279,15 @@ The submodule name, such as Metric for WebService::DataDog::Metric.
 sub build
 {
 		my ( $self, $module ) = @_;
-		
+
 		# Check required arguments
 		croak 'Please specify the name of the module to build'
 			if !defined( $module ) || ( $module eq '' );
-		
+
 		# Load the class corresponding to the submodule requested.
 		my $class = __PACKAGE__ . '::' . $module;
 		Class::Load::load_class( $class ) || croak "Failed to load $class, double-check the class name";
-		
+
 		# Instantiate a new object of that class. Since it's a subclass
 		# of WebService::DataDog, we pass all the non-hidden properties
 		# of the datadog object to build it.
@@ -296,7 +296,7 @@ sub build
 			grep { substr( $_, 0, 1 ) ne '_' }
 			keys %$self
 		);
-		
+
 		return $object;
 }
 
@@ -313,7 +313,7 @@ Get or set the 'verbose' property.
 sub verbose
 {
 	my ( $self, $value ) = @_;
-	
+
 	if ( defined $value && $value =~ /^[01]$/ )
 	{
 		$self->{'verbose'} = $value;
@@ -322,7 +322,7 @@ sub verbose
 	{
 		return $self->{'verbose'};
 	}
-	
+
 	return;
 }
 
@@ -349,7 +349,7 @@ You can now create a file named DataDogConfig.pm in your own directory, with
 the following content:
 
 	package DataDogConfig;
-	
+
 	sub new
 	{
 		return
@@ -359,7 +359,7 @@ the following content:
 			verbose         => 0, # Enable this for debugging output
 		};
 	}
-	
+
 	1;
 
 You will then be able to run all the tests included in this distribution, after
@@ -378,17 +378,17 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
-	
+
 	# Check for mandatory parameters
 	foreach my $arg ( qw( data method url ) )
 	{
 		croak "Argument '$arg' is needed to send a request with the WebService::DataDog object"
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
-	
+
 	my $url = $args{'url'};
 	my $method = $args{'method'};
-	
+
 	# Add authentication info
 	if ( $url =~ /\?/ )  # Some endpoints will already have URL params...
 	{
@@ -398,7 +398,7 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	{
 		$url .= '?api_key=' . $self->{'api_key'} . '&application_key=' . $self->{'application_key'};
 	}
-	
+
 	my $request;
 	if ( $method =~ /\A(?:GET|POST|DELETE|PUT)\z/x )
 	{
@@ -408,40 +408,40 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	{
 		croak "The method >$method< is not supported. Not sending request.";
 	}
-	
+
 	carp "Sending request to URL >" . ( defined( $url ) ? $url : '' ) . "< via method >$method<"
 		if $verbose;
-	
-	
+
+
 	my $json_in = JSON::encode_json( $args{'data'} );
 	carp "Sending JSON request >" . ( defined( $json_in ) ? $json_in : '' ) . "<"
 		if $verbose;
-	
+
 	$request->content_type('application/json');
 	$request->content( $json_in );
-	
+
 	carp "Request object: ", Dumper( $request )
 		if $verbose;
-	
+
 	my $user_agent = LWP::UserAgent->new();
 	my $response = $user_agent->request($request);
-	
+
 	croak "Request failed:" . $response->status_line()
 		if !$response->is_success();
 
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
-	
+
 	# Try to parse JSON response, only if one was received.
 	# Some functions, such as Dashboard::delete(), Alert::mute_all, Alert::unmute_all()
 	# return nothing when successful, so there won't be anything to parse.
 	my $json_out = defined( $response ) && defined( $response->content() ) && $response->content() ne ''
 		? JSON::decode_json( $response->content() )
 		: '';
-	
+
 	carp "JSON Response >" . ( defined( $json_out ) ? Dumper($json_out) : '' ) . "<"
 		if $verbose;
-	
+
 	return $json_out;
 }
 
@@ -496,8 +496,8 @@ Thanks to ThinkGeek (<http://www.thinkgeek.com/>) and its corporate overlords at
 Geeknet (<http://www.geek.net/>), for footing the bill while I write code for them!
 
 Special thanks for architecture advice, and code contributions, from fellow
-ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/> as 
-well as architecture advice from fellow ThinkGeek CPAN author Kate 
+ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/> as
+well as architecture advice from fellow ThinkGeek CPAN author Kate
 Kirby L<http://search.cpan.org/~kate/>.
 
 =head1 COPYRIGHT & LICENSE

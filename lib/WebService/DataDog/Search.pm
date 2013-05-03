@@ -37,16 +37,16 @@ The currently searchable entities are: hosts, metrics"
 Return a list of search results for the specified term.
 
 	my $search = $datadog->build('Search');
-	my $search_results = $search->retrieve( 
+	my $search_results = $search->retrieve(
 		term  => $search_term,
 		facet => [ 'hosts', 'metrics' ] #optional
 	);
-	
+
 Parameters:
 
 =over 4
 
-=item * term 
+=item * term
 
 Search term you want to retrieve results for.
 
@@ -62,21 +62,21 @@ sub retrieve
 {
 	my ( $self, %args ) = @_;
 	my $verbose = $self->verbose();
-	
+
 	# Check for mandatory parameters
 	foreach my $arg ( qw( term ) )
 	{
 		croak "ERROR - Argument '$arg' is required for retrieve()."
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
-	
+
 	my $url = $WebService::DataDog::API_ENDPOINT . 'search';
 
 
-	if ( 
+	if (
 			defined $args{'facet'} &&
 			$args{'facet'} ne 'hosts' &&
-			$args{'facet'} ne 'metrics' 
+			$args{'facet'} ne 'metrics'
 		)
 	{
 		croak 'ERROR - Invalid facet type >' . 	$args{'facet'} . "<. Allowed values: 'hosts', 'metrics'";
@@ -91,20 +91,20 @@ sub retrieve
 	{
 		$url .= '?q=' . $args{'term'};
 	}
-	
+
 	my $response = $self->_send_request(
 		method => 'GET',
 		url    => $url,
 		data   => { '' => [] },
 	);
-	
+
 	if ( !defined($response) || !defined($response->{'results'}) )
 	{
 		croak "Fatal error. No response or 'results' missing from response.";
 	}
-	
+
 	return $response->{'results'};
 }
 
-	
+
 1;
