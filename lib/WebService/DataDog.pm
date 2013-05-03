@@ -157,7 +157,7 @@ application key.
 	# Unmute all alerts at once. Example usage: completed system maintenance.
 	$alert->unmute_all();
 	
-	# For tag functions, first build an tag object
+	# For tag functions, first build a tag object
 	my $tag = $datadog->build('Tag');
 	
 	# Retrieve a mapping of tags to hosts.
@@ -180,6 +180,14 @@ application key.
 	
 	# Delete all tags from the specified host.
 	$tag->delete( host => $host );
+
+	# For search, first build a search object
+	my $search = $datadog->build('Search');
+
+	my $search_results = $search->retrieve(
+		term  => $search_term,
+		facet => [ 'hosts', 'metrics' ] #optional
+	);
 	
 =cut
 
