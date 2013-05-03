@@ -15,11 +15,11 @@ WebService::DataDog::Search - Interface to Search functions in DataDog's API.
 
 =head1 VERSION
 
-Version 0.7.0
+Version 0.8.0
 
 =cut
 
-our $VERSION = '0.7.0';
+our $VERSION = '0.8.0';
 
 
 =head1 SYNOPSIS
@@ -82,7 +82,6 @@ sub retrieve
 		croak 'ERROR - Invalid facet type >' . 	$args{'facet'} . "<. Allowed values: 'hosts', 'metrics'";
 	}
 
-	my $data;
 	if ( $args{'facet'} )
 	{
 		$url .= '?q=' . $args{'facet'} . ':' . $args{'term'};

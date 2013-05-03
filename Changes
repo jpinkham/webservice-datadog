@@ -1,3 +1,8 @@
+v0.8.0  04/05/2013
+        Added WebService::DataDog::Search module, with tests, and examples.
+        Updated WebService::DataDog to properly build destination url when
+        it already contains '?' character, regardless of API endpoint.
+
 v0.7.0  02/04/2013
         Added new WebService::DataDog::Tag module, with tests, and examples.
 
