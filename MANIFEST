@@ -6,12 +6,14 @@ examples/alert.pl
 examples/dashboard.pl
 examples/event.pl
 examples/metric.pl
+examples/search.pl
 examples/tag.pl
 lib/WebService/DataDog.pm
 lib/WebService/DataDog/Alert.pm
 lib/WebService/DataDog/Dashboard.pm
 lib/WebService/DataDog/Event.pm
 lib/WebService/DataDog/Metric.pm
+lib/WebService/DataDog/Search.pm
 lib/WebService/DataDog/Tag.pm
 Makefile.PL
 MANIFEST			This list of files
@@ -45,6 +47,8 @@ t/Event/40-create.t
 t/Event/99-cleanup.t
 t/Metric/00-load.t
 t/Metric/20-emit.t
+t/Search/00-load.t
+t/Search/10-retrieve.t
 t/Tag/00-load.t
 t/Tag/10-retrieve_all.t
 t/Tag/20-retrieve.t

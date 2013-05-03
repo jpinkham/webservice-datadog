@@ -28,15 +28,10 @@ Features coming soon (not necessarily in this order):
 
 * Capture 404 errors on certain actions and show "invalid/unknown $object id" instead
 
-* Centralize error checking for tags
-
 * new module 'Comment'
   - create
   - edit
   - delete 
-
-* new module 'Search'
-
 
 INSTALLATION
 
