@@ -227,6 +227,7 @@ sub delete
 		data   => {},
 	);
 	
+	return;
 }
 
 
