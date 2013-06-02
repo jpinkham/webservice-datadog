@@ -15,11 +15,11 @@ WebService::DataDog::Alert - Interface to Alert functions in DataDog's API.
 
 =head1 VERSION
 
-Version 0.8.0
+Version 0.9.0
 
 =cut
 
-our $VERSION = '0.8.0';
+our $VERSION = '0.9.0';
 
 
 =head1 SYNOPSIS
