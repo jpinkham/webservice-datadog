@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 10 );
 
 my $config = DataDogConfig->new();
 
@@ -87,9 +87,25 @@ lives_ok(
 	'Create new comment - specifying related event.',
 )|| diag explain $response;
 
+my $new_comment_id = $response->{'id'};
+
 is(
 	$response->{'related_event_id'},
 	$event_id,
 	'Comment added to existing thread.'
 );
 
+
+# Store id for use in upcoming tests
+
+ok(
+	open( FILE, '>', 'webservice-datadog-comment-commentid.tmp'),
+	'Open temp file to store new comment id'
+);
+
+print FILE $new_comment_id;
+
+ok(
+	close FILE,
+	'Close temp file'
+);
