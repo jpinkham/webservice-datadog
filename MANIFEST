@@ -4,6 +4,7 @@ Build.PL
 Changes
 ignore.txt
 examples/alert.pl
+examples/comment.pl
 examples/dashboard.pl
 examples/event.pl
 examples/metric.pl
@@ -11,6 +12,7 @@ examples/search.pl
 examples/tag.pl
 lib/WebService/DataDog.pm
 lib/WebService/DataDog/Alert.pm
+lib/WebService/DataDog/Comment.pm
 lib/WebService/DataDog/Dashboard.pm
 lib/WebService/DataDog/Event.pm
 lib/WebService/DataDog/Metric.pm
@@ -21,7 +23,7 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 META.json
 META.yml
-README
+README.md
 t/00-load.t
 t/10-new.t
 t/15-build.t
@@ -34,6 +36,11 @@ t/Alert/50-mute_all.t
 t/Alert/60-unmute_all.t
 t/Alert/70-delete.t
 t/Alert/99-cleanup.t
+t/Comment/00-load.t
+t/Comment/10-create.t
+t/Comment/20-update.t
+t/Comment/30-delete.t
+t/Comment/99-cleanup.t
 t/Dashboard/00-load.t
 t/Dashboard/10-retrieve_all.t
 t/Dashboard/20-create.t
