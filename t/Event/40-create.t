@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 15 );
+	: plan( tests => 16 );
 
 my $config = DataDogConfig->new();
 
@@ -187,7 +187,22 @@ lives_ok(
 			text       => "Text goes here",
 		);
 	},
-	'Post valid event to stream.',
+	'Post valid event to stream - [ title, text ].',
+);
+
+lives_ok(
+	sub
+	{
+		$response = $event_obj->create(
+			title            => "title goes here(" . time() . ")",
+			text             => "Text goes here",
+			date_happened    => '1370663582',
+			priority         => 'low',
+			source_type_name => 'jenkins',
+			alert_type       => 'info',
+		);
+	},
+	'Post valid event to stream - [ title, text, date_happened, priority, source_rtype_name, alert_type ].',
 );
 
 
