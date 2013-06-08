@@ -21,6 +21,9 @@ http://help.datadoghq.com/kb/graphs-dashboards/graph-primer
 
 Build status: [![Build Status](https://travis-ci.org/jpinkham/webservice-datadog.png)](https://travis-ci.org/jpinkham/webservice-datadog)
 
+Test coverage: [![Coverage Status](https://coveralls.io/repos/jpinkham/webservice-datadog/badge.png?branch=master)](https://coveralls.io/r/jpinkham/webservice-datadog?branch=master)
+
+
 
 INSTALLATION
 -------------
