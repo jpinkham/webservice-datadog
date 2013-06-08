@@ -62,6 +62,7 @@ t/Tag/10-retrieve_all.t
 t/Tag/20-retrieve.t
 t/Tag/30-update.t
 t/Tag/40-add.t
+t/Tag/50-delete.t
 t/Tag/99-cleanup.t
 t/manifest.t
 t/module_versions.t
