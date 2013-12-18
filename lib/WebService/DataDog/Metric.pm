@@ -14,11 +14,11 @@ WebService::DataDog::Metric - Interface to Metric functions in DataDog's API.
 
 =head1 VERSION
 
-Version 0.9.0
+Version 1.0.0
 
 =cut
 
-our $VERSION = '0.9.0';
+our $VERSION = '1.0.0';
 
 
 =head1 METHODS

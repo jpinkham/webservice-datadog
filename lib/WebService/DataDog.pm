@@ -22,11 +22,11 @@ WebService::DataDog - Interface to DataDog's REST API.
 
 =head1 VERSION
 
-Version 0.9.0
+Version 1.0.0
 
 =cut
 
-our $VERSION = '0.9.0';
+our $VERSION = '1.0.0';
 
 
 =head1 SYNOPSIS

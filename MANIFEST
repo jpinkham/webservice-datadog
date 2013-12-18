@@ -2,7 +2,6 @@
 .travis.yml
 Build.PL
 Changes
-ignore.txt
 examples/alert.pl
 examples/comment.pl
 examples/dashboard.pl
@@ -18,6 +17,7 @@ lib/WebService/DataDog/Event.pm
 lib/WebService/DataDog/Metric.pm
 lib/WebService/DataDog/Search.pm
 lib/WebService/DataDog/Tag.pm
+lib/WebService/DataDog/User.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -64,6 +64,8 @@ t/Tag/30-update.t
 t/Tag/40-add.t
 t/Tag/50-delete.t
 t/Tag/99-cleanup.t
+t/User/00-load.t
+t/User/10-invite.t
 t/manifest.t
 t/module_versions.t
 t/perlcritic.t
