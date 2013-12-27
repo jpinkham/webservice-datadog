@@ -51,19 +51,24 @@ ok(
 	'Response is an hashref.',
 );
 
+SKIP: {
+	# If no tags are returned (we assume because none are configured for the account), skip rest of tests
+	skip "No tags returned. Skipping rest of tests", 2 if !scalar( $response->{'tags'} );
 
-# Store id for use in upcoming tests: update, retrieve
-ok(
-	open( FILE, '>', 'webservice-datadog-tag-host.tmp'),
-	'Open temp file to store host name/id.'
-);
+	# Store id for use in upcoming tests: update, retrieve
+	ok(
+		open( FILE, '>', 'webservice-datadog-tag-host.tmp'),
+		'Open temp file to store host name/id.'
+	);
+	
+	# Grab the first hash key (tags)
+	my $first_tag = (keys %$response)[0];
+	# Print the first host for the first hash key (tags)
+	print FILE $response->{ $first_tag }->[0];
+	
+	ok(
+		close FILE,
+		'Close temp file.'
+	);
+}
 
-# Grab the first hash key (tag)
-my $first_tag = (keys %$response)[0];
-# Print the first host for the first hash key (tag)
-print FILE $response->{ $first_tag }->[0];
-
-ok(
-	close FILE,
-	'Close temp file.'
-);

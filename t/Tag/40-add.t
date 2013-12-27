@@ -10,10 +10,28 @@ use Test::More;
 use WebService::DataDog;
 
 
+my $skip_condition = 0;
+my $skip_reason;
+
 eval 'use DataDogConfig';
-$@
-	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+if ( $@ )
+{
+	$skip_reason = 'Local connection information for DataDog required to run tests.';
+}
+
+if ( ! -e 'webservice-datadog-tag-host.tmp' )
+{
+	$skip_condition = 1;
+	$skip_reason = 'No tags found for the configured account.';
+}
+
+if ($skip_condition)
+{
+	plan skip_all => $skip_reason;
+}
+else {
+	plan tests => 8;
+}
 
 my $config = DataDogConfig->new();
 
