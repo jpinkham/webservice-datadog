@@ -1,5 +1,7 @@
 v1.0.0  12/17/2013
-        Added WebService::DataDog::User modulem, with tests.
+        Added WebService::DataDog::User module, with tests.
+
+
 v0.9.0  06/01/2013
         Added WebService::DataDog::Comment module, with tests, and examples.
         Renamed README to README.md, with markdown formatting.
