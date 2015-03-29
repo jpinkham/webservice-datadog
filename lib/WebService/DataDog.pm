@@ -22,11 +22,11 @@ WebService::DataDog - Interface to DataDog's REST API.
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 
 =head1 SYNOPSIS
@@ -471,9 +471,9 @@ You can also look for information at:
 
 =over 4
 
-=item * RT: CPAN's request tracker
+=item * Github Bug/Issue tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-DataDog>
+L<https://github.com/jpinkham/webservice-datadog/issues>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
@@ -483,9 +483,9 @@ L<http://annocpan.org/dist/WebService-DataDog>
 
 L<http://cpanratings.perl.org/d/WebService-DataDog>
 
-=item * Search CPAN
+=item * MetaCPAN
 
-L<http://search.cpan.org/dist/WebService-DataDog/>
+L<https://metacpan.org/release/WebService-DataDog>
 
 =back
 
