@@ -1,6 +1,9 @@
 WebService-DataDog
 ====================
 
+
+DESCRIPTION
+-----------
 This module allows you to interact with DataDog (http://http://www.datadoghq.com/),
 a service that will "Capture metrics and events, then graph, filter, and search
 to see what's happening and how systems interact. Datadog is a service for IT,
@@ -30,10 +33,10 @@ INSTALLATION
 
 To install this module, run the following commands:
 
-	perl Build.PL
-	./Build
-	./Build test
-	./Build install
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
 
 
 NOTES
@@ -79,17 +82,17 @@ perldoc command.
 
 You can also look for information at:
 
-    RT, CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-DataDog
+ * [GitHub's request tracker (report bugs here)]
+        (https://github.com/jpinkham/webservice-datadog/issues)
 
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/WebService-DataDog
+ * [AnnoCPAN, Annotated CPAN documentation]
+        (http://annocpan.org/dist/WebService-DataDog)
 
-    CPAN Ratings
-        http://cpanratings.perl.org/d/WebService-DataDog
+ * [CPAN Ratings]
+        (http://cpanratings.perl.org/d/WebService-DataDog)
 
-    Search CPAN
-        http://search.cpan.org/dist/WebService-DataDog/
+ * [MetaCPAN]
+        (https://metacpan.org/release/WebService-DataDog)
 
 
 LICENSE AND COPYRIGHT
