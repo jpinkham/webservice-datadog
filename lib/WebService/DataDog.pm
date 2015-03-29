@@ -492,22 +492,26 @@ L<http://search.cpan.org/dist/WebService-DataDog/>
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to ThinkGeek (<http://www.thinkgeek.com/>) and its corporate overlords at
-Geeknet (<http://www.geek.net/>), for footing the bill while I write code for them!
+I originally developed this project for ThinkGeek (L<http://www.thinkgeek.com/>).
+Thanks for allowing me to open-source it!
 
-Special thanks for architecture advice, and code contributions, from fellow
-ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/> as
-well as architecture advice from fellow ThinkGeek CPAN author Kate
-Kirby L<http://search.cpan.org/~kate/>.
+Special thanks for architecture advice, and code contributions, from Guillaume
+Aubert L<http://search.cpan.org/~aubertg/>.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2013 Jennifer Pinkham.
+Copyright 2015 Jennifer Pinkham.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the Artistic License.
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License version 3 as published by the Free
+Software Foundation.
 
-See http://dev.perl.org/licenses/ for more information.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see http://www.gnu.org/licenses/
 
 =cut
 
