@@ -18,6 +18,9 @@ if $@;
 Test::Kwalitee::Extra->import(
 	qw(
 		:optional
+		:experimental
+		!build_prereq_matches_use
+		!prereq_matches_use
 	)
 );
 
