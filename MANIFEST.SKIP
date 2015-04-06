@@ -3,3 +3,4 @@
 ^#.*#$
 ^cover_db
 .coveralls.yml
+nytprof
