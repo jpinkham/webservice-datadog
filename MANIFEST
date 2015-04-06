@@ -67,9 +67,13 @@ t/Tag/50-delete.t
 t/Tag/99-cleanup.t
 t/User/00-load.t
 t/User/10-invite.t
-t/manifest.t
-t/module_versions.t
-t/perlcritic.t
-t/pod.t
-t/pod-coverage.t
+xt/changes.t
+xt/kwalitee.t
+xt/manifest.t
+xt/module_versions.t
+xt/perlcritic.t
+xt/pod-coverage.t
+xt/pod.t
+xt/prereq.t
+xt/unix_eol.t
 
