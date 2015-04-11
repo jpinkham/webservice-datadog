@@ -82,11 +82,11 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog"
+         "web" : "https://github.com/jpinkham/webservice-datadog/issues"
       },
       "homepage" : "https://metacpan.org/release/WebService-DataDog",
       "license" : [
-         "http://www.perlfoundation.org/artistic_license_1_0"
+         "http://www.gnu.org/licenses/gpl-3.0.txt"
       ],
       "repository" : {
          "url" : "https://github.com/jpinkham/webservice-datadog.git"

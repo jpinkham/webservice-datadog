@@ -32,17 +32,17 @@ my $class = Module::Build->subclass(
 	|,
 );
 
-my $builder = Module::Build->new(
+my $builder = $class->new(
 	module_name          => 'WebService::DataDog',
-	license              => 'artistic',
+	license              => 'GPL_3',
 	dist_author          => q|Jennifer Pinkham <jpinkham@cpan.org>|,
 	dist_version_from    => 'lib/WebService/DataDog.pm',
 	build_requires       =>
 	{
 		'Scalar::Util'         => 0,
 		'Storable'             => 0,
-		'Test::Exception'      => 0,
-		'Test::More'           => 0.94,
+		'Test::Most'           => 0,
+		'Test::FailWarnings'   => 0,
 	},
 	requires             =>
 	{
@@ -54,7 +54,7 @@ my $builder = Module::Build->new(
 		'LWP::UserAgent'       => 0,
 		'Try::Tiny'            => 0,
 		'Class::Load'          => 0,
-		'perl' => 5.006,
+		'perl'                 => 5.006,
 	},
 	add_to_cleanup       => [ 'WebService-DataDog-*' ],
 	create_makefile_pl   => 'traditional',
@@ -69,7 +69,7 @@ my $builder = Module::Build->new(
 		{
 			repository  => 'https://github.com/jpinkham/webservice-datadog.git',
 			homepage    => 'https://metacpan.org/release/WebService-DataDog',
-			bugtracker  => 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog',
+			bugtracker  => 'https://github.com/jpinkham/webservice-datadog/issues',
 		},
 	},
 );
