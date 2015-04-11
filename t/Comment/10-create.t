@@ -61,7 +61,7 @@ lives_ok(
 	sub
 	{
 		$response = $comment_obj->create(
-			message          => "Message goes here",
+			message          => "Unit test for WebService::DataDog -- Message goes here",
 		);
 	},
 	'Create new comment - no related event.',

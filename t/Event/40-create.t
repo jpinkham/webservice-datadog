@@ -194,7 +194,7 @@ lives_ok(
 	sub
 	{
 		$response = $event_obj->create(
-			title            => "title goes here(" . time() . ")",
+			title            => "Unit test for WebService::DataDog::Event -- title goes here(" . time() . ")",
 			text             => "Text goes here",
 			date_happened    => '1370663582',
 			priority         => 'low',

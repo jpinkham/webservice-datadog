@@ -74,7 +74,7 @@ lives_ok(
 	sub
 	{
 		$response = $comment_obj->update(
-			message    => "My edited message goes here",
+			message    => "Unit test for WebService::DataDog -- My edited message goes here",
 			comment_id => $comment_id,
 		);
 	},

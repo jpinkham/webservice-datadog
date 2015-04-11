@@ -95,7 +95,7 @@ lives_ok(
 		$response = $alert_obj->update(
 			id       => $alert_id,
 			query    => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 100",
-			message  => "Updated message goes here",
+			message  => "Unit test for WebService::DataDog -- Updated message goes here",
 			silenced => 1,
 		);
 	},

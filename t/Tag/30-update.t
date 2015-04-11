@@ -94,7 +94,7 @@ lives_ok(
 	{
 		$response = $tag_obj->update(
 			host => $host,
-			tags => [ 'testing_tag' ],
+			tags => [ 'webservice_datadog_unit_testing_tag' ],
 		);
 	},
 	'Update tags attached to specified host.',
