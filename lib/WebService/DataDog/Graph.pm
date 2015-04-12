@@ -90,26 +90,23 @@ sub snapshot
 	foreach my $arg ( qw( start end ) )
 	{
 		croak "ERROR - Argument '$arg' must be an integer, required for snapshot()."
-			if $arg !~ /^\d+$/;
+			if $args{$arg} !~ /^\d+$/;
 	}
 	
-	my $url = $WebService::DataDog::API_ENDPOINT . 'graph';
-	
-	my $data = {
-		metric_query => $args{'metric_query'},
-		start        => $args{'start'},
-		end          => $args{'end'},
-	};
+	my $url = $WebService::DataDog::API_ENDPOINT . 'graph/snapshot?';
+	$url .= 'metric_query=' . $args{'metric_query'} . '&';
+	$url .= 'start=' . $args{'start'} . '&';
+	$url .= 'end=' . $args{'end'};
 	
 	if ( defined( $args{'event_query'} ) && $args{'event_query'} ne '' )
 	{
-		$data->{'event_query'} = $args{'event_query'};
+		$url .= '&event_query=' . $args{'event_query'};
 	}
 	
 	my $response = $self->_send_request(
-		method => 'POST',
+		method => 'GET',
 		url    => $url,
-		data   => $data,
+		data   => { '' => [] }
 	);
 	
 	if ( !defined($response) )
@@ -117,7 +114,7 @@ sub snapshot
 		croak "Fatal error. No response.";
 	}
 	
-	if ( defined($response->{'snapshot_url'}) || $response->{'snapshot_url'} eq '' )
+	if ( !defined($response->{'snapshot_url'}) || $response->{'snapshot_url'} eq '' )
 	{
 		croak "Fatal error. Missing or invalid snapshot_url.";
 	}

@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 4 );
+	: plan( tests => 7 );
 
 my $config = DataDogConfig->new();
 
@@ -57,57 +57,36 @@ throws_ok(
 );
 
 
-#**    [CommentBlockStart     (April 12, 2015 11:25:24 AM EDT, jpinkham)
-#**+----------------------------------------------------------------------
-#**|throws_ok(
-#**|	sub
-#**|	{
-#**|		$response = $graph_obj->snapshot(
-#**|			metric_query     => "system.load.1{*}",
-#**|			start            => 12345,
-#**|			end              => "abcd"
-#**|		);
-#**|	},
-#**|	qr/'end' must be an integer/,
-#**|	'Dies on invalid end time',
-#**|);
-#**+----------------------------------------------------------------------
-#**    CommentBlockEnd]       (April 12, 2015 11:25:24 AM EDT, jpinkham)
+throws_ok(
+	sub
+	{
+		$response = $graph_obj->snapshot(
+			metric_query     => "system.load.1{*}",
+			start            => 12345,
+			end              => "abcd"
+		);
+	},
+	qr/'end' must be an integer/,
+	'Dies on invalid end time',
+);
 
 
-#**    [CommentBlockStart     (April 12, 2015 10:59:14 AM EDT, jpinkham)
-#**+----------------------------------------------------------------------
-#**|lives_ok(
-#**|	sub
-#**|	{
-#**|		$response = $comment_obj->create(
-#**|			message          => "Unit test for WebService::DataDog -- Message goes here",
-#**|		);
-#**|	},
-#**|	'Create new comment - no related event.',
-#**|)|| diag explain $response;
-#**|
-#**|ok(
-#**|	Data::Validate::Type::is_hashref( $response ),
-#**|	'Response is a hashref.',
-#**|);
-#**|
-#**|
-#**|# Store id for use in upcoming tests
-#**|
-#**|ok(
-#**|	open( FILE, '>', 'webservice-datadog-comment-commentid.tmp'),
-#**|	'Open temp file to store new comment id'
-#**|);
-#**|
-#**|print FILE $response->{'id'};#$new_comment_id;
-#**|
-#**|
-#**|
-#**|ok(
-#**|	close FILE,
-#**|	'Close temp file'
-#**|);
-#**+----------------------------------------------------------------------
-#**    CommentBlockEnd]       (April 12, 2015 10:59:14 AM EDT, jpinkham)
+lives_ok(
+	sub
+	{
+		my $now_ish = time() - 10000;
+		
+		$response = $graph_obj->snapshot(
+			metric_query     => "system.load.1{*}",
+			start            => $now_ish - 86400,
+			end              => $now_ish
+		);
+	},
+	'Create snapshot.',
+)|| diag explain $response;
+
+ok(
+	Data::Validate::Type::is_hashref( $response ),
+	'Response is a hashref.',
+);
 
