@@ -93,16 +93,24 @@ is(
 );
 
 
-# NOTE: set $alt_handle to another team member's account
-#lives_ok(
-#	sub
-#	{
-#		$response = $comment_obj->update(
-#			message    => "My edited, again, message goes here",
-#			comment_id => $comment_id,
-#			handle     => $alt_handle,
-#		);
-#	},
-#	'Edit existing comment. Changing handle.',
-#)|| diag explain $response;
+# Cannot get this test to work, even with known good comment id and alt_handle
+# Returns "500 Internal Server Error"
+#**    [CommentBlockStart     (April 11, 2015 8:42:38 PM EDT, jpinkham)
+#**+----------------------------------------------------------------------
+#**|my $config = DataDogConfig->new();
+#**|my $alt_handle = $config->{'alt_handle'};
+#**|lives_ok(
+#**|	sub
+#**|	{
+#**|		$response = $comment_obj->update(
+#**|			message    => "My edited, again, message goes here",
+#**|			comment_id => $comment_id,
+#**|			handle     => $alt_handle
+#**|		);
+#**|		
+#**|	},
+#**|	'Edit existing comment. Changing handle.',
+#**|)|| diag explain $response;
+#**+----------------------------------------------------------------------
+#**    CommentBlockEnd]       (April 11, 2015 8:42:38 PM EDT, jpinkham)
 
