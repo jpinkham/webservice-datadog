@@ -15,18 +15,18 @@ WebService::DataDog::Graph - Interface to Graph functions in DataDog's API.
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 
 =head1 SYNOPSIS
 
 This module allows you interact with the graph endpoint of the DataDog API.
 
-Per DataDog: "You can take graph snapshots using the API.."
+Per DataDog: "You can take graph snapshots using the API"
 
 
 =head1 METHODS
@@ -47,8 +47,8 @@ Take a graph snapshot.
 	$graph->snapshot(
 		metric_query => "system.load.1{*}",
 		start        => 1388632282
-		end          => 1388718682,
-		event_query  => 
+		end          => 1388718682
+	);
 	
 Parameters:
 
@@ -56,7 +56,19 @@ Parameters:
 
 =item * metric_query
 
+Metric query to capture in the graph.
 
+=item * start
+
+The POSIX timestamp of the start of the query.
+
+=item * end
+
+The POSIX timestamp of the end of the query.
+
+=item * event_query
+
+A query that will add event bands to the graph.
 
 =back
 
@@ -74,20 +86,25 @@ sub snapshot
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	if ( defined $args{'emails'} )
+	# Check for valid parameters
+	foreach my $arg ( qw( start end ) )
 	{
-		if ( !Data::Validate::Type::is_arrayref( $args{'emails'} ) )
-		{
-			croak "ERROR - invalid 'emails' value. Must be an arrayref.";
-		}
-		
+		croak "ERROR - Argument '$arg' must be an integer, required for snapshot()."
+			if $arg !~ /^\d+$/;
 	}
-
-	my $url = $WebService::DataDog::API_ENDPOINT . 'invite_users';
+	
+	my $url = $WebService::DataDog::API_ENDPOINT . 'graph';
 	
 	my $data = {
-		emails => $args{'emails'},
+		metric_query => $args{'metric_query'},
+		start        => $args{'start'},
+		end          => $args{'end'},
 	};
+	
+	if ( defined( $args{'event_query'} ) && $args{'event_query'} ne '' )
+	{
+		$data->{'event_query'} = $args{'event_query'};
+	}
 	
 	my $response = $self->_send_request(
 		method => 'POST',
@@ -97,7 +114,12 @@ sub snapshot
 	
 	if ( !defined($response) )
 	{
-		croak "Fatal error. No response";
+		croak "Fatal error. No response.";
+	}
+	
+	if ( defined($response->{'snapshot_url'}) || $response->{'snapshot_url'} eq '' )
+	{
+		croak "Fatal error. Missing or invalid snapshot_url.";
 	}
 	
 	return $response;
