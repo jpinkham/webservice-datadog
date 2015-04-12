@@ -63,7 +63,7 @@ application key.
 		tags        => $tag_list,     # Optional - tags associated with the metric
 	);
 
-	# For dashboard functions, first build a dashboard object
+	# For dashboard/timeboard functions, first build a dashboard object
 	my $dashboard = $datadog->build('Dashboard');
 
 	# Create a new dashboard
@@ -188,7 +188,17 @@ application key.
 		term  => $search_term,
 		facet => [ 'hosts', 'metrics' ] #optional
 	);
-
+	
+	# For graph snapshots, first build a graph object
+	my $graph = $datadog->build('Graph');
+	
+	my $snapshot = $graph->snapshot(
+		metric_query => $metric_query,
+		start        => $start_timestamp,
+		end          => $end_timestamp,
+		event_query  => $event_query, # optional -- default=None
+	);
+	
 =cut
 
 
