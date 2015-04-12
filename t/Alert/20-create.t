@@ -6,7 +6,7 @@ use warnings;
 use Data::Dumper;
 use Data::Validate::Type;
 use Test::Exception;
-use Test::More;
+use Test::Most 'bail';
 use WebService::DataDog;
 
 
@@ -75,7 +75,7 @@ lives_ok(
 		$response = $alert_obj->create(
 			query    => "sum(last_1d):sum:system.net.bytes_rcvd{host:host0} > 100",
 			name     => "Bytes received on host0",
-			message  => "Message goes here",
+			message  => "Unit test for WebService::DataDog -- Message goes here",
 			silenced => 1,
 		);
 	},

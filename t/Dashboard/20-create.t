@@ -6,7 +6,7 @@ use warnings;
 use Data::Dumper;
 use Data::Validate::Type;
 use Test::Exception;
-use Test::More;
+use Test::Most 'bail';
 use WebService::DataDog;
 
 
@@ -110,7 +110,7 @@ lives_ok(
   {                                                                             
     $response = $dashboard_obj->create(                                         
       title       => "TO BE DELETED test dash deprecated",                                 
-      description => "Created by test script",                                  
+      description => "Created by WebService::DataDog unit test script",                                  
       graphs      => [                                                          
         {                                                                       
           title => "Sum of Memory Free",                                        
@@ -147,7 +147,7 @@ lives_ok(
 	{
 		$response = $dashboard_obj->create(
 			title       => "TO BE DELETED test dash",
-			description => "Created by test script",
+			description => "Created by WebService::DataDog unit test script",
 			graphs      => [
 				{
 					title => "Sum of Memory Free",

@@ -9,7 +9,7 @@ use Data::Validate::Type;
 use Scalar::Util qw();
 use Storable qw();
 use Test::Exception;
-use Test::More;
+use Test::Most;
 
 use WebService::DataDog;
 

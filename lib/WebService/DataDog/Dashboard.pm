@@ -10,15 +10,15 @@ use Data::Dumper;
 
 =head1 NAME
 
-WebService::DataDog::Dashboard - Interface to Dashboard functions in DataDog's API.
+WebService::DataDog::Dashboard - Interface to Dashboard/Timeboard functions in DataDog's API.
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 
 =head1 SYNOPSIS
@@ -49,7 +49,7 @@ sub get_all_dashboards
 
 =head2 retrieve_all()
 
-Retrieve details for all user-created dashboards ( does not include
+Retrieve details for all user-created dashboards/timeboards ( does not include
 system-generated or integration dashboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
@@ -99,8 +99,8 @@ sub get_dashboard
 
 =head2 retrieve()
 
-Retrieve details for specified user-created dashboards ( does not work for
-system-generated or integration dashboards ).
+Retrieve details for specified user-created dashboards/timeboards ( does not work for
+system-generated or integration dashboards/timeboards ).
 
 	my $dashboard = $datadog->build('Dashboard');
 	my $dashboard_data = $dashboard->retrieve( id => $dash_id );
@@ -111,7 +111,7 @@ Parameters:
 
 =item * id
 
-Id of dashboard you want to retrieve the details for.
+Id of dashboard/timeboard you want to retrieve the details for.
 
 =back
 
@@ -184,8 +184,8 @@ sub update_dashboard
 
 =head2 update()
 
-Update details for specified user-created dashboard ( does not work for
-system-generated or integration dashboards ).
+Update details for specified user-created dashboard/timeboard ( does not work for
+system-generated or integration dashboards/timeboards ).
 Supply at least one of the arguments 'title', 'description', 'graphs'.
 Any argument not supplied will remain unchanged within the dashboard.
 
@@ -292,8 +292,8 @@ sub update
 
 =head2 create()
 
-Create new DataDog dashboard with 1+ graphs.
-If successful, returns created dashboard id.
+Create new DataDog dashboard/timeboard with 1+ graphs.
+If successful, returns created dashboard/timeboard id.
 
 	my $dashboard = $datadog->build('Dashboard');
 	my $dashboard_id = $dashboard->create(
@@ -486,7 +486,7 @@ sub delete
 
 =head2 _error_checks()
 
-Common error checking for creating/updating dashboards.
+Common error checking for creating/updating dashboards/timeboards.
 
 =cut
 
@@ -568,60 +568,6 @@ sub _error_checks
 	
 	return;
 }
-
-
-=head1 AUTHOR
-
-Jennifer Pinkham, C<< <jpinkham at cpan.org> >>.
-
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-WebService-DataDog at rt.cpan.org>,
-or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-DataDog>.
-I will be notified, and then you'll automatically be notified of progress on
-your bug as I make changes.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-	perldoc WebService::DataDog::Dashboard
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-DataDog>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/WebService-DataDog>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/WebService-DataDog>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/WebService-DataDog/>
-
-=back
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2013 Jennifer Pinkham.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
-=cut
 
 
 1;

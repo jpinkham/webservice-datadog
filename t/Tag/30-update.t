@@ -6,7 +6,7 @@ use warnings;
 use Data::Dumper;
 use Data::Validate::Type;
 use Test::Exception;
-use Test::More;
+use Test::Most 'bail';
 use WebService::DataDog;
 
 my $skip_condition = 0;
@@ -94,7 +94,7 @@ lives_ok(
 	{
 		$response = $tag_obj->update(
 			host => $host,
-			tags => [ 'testing_tag' ],
+			tags => [ 'webservice_datadog_unit_testing_tag' ],
 		);
 	},
 	'Update tags attached to specified host.',
