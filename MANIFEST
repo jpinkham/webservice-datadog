@@ -14,6 +14,7 @@ lib/WebService/DataDog/Alert.pm
 lib/WebService/DataDog/Comment.pm
 lib/WebService/DataDog/Dashboard.pm
 lib/WebService/DataDog/Event.pm
+lib/WebService/DataDog/Graph.pm
 lib/WebService/DataDog/Metric.pm
 lib/WebService/DataDog/Search.pm
 lib/WebService/DataDog/Tag.pm
@@ -54,6 +55,8 @@ t/Event/20-search.t
 t/Event/30-retrieve.t
 t/Event/40-create.t
 t/Event/99-cleanup.t
+t/Graph/00-load.t
+t/Graph/10-snapshot.t
 t/Metric/00-load.t
 t/Metric/20-emit.t
 t/Search/00-load.t
