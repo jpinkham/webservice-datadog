@@ -1,6 +1,6 @@
 ^MYMETA.yml$
 ^.git
 ^#.*#$
-^cover_db
+cover_db
 .coveralls.yml
 nytprof
