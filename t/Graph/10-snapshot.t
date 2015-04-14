@@ -86,7 +86,8 @@ lives_ok(
 )|| diag explain $response;
 
 ok(
-	Data::Validate::Type::is_hashref( $response ),
-	'Response is a hashref.',
+	Data::Validate::Type::is_string( $response ),
+	'Response is a string.',
 );
+
 

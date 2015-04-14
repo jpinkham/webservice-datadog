@@ -36,7 +36,7 @@ Per DataDog: "You can take graph snapshots using the API"
 Take a graph snapshot.
 	
 	my $graph = $datadog->build('Graph');
-	$graph->snapshot(
+	my $snapshot_url = $graph->snapshot(
 		metric_query => $metric_query,
 		start        => $start_timestamp,
 		end          => $end_timestamp,
@@ -44,7 +44,7 @@ Take a graph snapshot.
 	);
 	
 	Example:
-	$graph->snapshot(
+	my $snapshot_url = $graph->snapshot(
 		metric_query => "system.load.1{*}",
 		start        => 1388632282
 		end          => 1388718682
@@ -119,7 +119,7 @@ sub snapshot
 		croak "Fatal error. Missing or invalid snapshot_url.";
 	}
 	
-	return $response;
+	return $response->{'snapshot_url'};
 }
 
 

@@ -192,7 +192,7 @@ application key.
 	# For graph snapshots, first build a graph object
 	my $graph = $datadog->build('Graph');
 	
-	my $snapshot = $graph->snapshot(
+	my $snapshot_url = $graph->snapshot(
 		metric_query => $metric_query,
 		start        => $start_timestamp,
 		end          => $end_timestamp,
