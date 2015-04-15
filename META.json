@@ -6,7 +6,7 @@
    "dynamic_config" : 1,
    "generated_by" : "Module::Build version 0.421",
    "license" : [
-      "artistic_1"
+      "gpl_3"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -18,8 +18,8 @@
          "requires" : {
             "Scalar::Util" : "0",
             "Storable" : "0",
-            "Test::Exception" : "0",
-            "Test::More" : "0.94"
+            "Test::FailWarnings" : "0",
+            "Test::Most" : "0"
          }
       },
       "configure" : {
@@ -60,6 +60,10 @@
       },
       "WebService::DataDog::Event" : {
          "file" : "lib/WebService/DataDog/Event.pm",
+         "version" : "v1.0.2"
+      },
+      "WebService::DataDog::Graph" : {
+         "file" : "lib/WebService/DataDog/Graph.pm",
          "version" : "v1.0.2"
       },
       "WebService::DataDog::Metric" : {

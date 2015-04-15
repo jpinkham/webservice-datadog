@@ -3,27 +3,27 @@ require 5.006;
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-  'VERSION_FROM' => 'lib/WebService/DataDog.pm',
-  'NAME' => 'WebService::DataDog',
   'PL_FILES' => {},
+  'NAME' => 'WebService::DataDog',
   'test' => {
-              'TESTS' => 't/*.t t/User/*.t t/Dashboard/*.t t/Tag/*.t t/Search/*.t t/Alert/*.t t/Metric/*.t t/Event/*.t t/Comment/*.t'
+              'TESTS' => 't/*.t t/User/*.t t/Dashboard/*.t t/Tag/*.t t/Search/*.t t/Alert/*.t t/Graph/*.t t/Metric/*.t t/Event/*.t t/Comment/*.t'
             },
+  'INSTALLDIRS' => 'site',
+  'VERSION_FROM' => 'lib/WebService/DataDog.pm',
   'PREREQ_PM' => {
+                   'HTTP::Request' => 0,
                    'Storable' => 0,
                    'Data::Dumper' => 0,
                    'Class::Load' => 0,
-                   'Carp' => 0,
                    'Scalar::Util' => 0,
-                   'Try::Tiny' => 0,
-                   'HTTP::Request' => 0,
-                   'Data::Validate::Type' => '1.001000',
-                   'Test::Exception' => 0,
-                   'LWP::UserAgent' => 0,
                    'JSON' => 0,
-                   'Test::More' => '0.94'
+                   'Test::Most' => 0,
+                   'Data::Validate::Type' => '1.001000',
+                   'LWP::UserAgent' => 0,
+                   'Test::FailWarnings' => 0,
+                   'Carp' => 0,
+                   'Try::Tiny' => 0
                  },
-  'EXE_FILES' => [],
-  'INSTALLDIRS' => 'site'
+  'EXE_FILES' => []
 )
 ;

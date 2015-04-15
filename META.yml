@@ -32,6 +32,9 @@ provides:
   WebService::DataDog::Event:
     file: lib/WebService/DataDog/Event.pm
     version: v1.0.2
+  WebService::DataDog::Graph:
+    file: lib/WebService/DataDog/Graph.pm
+    version: v1.0.2
   WebService::DataDog::Metric:
     file: lib/WebService/DataDog/Metric.pm
     version: v1.0.2
