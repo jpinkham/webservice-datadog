@@ -13,7 +13,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 10 );
 
 my $config = DataDogConfig->new();
 
@@ -102,14 +102,34 @@ ok(
 #**+----------------------------------------------------------------------
 #**    CommentBlockEnd]       (April 11, 2015 8:08:13 PM EDT, jpinkham)
 
+my $related_comment = $response->{'resource'};
+
+lives_ok(
+	sub
+	{
+		$response = $comment_obj->create(
+			message           => 'WebService::DataDog::Comment unit test - message2',
+			related_event_url => $related_comment,
+		);
+	},
+	'Create new comment - specifying related event.',
+)|| diag explain $response;
+
+is(
+	$response->{'resource'},
+	$related_comment,
+	'Comment added to existing thread.'
+);
+	
+
 # Store id for use in upcoming tests
 
 ok(
-	open( FILE, '>', 'webservice-datadog-comment-commentid.tmp'),
-	'Open temp file to store new comment id'
+	open( FILE, '>', 'webservice-datadog-comment-commenturl.tmp'),
+	'Open temp file to store new comment URL'
 );
 
-print FILE $response->{'id'};#$new_comment_id;
+print FILE $response->{'resource'};#$new_comment_id;
 
 ok(
 	close FILE,

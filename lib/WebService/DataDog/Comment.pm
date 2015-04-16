@@ -47,7 +47,7 @@ replying to an existing comment (specified with the 'related_event_id' parameter
 	$comment->create(
 		message          => $message,  # the comment text
 		handle           => $handle,   # optional - handle of the user making the comment
-		related_event_id => $event_id, # optional - the id of another comment or event to reply to
+FIXTHIS!		related_event_id => $event_id, # optional - the id of another comment or event to reply to
 	);
 	
 	Example:
@@ -68,7 +68,7 @@ Text of the comment.
 
 Handle of the user making the comment.
 
-=item * related_event_id
+=item * related_event_id   FIXTHIS!
 
 The id of another comment or event to reply to.
 
@@ -98,7 +98,8 @@ sub create
 	my $data = {
 		message          => $args{'message'},
 		handle           => defined $args{'handle'} ? $args{'handle'} : undef,
-		related_event_id => defined $args{'related_event_id'} ? $args{'related_event_id'} : undef,
+#		related_event_id => defined $args{'related_event_id'} ? $args{'related_event_id'} : undef,
+		resource         => defined $args{'related_event_url'} ? $args{'related_event_url'} : undef
 	};
 	
 	my $response = $self->_send_request(
