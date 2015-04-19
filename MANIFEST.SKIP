@@ -4,3 +4,14 @@
 cover_db
 .coveralls.yml
 nytprof
+blib/
+_build/
+cover_db/
+inc/
+Build
+Build.bat
+Makefile
+MYMETA.yml
+MYMETA.json
+nytprof.out
+pm_to_blib

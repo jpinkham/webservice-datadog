@@ -44,43 +44,43 @@
    "provides" : {
       "WebService::DataDog" : {
          "file" : "lib/WebService/DataDog.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Alert" : {
          "file" : "lib/WebService/DataDog/Alert.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Comment" : {
          "file" : "lib/WebService/DataDog/Comment.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Dashboard" : {
          "file" : "lib/WebService/DataDog/Dashboard.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Event" : {
          "file" : "lib/WebService/DataDog/Event.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Graph" : {
          "file" : "lib/WebService/DataDog/Graph.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Metric" : {
          "file" : "lib/WebService/DataDog/Metric.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Search" : {
          "file" : "lib/WebService/DataDog/Search.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::Tag" : {
          "file" : "lib/WebService/DataDog/Tag.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       },
       "WebService::DataDog::User" : {
          "file" : "lib/WebService/DataDog/User.pm",
-         "version" : "v1.0.2"
+         "version" : "v1.0.3"
       }
    },
    "release_status" : "stable",
@@ -96,5 +96,5 @@
          "url" : "https://github.com/jpinkham/webservice-datadog.git"
       }
    },
-   "version" : "v1.0.2"
+   "version" : "v1.0.3"
 }

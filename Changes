@@ -1,3 +1,9 @@
+v1.0.3  2015-04-19
+        Included properly updated META.* files, so new Graph module is visible,
+        and new requirement Test::Most is specified.
+        Added printing of full response if a non-200 code is received.
+
+
 v1.0.2  2015-04-13
         Added WebService::DataDog::Graph module, with tests.
         Fixed a few spots I missed previously, regarding change to license to GPL v3.
