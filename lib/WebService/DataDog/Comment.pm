@@ -98,8 +98,7 @@ sub create
 	my $data = {
 		message          => $args{'message'},
 		handle           => defined $args{'handle'} ? $args{'handle'} : undef,
-#		related_event_id => defined $args{'related_event_id'} ? $args{'related_event_id'} : undef,
-		resource         => defined $args{'related_event_url'} ? $args{'related_event_url'} : undef
+		related_event_id => defined $args{'related_event_id'} ? $args{'related_event_id'} : undef,
 	};
 	
 	my $response = $self->_send_request(
