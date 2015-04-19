@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Most 'bail', tests => 1;
+use Test::Most , tests => 1;
 
 SKIP:
 {

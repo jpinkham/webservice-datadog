@@ -7,7 +7,7 @@ use Data::Dumper;
 
 use Data::Validate::Type;
 use Test::Exception;
-use Test::Most 'bail';
+use Test::Most ;
 
 use WebService::DataDog;
 
