@@ -102,7 +102,7 @@ is(
 # Store id for use in upcoming tests
 
 ok(
-	open( FILE, '>', 'webservice-datadog-comment-commenturl.tmp'),
+	open( FILE, '>', 'webservice-datadog-comment-commentid.tmp'),
 	'Open temp file to store new comment URL'
 );
 
