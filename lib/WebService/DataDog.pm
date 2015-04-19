@@ -436,8 +436,14 @@ sub _send_request ## no critic qw( Subroutines::ProhibitUnusedPrivateSubroutines
 	my $user_agent = LWP::UserAgent->new();
 	my $response = $user_agent->request($request);
 
-	croak "Request failed:" . $response->status_line()
-		if !$response->is_success();
+	if (! $response->is_success() )
+	{
+		my $message = "Request failed:" . $response->status_line();
+		my $content = $response->content();
+		$message .= "\nResponse errors:" . Dumper($content);
+
+		croak $message;
+	}
 
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
