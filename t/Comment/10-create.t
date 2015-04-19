@@ -72,55 +72,32 @@ ok(
 	'Response is a hashref.',
 );
 
-# BROKEN(4/11/2015) - Add a comment to thread of message we just created
+my $event_id = $response->{'id'};
 
-#**    [CommentBlockStart     (April 11, 2015 8:08:13 PM EDT, jpinkham)
-#**+----------------------------------------------------------------------
-#**|my $event_id = $response->{'id'};
-#**|#hardcode. for testing
-#**|#$event_id = "2760155822150389761";
-#**|
-#**|lives_ok(
-#**|	sub
-#**|	{
-#**|		$response = $comment_obj->create(
-#**|			message          => "Message2 goes here",
-#**|			related_event_id => $event_id,
-#**|		);
-#**|	},
-#**|	'Create new comment - specifying related event.',
-#**|)|| diag explain $response;
-#**|
-#**|my $new_comment_id = $response->{'id'};
-#**|
-#**|is(
-#**|	$response->{'related_event_id'},
-#**|	$event_id,
-#**|	'Comment added to existing thread.'
-#**|);
-#**|
-#**+----------------------------------------------------------------------
-#**    CommentBlockEnd]       (April 11, 2015 8:08:13 PM EDT, jpinkham)
+# Sometimes DataDog has a slight delay in recognizing new comments, and as a result
+# it will fail to add a comment to a thread because it does not believe that the
+# parent comment exists yet.  So we pause here before trying to create a thread.
 
-my $related_comment = $response->{'resource'};
+sleep 2;
 
 lives_ok(
 	sub
 	{
 		$response = $comment_obj->create(
-			message           => 'WebService::DataDog::Comment unit test - message2',
-			related_event_url => $related_comment,
+			message          => "Unit test for WebService::DataDog -- thread message goes here",
+			related_event_id => $event_id,
 		);
 	},
 	'Create new comment - specifying related event.',
 )|| diag explain $response;
 
+
 is(
-	$response->{'resource'},
-	$related_comment,
+	$response->{'related_event_id'},
+	$event_id,
 	'Comment added to existing thread.'
 );
-	
+
 
 # Store id for use in upcoming tests
 
@@ -129,7 +106,7 @@ ok(
 	'Open temp file to store new comment URL'
 );
 
-print FILE $response->{'resource'};#$new_comment_id;
+print FILE $response->{'id'};
 
 ok(
 	close FILE,
