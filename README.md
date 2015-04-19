@@ -42,8 +42,18 @@ To install this module, run the following commands:
 NOTES
 ------
 
+ * WebService::DataDog::Alert is deprecated and is no longer supported by DataDog.
+This Perl wrapper will soon have a replacement Monitor module that utilizes the
+replacement "monitor" endpoint in the DataDog API.
+
  * WebService::DataDog::Alert, in retrieve() and update():
 A 404 response typically indicates an incorrect alert id was specified
+
+ * WebService::DataDog::Comment, in create():
+There may be a race condition that exists between comment creation and comment
+creation that is tied to the aformentioned comment.  Tests run successfully
+in a consistent manner only when a short "sleep" is added between parent comment
+creation and child comment creation.
 
  * WebService::DataDog::Comment, in create() and update():
 The 'handle' parameter must specify a username on the "team" (https://app.datadoghq.com/account/team)
