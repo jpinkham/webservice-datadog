@@ -47,7 +47,7 @@ replying to an existing comment (specified with the 'related_event_id' parameter
 	$comment->create(
 		message          => $message,  # the comment text
 		handle           => $handle,   # optional - handle of the user making the comment
-FIXTHIS!		related_event_id => $event_id, # optional - the id of another comment or event to reply to
+		related_event_id => $event_id, # optional - the id of another comment or event to reply to
 	);
 	
 	Example:
@@ -68,7 +68,7 @@ Text of the comment.
 
 Handle of the user making the comment.
 
-=item * related_event_id   FIXTHIS!
+=item * related_event_id
 
 The id of another comment or event to reply to.
 
