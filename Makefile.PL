@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile
 (
   'test' => {
-              'TESTS' => 't/*.t t/User/*.t t/Dashboard/*.t t/Tag/*.t t/Search/*.t t/Alert/*.t t/Graph/*.t t/Metric/*.t t/Event/*.t t/Comment/*.t'
+              'TESTS' => 't/*.t t/Alert/*.t t/Comment/*.t t/Dashboard/*.t t/Event/*.t t/Graph/*.t t/Metric/*.t t/Search/*.t t/Tag/*.t t/User/*.t'
             },
   'PREREQ_PM' => {
                    'Carp' => 0,
