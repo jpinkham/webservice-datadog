@@ -5,7 +5,7 @@ use warnings;
 
 use English qw(-no_match_vars);
 use File::Spec;
-use Test::More;
+use Test::Most;
  
 plan( skip_all => 'Author tests not required for installation.' )
 	unless $ENV{'RELEASE_TESTING'};
