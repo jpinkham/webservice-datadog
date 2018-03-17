@@ -15,6 +15,7 @@ WriteMakefile
                    'LWP::UserAgent' => 0,
                    'Scalar::Util' => 0,
                    'Storable' => 0,
+                   'Test::Exception' => 0,
                    'Test::FailWarnings' => 0,
                    'Test::Most' => 0,
                    'Try::Tiny' => 0,

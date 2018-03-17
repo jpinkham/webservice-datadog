@@ -41,6 +41,7 @@ my $builder = $class->new(
 	{
 		'Scalar::Util'         => 0,
 		'Storable'             => 0,
+		'Test::Exception'      => 0,
 		'Test::Most'           => 0,
 		'Test::FailWarnings'   => 0,
 	},
