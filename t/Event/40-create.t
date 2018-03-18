@@ -14,7 +14,7 @@ use WebService::DataDog;
 eval 'use DataDogConfig';
 $@
 	? plan( skip_all => 'Local connection information for DataDog required to run tests.' )
-	: plan( tests => 16 );
+	: plan( tests => 17 );
 
 my $config = DataDogConfig->new();
 
@@ -98,8 +98,23 @@ throws_ok(
 		);
 	},
 	qr/nvalid 'date_happened'.*POSIX/,
-	'Dies on invalid "date_happened".',
+	'Dies on invalid format "date_happened".',
 );
+
+
+throws_ok(
+	sub
+	{
+		$response = $event_obj->create(
+			title           => "test: date too far in the past",
+			text            => "Text goes here",
+			date_happened   => ( time() - 34560000 ), #400 days in the past
+		);
+	},
+	qr/nvalid 'date_happened'.*too far in the past/,
+	'Dies on invalid "date_happened" timeframe.',
+);
+
 
 
 throws_ok(
