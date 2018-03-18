@@ -214,7 +214,7 @@ tag them, set priority and event aggregate them with other events."
 	$event->create(
 		title            => $event_title,               
 		text             => $event_text,  # Body/Description of the event.
-		date_happened    => $timestamp,   # Optional, default "now"
+		date_happened    => $epoch_timestamp,   # Optional, default is current time. Past events limited to 389 days ago
 		priority         => $priority,    # Optional. normal|low
 		related_event_id => $event_id,    # Optional, id of aggregate event
 		tags             => $tag_list,    # Optional - tags to apply to event (easy to search by)
@@ -245,7 +245,7 @@ Optional. Event body/description.
 
 =item * date_happened
 
-Optional. Default value 'now'. POSIX/Unix time.
+Optional. Default value 'now'. POSIX/Unix time.	Past events limited to 389 days ago.
 
 =item * priority
 
@@ -412,7 +412,7 @@ sub _create_error_checks
 			if !defined( $args{$arg} ) || ( $args{$arg} eq '' );
 	}
 	
-	# Check that title is <= 100 characters. Per Carlo @ DDog. Undocumented?
+	# Check that title is <= 100 characters. 
 	croak( "ERROR - invalid 'title' >" . $args{'title'} . "<. Title must be 100 characters or less." )
 		if ( length( $args{'title'} ) > 100 );
 	
@@ -420,7 +420,10 @@ sub _create_error_checks
 	if ( defined( $args{'date_happened'} ) )
 	{
 		croak "ERROR - invalid 'date_happened' >" . $args{'date_happened'} . "<. Must be POSIX/Unixtime"
-			unless ( $args{'date_happened'} =~ /^\d{10,}$/ ); #min 10 digits, allowing for older data back to 1/1/2000
+			unless ( $args{'date_happened'} =~ /^\d{10,}$/ ); #min 10 digits
+		croak "ERROR - invalid 'date_happened' >" . $args{'date_happened'} .  "<. Date too far in the past (limit to 389 days ago)"
+			unless ( $args{'date_happened'} > (time() - 33696000)); 
+		
 	}
 	
 	# Check that 'priority' is valid
