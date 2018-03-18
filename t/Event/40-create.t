@@ -196,13 +196,11 @@ lives_ok(
 		$response = $event_obj->create(
 			title            => "Unit test for WebService::DataDog::Event -- title goes here(" . time() . ")",
 			text             => "Text goes here",
-			date_happened    => '1370663582',
-			priority         => 'low',
-			source_type_name => 'jenkins',
-			alert_type       => 'info',
+			date_happened    => time() - 86400, #max limit in the past seems to be 1 year, 24 days, 18 hours, 26 min, 38 sec
+			priority         => "low",
+			source_type_name => "jenkins",
+			alert_type       => "info",
 		);
 	},
-	'Post valid event to stream - [ title, text, date_happened, priority, source_rtype_name, alert_type ].',
+	'Post valid event to stream - [ title, text, date_happened, priority, source_type_name, alert_type ].',
 );
-
-
